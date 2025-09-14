@@ -1,19 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PART_2_DATA } from "../../utils/data";
 import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
-export default function Part2() {
+function Part2Content() {
   const searchParams = useSearchParams();
   const questionId = searchParams.get('questionId');
   
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [answeredQuestions, setAnsweredQuestions] = useState({});
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [currentSpeaker, setCurrentSpeaker] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Record<string, boolean>>({});
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [currentSpeaker, setCurrentSpeaker] = useState<number | null>(null);
 
   // Navigate to specific question if questionId is provided
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Part2() {
 
   const currentQuestion = PART_2_DATA[currentIndex];
 
-  function handleSelect(speakerIndex, option) {
+  function handleSelect(speakerIndex: string, option: string) {
     if (showAnswer) return;
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -58,7 +58,7 @@ export default function Part2() {
     const incorrectSpeakers = [];
     
     Object.keys(currentQuestion.answer).forEach((speakerNum) => {
-      const isCorrect = selectedAnswers[speakerNum] === currentQuestion.answer[speakerNum];
+      const isCorrect = selectedAnswers[speakerNum] === (currentQuestion.answer as any)[speakerNum];
       if (!isCorrect) {
         allCorrect = false;
         incorrectSpeakers.push(speakerNum);
@@ -85,7 +85,7 @@ export default function Part2() {
     }
   }
 
-  function goToQuestion(index) {
+  function goToQuestion(index: number) {
     setCurrentIndex(index);
     setSelectedAnswers({});
     setShowAnswer(false);
@@ -99,7 +99,7 @@ export default function Part2() {
     setCurrentSpeaker(null);
   }
 
-  function playSpeakerAudio(index) {
+  function playSpeakerAudio(index: number) {
     setCurrentSpeaker(index);
   }
 
@@ -336,7 +336,7 @@ export default function Part2() {
           <div style={{ display: "grid", gap: "16px" }}>
             {currentQuestion.speakers.map((speaker, index) => {
               const speakerNum = (index + 1).toString();
-              const correctAnswer = currentQuestion.answer[speakerNum];
+              const correctAnswer = (currentQuestion.answer as any)[speakerNum];
               const selectedAnswer = selectedAnswers[speakerNum];
               
               return (
@@ -461,8 +461,8 @@ export default function Part2() {
             </h3>
             {Object.entries(currentQuestion.answer).map(([speakerNum, correctAnswer]) => {
               const isCorrect = selectedAnswers[speakerNum] === correctAnswer;
-              const selectedOption = currentQuestion.options[selectedAnswers[speakerNum]] || "Not selected";
-              const correctOption = currentQuestion.options[correctAnswer];
+              const selectedOption = (currentQuestion.options as any)[selectedAnswers[speakerNum]] || "Not selected";
+              const correctOption = (currentQuestion.options as any)[correctAnswer];
               
               return (
                 <div key={speakerNum} style={{ 
@@ -547,5 +547,23 @@ export default function Part2() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function Part2() {
+  return (
+    <Suspense fallback={
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    }>
+      <Part2Content />
+    </Suspense>
   );
 }

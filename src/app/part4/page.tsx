@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PART_4_DATA } from "../../utils/data";
 import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
-export default function Part4() {
+function Part4Content() {
   const searchParams = useSearchParams();
   const questionId = searchParams.get('questionId');
   
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showAnswers, setShowAnswers] = useState({});
-  const [answeredQuestions, setAnsweredQuestions] = useState({});
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+  const [showAnswers, setShowAnswers] = useState<Record<number, boolean>>({});
+  const [answeredQuestions, setAnsweredQuestions] = useState<Record<number, boolean>>({});
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   // Navigate to specific question if questionId is provided
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Part4() {
 
   const currentAudio = PART_4_DATA[currentIndex];
 
-  function handleSelect(questionId, option) {
+  function handleSelect(questionId: number, option: string) {
     if (showAnswers[questionId]) return;
     
     setSelectedAnswers((prev) => ({
@@ -45,6 +45,8 @@ export default function Part4() {
     }));
     
     const question = currentAudio.questions.find(q => q.id === questionId);
+    if (!question) return;
+    
     const isCorrect = option === question.answer;
     
     setAnsweredQuestions((prev) => ({
@@ -55,7 +57,7 @@ export default function Part4() {
     // Track incorrect answers
     if (!isCorrect) {
       saveIncorrectAnswer({
-        id: questionId,
+        id: questionId.toString(),
         part: 'part4',
         questionData: question,
         userAnswer: option,
@@ -63,7 +65,7 @@ export default function Part4() {
       });
     } else {
       // Remove from incorrect answers if user got it right
-      removeIncorrectAnswer(questionId, 'part4');
+      removeIncorrectAnswer(questionId.toString(), 'part4');
     }
   }
 
@@ -79,14 +81,14 @@ export default function Part4() {
     setCurrentIndex((prev) => (prev + 1 < PART_4_DATA.length ? prev + 1 : 0));
   }
 
-  function goToAudio(index) {
+  function goToAudio(index: number) {
     setCurrentIndex(index);
     setSelectedAnswers({});
     setShowAnswers({});
     setIsDrawerOpen(false);
   }
 
-  function tryAgainQuestion(questionId) {
+  function tryAgainQuestion(questionId: number) {
     setSelectedAnswers((prev) => {
       const newAnswers = { ...prev };
       delete newAnswers[questionId];
@@ -436,7 +438,7 @@ export default function Part4() {
 
         {/* Show transcript when any question is answered */}
         {Object.keys(showAnswers).some(qId => 
-          currentAudio.questions.some(q => q.id === parseInt(qId)) && showAnswers[qId]
+          currentAudio.questions.some(q => q.id === parseInt(qId)) && showAnswers[parseInt(qId)]
         ) && (
           <div className="card" style={{ marginTop: 20 }}>
             <details>
@@ -477,5 +479,23 @@ export default function Part4() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function Part4() {
+  return (
+    <Suspense fallback={
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    }>
+      <Part4Content />
+    </Suspense>
   );
 }

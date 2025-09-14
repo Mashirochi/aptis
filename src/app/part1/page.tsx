@@ -1,92 +1,79 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { PART_3_DATA } from "../../utils/data";
+import { PART_1_DATA } from "../../utils/data";
 import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
-export default function Part3() {
+function Part1Content() {
   const searchParams = useSearchParams();
   const questionId = searchParams.get('questionId');
   
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [answeredQuestions, setAnsweredQuestions] = useState({});
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Record<string | number, boolean>>({});
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   // Navigate to specific question if questionId is provided
   useEffect(() => {
     if (questionId) {
-      const questionIndex = PART_3_DATA.findIndex(q => q.exam_code === questionId);
+      const questionIndex = PART_1_DATA.findIndex(q => q.id.toString() === questionId);
       if (questionIndex !== -1) {
         setCurrentIndex(questionIndex);
       }
     }
   }, [questionId]);
 
-  const currentQuestion = PART_3_DATA[currentIndex];
+  const currentQuestion = PART_1_DATA[currentIndex];
 
-  function handleSelect(statementIndex, option) {
+  function handleSelect(option: string) {
     if (showAnswer) return;
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [statementIndex]: option,
-    }));
-  }
-
-  function submitAnswers() {
-    if (showAnswer) return;
+    setSelected(option);
     setShowAnswer(true);
     
-    // Check if all statements are answered correctly
-    let allCorrect = true;
-    currentQuestion.answers.forEach((answer) => {
-      if (selectedAnswers[answer.number - 1] !== answer.answer) {
-        allCorrect = false;
-      }
-    });
-    
+    const isCorrect = option === currentQuestion.answer;
     setAnsweredQuestions((prev) => ({
       ...prev,
-      [currentQuestion.exam_code]: allCorrect,
+      [currentQuestion.id]: isCorrect,
     }));
     
     // Track incorrect answers
-    if (!allCorrect) {
+    if (!isCorrect) {
       saveIncorrectAnswer({
-        id: currentQuestion.exam_code,
-        part: 'part3',
+        id: currentQuestion.id,
+        part: 'part1',
         questionData: currentQuestion,
-        userAnswer: selectedAnswers,
-        correctAnswer: currentQuestion.answers
+        userAnswer: option,
+        correctAnswer: currentQuestion.answer
       });
     } else {
       // Remove from incorrect answers if user got it right
-      removeIncorrectAnswer(currentQuestion.exam_code, 'part3');
+      removeIncorrectAnswer(currentQuestion.id, 'part1');
     }
   }
 
-  function previousQuestion() {
-    setSelectedAnswers({});
-    setShowAnswer(false);
-    setCurrentIndex((prev) => (prev - 1 >= 0 ? prev - 1 : PART_3_DATA.length - 1));
-  }
-
   function nextQuestion() {
-    setSelectedAnswers({});
+    setSelected(null);
     setShowAnswer(false);
-    setCurrentIndex((prev) => (prev + 1 < PART_3_DATA.length ? prev + 1 : 0));
+    setCurrentIndex((prev) => (prev + 1 < PART_1_DATA.length ? prev + 1 : 0));
   }
 
-  function goToQuestion(index) {
+
+  function previousQuestion() {
+    setSelected(null);
+    setShowAnswer(false);
+    setCurrentIndex((prev) => (prev - 1 >= 0 ? prev - 1 : PART_1_DATA.length - 1));
+  }
+
+  function goToQuestion(index: number) {
     setCurrentIndex(index);
-    setSelectedAnswers({});
+    setSelected(null);
     setShowAnswer(false);
     setIsDrawerOpen(false);
   }
 
   function tryAgain() {
-    setSelectedAnswers({});
+    setSelected(null);
     setShowAnswer(false);
   }
 
@@ -111,21 +98,21 @@ export default function Part3() {
           fontWeight: "700",
           textAlign: "center"
         }}>
-          📝 Danh sách câu hỏi - Part 3
+          📋 Danh sách câu hỏi - Part 1
         </h3>
         <div
           style={{
             marginTop: 15,
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(8, 1fr)",
             gap: "8px",
           }}
         >
-          {PART_3_DATA.map((question, index) => {
+          {PART_1_DATA.map((question, index) => {
             let className = "question-number";
-            if (answeredQuestions[question.exam_code] === true) {
+            if (answeredQuestions[question.id] === true) {
               className += " correct";
-            } else if (answeredQuestions[question.exam_code] === false) {
+            } else if (answeredQuestions[question.id] === false) {
               className += " incorrect";
             } else if (currentIndex === index) {
               className += " current";
@@ -133,16 +120,11 @@ export default function Part3() {
 
             return (
               <div
-                key={question.exam_code}
+                key={question.key}
                 onClick={() => goToQuestion(index)}
                 className={className}
-                style={{
-                  width: 80,
-                  height: 40,
-                  fontSize: "12px",
-                }}
               >
-                {question.exam_code}
+                {index + 1}
               </div>
             );
           })}
@@ -178,21 +160,21 @@ export default function Part3() {
             fontWeight: "700",
             textAlign: "center"
           }}>
-            📝 Danh sách câu hỏi - Part 3
+            📋 Danh sách câu hỏi - Part 1
           </h3>
           <div
             style={{
               marginTop: 15,
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateColumns: "repeat(8, 1fr)",
               gap: "8px",
             }}
           >
-            {PART_3_DATA.map((question, index) => {
+            {PART_1_DATA.map((question, index) => {
               let className = "question-number";
-              if (answeredQuestions[question.exam_code] === true) {
+              if (answeredQuestions[question.id] === true) {
                 className += " correct";
-              } else if (answeredQuestions[question.exam_code] === false) {
+              } else if (answeredQuestions[question.id] === false) {
                 className += " incorrect";
               } else if (currentIndex === index) {
                 className += " current";
@@ -200,16 +182,11 @@ export default function Part3() {
 
               return (
                 <div
-                  key={question.exam_code}
+                  key={question.id}
                   onClick={() => goToQuestion(index)}
                   className={className}
-                  style={{
-                    width: 80,
-                    height: 40,
-                    fontSize: "12px",
-                  }}
                 >
-                  {question.exam_code}
+                  {index + 1}
                 </div>
               );
             })}
@@ -222,7 +199,7 @@ export default function Part3() {
         style={{
           flex: 1,
           padding: 20,
-          maxWidth: 800,
+          maxWidth: 600,
           margin: "0 auto",
         }}
       >
@@ -241,11 +218,11 @@ export default function Part3() {
           fontSize: "24px",
           fontWeight: "700"
         }}>
-          📝 Part 3 - Đề: {currentQuestion.exam_code}
-          {questionId && currentQuestion.exam_code === questionId && " 🎯"}
+          🎧 Part 1 - Câu {currentIndex + 1} / {PART_1_DATA.length}
+          {questionId && currentQuestion.id.toString() === questionId && " 🎯"}
         </h2>
 
-        {questionId && currentQuestion.exam_code === questionId && (
+        {questionId && currentQuestion.id.toString() === questionId && (
           <div className="card" style={{
             marginBottom: 20,
             backgroundColor: "#dbeafe",
@@ -271,7 +248,7 @@ export default function Part3() {
             margin: 0,
             color: "#374151"
           }}>
-            <strong>📋 Hướng dẫn:</strong> {currentQuestion.question}
+            <strong>📋 Đề bài:</strong> {currentQuestion.question}
           </p>
         </div>
 
@@ -289,44 +266,27 @@ export default function Part3() {
         </div>
 
         <div style={{ marginTop: 20 }}>
-          {currentQuestion.statements.map((statement, index) => {
-            const correctAnswer = currentQuestion.answers.find(a => a.number === index + 1)?.answer;
-            const selectedAnswer = selectedAnswers[index];
+          {Object.entries(currentQuestion.options).map(([key, text]) => {
+            const isCorrect = key === currentQuestion.answer;
+            const isSelected = key === selected;
             
-            return (
-              <div key={index} className="card" style={{ marginBottom: 20, padding: 20 }}>
-                <p style={{ 
-                  fontSize: "16px", 
-                  fontWeight: "600", 
-                  marginBottom: "12px",
-                  color: "#1f2937"
-                }}>
-                  <strong>{index + 1}. {statement}</strong>
-                </p>
-                <div style={{ display: "flex", gap: "10px", marginTop: 10, flexWrap: "wrap" }}>
-                  {currentQuestion.options.map((option) => {
-                    let className = "btn btn-secondary";
-                    if (showAnswer) {
-                      if (option === correctAnswer) className = "btn btn-success";
-                      else if (option === selectedAnswer && option !== correctAnswer) className = "btn btn-danger";
-                    } else if (option === selectedAnswer) {
-                      className = "btn btn-primary";
-                    }
+            let className = "answer-option";
+            if (showAnswer) {
+              if (isCorrect) className += " correct";
+              else if (isSelected && !isCorrect) className += " incorrect";
+            } else if (isSelected) {
+              className += " selected";
+            }
 
-                    return (
-                      <button
-                        key={option}
-                        onClick={() => handleSelect(index, option)}
-                        disabled={showAnswer}
-                        className={className}
-                        style={{ minWidth: "60px" }}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+            return (
+              <button
+                key={key}
+                onClick={() => handleSelect(key)}
+                disabled={showAnswer}
+                className={className}
+              >
+                <strong>{key}.</strong> {text}
+              </button>
             );
           })}
         </div>
@@ -361,38 +321,29 @@ export default function Part3() {
           </button>
         </div>
 
-        {!showAnswer && (
-          <div style={{ textAlign: "center", marginTop: 20 }}>
-            <button 
-              onClick={submitAnswers}
-              className="btn btn-success btn-large"
-            >
-              📝 Nộp bài
-            </button>
-          </div>
-        )}
-
         {showAnswer && (
           <div className="card" style={{ marginTop: 20 }}>
-            <h3 style={{ 
-              color: "#1f2937", 
-              marginBottom: "16px",
-              fontSize: "18px",
-              fontWeight: "600"
-            }}>
-              📊 Kết quả:
-            </h3>
-            {currentQuestion.answers.map((answer, index) => (
-              <p key={index} style={{ 
-                color: selectedAnswers[answer.number - 1] === answer.answer ? "#059669" : "#dc2626",
-                fontSize: "16px",
-                fontWeight: "500",
-                marginBottom: "8px"
+            {selected === currentQuestion.answer ? (
+              <p style={{ 
+                color: "#059669", 
+                fontSize: "18px", 
+                fontWeight: "600", 
+                textAlign: "center",
+                margin: "0 0 16px 0"
               }}>
-                Câu {answer.number}: {selectedAnswers[answer.number - 1] === answer.answer ? "✅" : "❌"} 
-                (Đáp án: <strong>{answer.answer}</strong>)
+                ✅ Chính xác! 🎉
               </p>
-            ))}
+            ) : (
+              <p style={{ 
+                color: "#dc2626", 
+                fontSize: "18px", 
+                fontWeight: "600", 
+                textAlign: "center",
+                margin: "0 0 16px 0"
+              }}>
+                ❌ Sai rồi! Đáp án đúng là <strong>{currentQuestion.answer}</strong>.
+              </p>
+            )}
             
             <details style={{ marginTop: 16 }}>
               <summary style={{ 
@@ -410,8 +361,7 @@ export default function Part3() {
                 backgroundColor: "#f8fafc", 
                 borderRadius: 8,
                 lineHeight: "1.6",
-                border: "1px solid #e2e8f0",
-                whiteSpace: "pre-line"
+                border: "1px solid #e2e8f0"
               }}>
                 {currentQuestion.transcript}
               </div>
@@ -432,5 +382,23 @@ export default function Part3() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function Part1() {
+  return (
+    <Suspense fallback={
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        fontSize: '18px'
+      }}>
+        Loading...
+      </div>
+    }>
+      <Part1Content />
+    </Suspense>
   );
 }

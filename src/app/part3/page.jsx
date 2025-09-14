@@ -37,6 +37,12 @@ export default function Part3() {
     }));
   }
 
+  function previousQuestion() {
+    setSelectedAnswers({});
+    setShowAnswer(false);
+    setCurrentIndex((prev) => (prev - 1 >= 0 ? prev - 1 : PART_3_DATA.length - 1));
+  }
+
   function nextQuestion() {
     setSelectedAnswers({});
     setShowAnswer(false);
@@ -51,19 +57,28 @@ export default function Part3() {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "Arial" }}>
+    <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Sidebar desktop */}
       <div
         className="sidebar"
         style={{
           width: 500,
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#f8fafc",
           padding: 20,
-          borderRight: "1px solid #ddd",
+          borderRight: "2px solid #e2e8f0",
           overflowY: "auto",
+          boxShadow: "2px 0 8px rgba(0,0,0,0.1)"
         }}
       >
-        <h3>Danh sách câu hỏi - Part 3</h3>
+        <h3 style={{
+          color: "#1f2937",
+          marginBottom: "20px",
+          fontSize: "18px",
+          fontWeight: "700",
+          textAlign: "center"
+        }}>
+          📝 Danh sách câu hỏi - Part 3
+        </h3>
         <div
           style={{
             marginTop: 15,
@@ -72,34 +87,31 @@ export default function Part3() {
             gap: "8px",
           }}
         >
-          {PART_3_DATA.map((question, index) => (
-            <div
-              key={question.exam_code}
-              onClick={() => goToQuestion(index)}
-              style={{
-                width: 80,
-                height: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 5,
-                cursor: "pointer",
-                border: "1px solid #ddd",
-                backgroundColor:
-                  answeredQuestions[question.exam_code] === true
-                    ? "#4caf50"
-                    : answeredQuestions[question.exam_code] === false
-                    ? "#f44336"
-                    : currentIndex === index
-                    ? "#e3f2fd"
-                    : "white",
-                fontWeight: "bold",
-                fontSize: "12px",
-              }}
-            >
-              {question.exam_code}
-            </div>
-          ))}
+          {PART_3_DATA.map((question, index) => {
+            let className = "question-number";
+            if (answeredQuestions[question.exam_code] === true) {
+              className += " correct";
+            } else if (answeredQuestions[question.exam_code] === false) {
+              className += " incorrect";
+            } else if (currentIndex === index) {
+              className += " current";
+            }
+
+            return (
+              <div
+                key={question.exam_code}
+                onClick={() => goToQuestion(index)}
+                className={className}
+                style={{
+                  width: 80,
+                  height: 40,
+                  fontSize: "12px",
+                }}
+              >
+                {question.exam_code}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -119,12 +131,21 @@ export default function Part3() {
           }}
         >
           <button
+            className="btn btn-secondary"
             onClick={() => setIsDrawerOpen(false)}
             style={{ marginBottom: 20 }}
           >
-            Đóng
+            ✖️ Đóng
           </button>
-          <h3>Danh sách câu hỏi - Part 3</h3>
+          <h3 style={{
+            color: "#1f2937",
+            marginBottom: "20px",
+            fontSize: "18px",
+            fontWeight: "700",
+            textAlign: "center"
+          }}>
+            📝 Danh sách câu hỏi - Part 3
+          </h3>
           <div
             style={{
               marginTop: 15,
@@ -133,34 +154,31 @@ export default function Part3() {
               gap: "8px",
             }}
           >
-            {PART_3_DATA.map((question, index) => (
-              <div
-                key={question.exam_code}
-                onClick={() => goToQuestion(index)}
-                style={{
-                  width: 80,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 5,
-                  cursor: "pointer",
-                  border: "1px solid #ddd",
-                  backgroundColor:
-                    answeredQuestions[question.exam_code] === true
-                      ? "#4caf50"
-                      : answeredQuestions[question.exam_code] === false
-                      ? "#f44336"
-                      : currentIndex === index
-                      ? "#e3f2fd"
-                      : "white",
-                  fontWeight: "bold",
-                  fontSize: "12px",
-                }}
-              >
-                {question.exam_code}
-              </div>
-            ))}
+            {PART_3_DATA.map((question, index) => {
+              let className = "question-number";
+              if (answeredQuestions[question.exam_code] === true) {
+                className += " correct";
+              } else if (answeredQuestions[question.exam_code] === false) {
+                className += " incorrect";
+              } else if (currentIndex === index) {
+                className += " current";
+              }
+
+              return (
+                <div
+                  key={question.exam_code}
+                  onClick={() => goToQuestion(index)}
+                  className={className}
+                  style={{
+                    width: 80,
+                    height: 40,
+                    fontSize: "12px",
+                  }}
+                >
+                  {question.exam_code}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -176,24 +194,45 @@ export default function Part3() {
       >
         {/* Nút mở drawer trên mobile */}
         <button
-          className="open-drawer-btn"
+          className="btn btn-secondary open-drawer-btn"
           onClick={() => setIsDrawerOpen(true)}
           style={{ marginBottom: 20, display: "none" }}
         >
-          Danh sách câu hỏi
+          📋 Danh sách câu hỏi
         </button>
 
-        <h2>Luyện thi nghe Part 3 - Đề: {currentQuestion.exam_code}</h2>
+        <h2 style={{ 
+          color: "#1f2937", 
+          marginBottom: "20px",
+          fontSize: "24px",
+          fontWeight: "700"
+        }}>
+          📝 Part 3 - Đề: {currentQuestion.exam_code}
+        </h2>
 
-        <div style={{ backgroundColor: "#f9f9f9", padding: 15, borderRadius: 5, marginBottom: 20 }}>
-          <p><strong>Hướng dẫn:</strong> {currentQuestion.question}</p>
+        <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
+          <p style={{ 
+            fontSize: "16px", 
+            lineHeight: "1.5", 
+            margin: 0,
+            color: "#374151"
+          }}>
+            <strong>📋 Hướng dẫn:</strong> {currentQuestion.question}
+          </p>
         </div>
 
-        <audio
-          controls
-          src={currentQuestion.audio_link}
-          style={{ width: "100%", marginBottom: 20 }}
-        />
+        <div className="card" style={{ padding: "16px", marginBottom: "20px" }}>
+          <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>🎵 Audio</h4>
+          <audio
+            controls
+            src={currentQuestion.audio_link}
+            style={{ 
+              width: "100%", 
+              height: "45px",
+              borderRadius: "8px"
+            }}
+          />
+        </div>
 
         <div style={{ marginTop: 20 }}>
           {currentQuestion.statements.map((statement, index) => {
@@ -201,16 +240,23 @@ export default function Part3() {
             const selectedAnswer = selectedAnswers[index];
             
             return (
-              <div key={index} style={{ marginBottom: 20, padding: 15, border: "1px solid #ddd", borderRadius: 5 }}>
-                <p><strong>{index + 1}. {statement}</strong></p>
-                <div style={{ display: "flex", gap: "10px", marginTop: 10 }}>
+              <div key={index} className="card" style={{ marginBottom: 20, padding: 20 }}>
+                <p style={{ 
+                  fontSize: "16px", 
+                  fontWeight: "600", 
+                  marginBottom: "12px",
+                  color: "#1f2937"
+                }}>
+                  <strong>{index + 1}. {statement}</strong>
+                </p>
+                <div style={{ display: "flex", gap: "10px", marginTop: 10, flexWrap: "wrap" }}>
                   {currentQuestion.options.map((option) => {
-                    let bgColor = "white";
+                    let className = "btn btn-secondary";
                     if (showAnswer) {
-                      if (option === correctAnswer) bgColor = "#a0e7a0";
-                      else if (option === selectedAnswer && option !== correctAnswer) bgColor = "#f7a0a0";
+                      if (option === correctAnswer) className = "btn btn-success";
+                      else if (option === selectedAnswer && option !== correctAnswer) className = "btn btn-danger";
                     } else if (option === selectedAnswer) {
-                      bgColor = "#d0d0d0";
+                      className = "btn btn-primary";
                     }
 
                     return (
@@ -218,13 +264,8 @@ export default function Part3() {
                         key={option}
                         onClick={() => handleSelect(index, option)}
                         disabled={showAnswer}
-                        style={{
-                          padding: "8px 16px",
-                          backgroundColor: bgColor,
-                          border: "1px solid #ccc",
-                          borderRadius: 5,
-                          cursor: showAnswer ? "default" : "pointer",
-                        }}
+                        className={className}
+                        style={{ minWidth: "60px" }}
                       >
                         {option}
                       </button>
@@ -236,45 +277,83 @@ export default function Part3() {
           })}
         </div>
 
-        {!showAnswer && (
+        {/* Navigation buttons - always visible */}
+        <div style={{ 
+          marginTop: 30, 
+          display: "flex", 
+          gap: "12px", 
+          justifyContent: "center", 
+          flexWrap: "wrap" 
+        }}>
           <button 
-            onClick={submitAnswers}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#2196f3",
-              color: "white",
-              border: "none",
-              borderRadius: 5,
-              cursor: "pointer",
-              marginTop: 20,
-            }}
+            onClick={previousQuestion} 
+            className="btn btn-secondary"
           >
-            Nộp bài
+            ⬅️ Previous Question
           </button>
+          <button 
+            onClick={nextQuestion} 
+            className="btn btn-primary"
+          >
+            Next Question ➡️
+          </button>
+        </div>
+
+        {!showAnswer && (
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <button 
+              onClick={submitAnswers}
+              className="btn btn-success btn-large"
+            >
+              📝 Nộp bài
+            </button>
+          </div>
         )}
 
         {showAnswer && (
-          <div style={{ marginTop: 20 }}>
-            <h3>Kết quả:</h3>
+          <div className="card" style={{ marginTop: 20 }}>
+            <h3 style={{ 
+              color: "#1f2937", 
+              marginBottom: "16px",
+              fontSize: "18px",
+              fontWeight: "600"
+            }}>
+              📊 Kết quả:
+            </h3>
             {currentQuestion.answers.map((answer, index) => (
               <p key={index} style={{ 
-                color: selectedAnswers[answer.number - 1] === answer.answer ? "green" : "red" 
+                color: selectedAnswers[answer.number - 1] === answer.answer ? "#059669" : "#dc2626",
+                fontSize: "16px",
+                fontWeight: "500",
+                marginBottom: "8px"
               }}>
-                Câu {answer.number}: {selectedAnswers[answer.number - 1] === answer.answer ? "✓" : "✗"} 
-                (Đáp án: {answer.answer})
+                Câu {answer.number}: {selectedAnswers[answer.number - 1] === answer.answer ? "✅" : "❌"} 
+                (Đáp án: <strong>{answer.answer}</strong>)
               </p>
             ))}
             
-            <details style={{ marginTop: 15 }}>
-              <summary>Transcript (bản ghi)</summary>
-              <div style={{ whiteSpace: "pre-line", marginTop: 10 }}>
+            <details style={{ marginTop: 16 }}>
+              <summary style={{ 
+                cursor: "pointer", 
+                fontSize: "16px", 
+                fontWeight: "600",
+                color: "#4f46e5",
+                marginBottom: "12px"
+              }}>
+                📝 Transcript (bản ghi)
+              </summary>
+              <div style={{ 
+                marginTop: 12, 
+                padding: 16, 
+                backgroundColor: "#f8fafc", 
+                borderRadius: 8,
+                lineHeight: "1.6",
+                border: "1px solid #e2e8f0",
+                whiteSpace: "pre-line"
+              }}>
                 {currentQuestion.transcript}
               </div>
             </details>
-            
-            <button onClick={nextQuestion} style={{ marginTop: 15, padding: "10px 20px" }}>
-              Câu tiếp theo
-            </button>
           </div>
         )}
       </div>

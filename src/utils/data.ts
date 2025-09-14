@@ -2690,6 +2690,351 @@ export const PART_1_DATA = [
   }
 ]
 
+export const PART_2_DATA =[
+  {
+    "exam_code": "L1.P2.T1",
+    "id": ["3471", "3472", "3629", "3630"],
+    "question": "Listen to the opinions of 4 people A, B, C, and D about studying habits. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "Prefer to study at various places",
+      "B": "Prefer to study in a quiet place",
+      "C": "Prefer to study with music",
+      "D": "Prefer to study late at night",
+      "E": "Prefer to study with friends"
+    },
+    "answer": {
+      "1": "D",
+      "2": "A",
+      "3": "C",
+      "4": "B"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/710167ae39a258a28691f81bce32cb6d.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/b99023d11546621ce1743188398dd762.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/f40ff0c602d27aae407c9190df8e782e.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/a9d6b6aaf995ba49c442d053832acdb6.mp3"
+    ],
+    "transcript": {
+      "A": "Surprisingly, I find that late-night hours work best for my studying. The quietness of the night really helps me concentrate...",
+      "B": "I’ve realised that my study environment has a significant impact on my productivity. Changing my study space has really helped me focus better...",
+      "C": "I’ve discovered that the right soundtrack can enhance my study sessions significantly. When I study, having some background music makes a noticeable difference...",
+      "D": "Finding the right space to study is crucial for effective learning. I usually end up in a quiet room at home or a secluded corner in the library..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T2",
+    "id": ["3497", "3499", "3500", "3502"],
+    "question": "Listen to the opinions of four people about their exercise preferences. Complete the sentence below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "Walking",
+      "B": "Climbing",
+      "C": "Going for a run",
+      "D": "Mountain biking",
+      "E": "Horse riding"
+    },
+    "answer": {
+      "1": "D",
+      "2": "C",
+      "3": "A",
+      "4": "E"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/99628931e46178ae29269040a1561e58.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/a13eb3b27d43de24870f5b74693d6818.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/63563dfb984b0a354fddd1aaea2a6df0.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/00301a027c1cd3750e431f7d5ddf189c.mp3"
+    ],
+    "transcript": {
+      "A": "I’ve always been drawn to outdoor activities, especially those that get my heart racing. While some of my friends prefer running or hiking...",
+      "B": "When it comes to staying active, I’ve tried lots of different things. But I’ve found that I get the most out of a good jog...",
+      "C": "I prefer something more low-key and calming when it comes to exercise. I’m not really into intense activities like running or biking...",
+      "D": "I’ve been involved in different sports over the years, but one thing that stands out for me is horse riding..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T3",
+    "id": ["3519", "3521", "3522", "3524"],
+    "question": "Listen to four people talking about how they get news. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "prefers TV news",
+      "B": "likes reading newspapers",
+      "C": "uses social media",
+      "D": "listens to the radio",
+      "E": "uses news websites"
+    },
+    "answer": {
+      "1": "C",
+      "2": "E",
+      "3": "A",
+      "4": "B"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/2c3b4ff79c097c8e37a6e83b132ecdee.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/bd2ebef60a26187e4d39c2ecf68bb29f.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/34eeced18f327cd7d1e6f10bbdc42d66.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/faf6a4f3c6a8a5d1b6d4a55e13e09d49.mp3"
+    ],
+    "transcript": {
+      "A": "I usually catch up with the news on Facebook or Twitter. It’s quick, and I get to know what’s trending immediately...",
+      "B": "I rely on online news websites. They’re updated constantly, and I can choose which sections I want to read...",
+      "C": "I’ve always enjoyed sitting down and watching the news on TV. The visuals and expert analysis help me understand better...",
+      "D": "I still read newspapers, especially on weekends. There’s something about flipping through the pages with my morning coffee..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T4",
+    "id": ["3541", "3542", "3544", "3546"],
+    "question": "Listen to four people talking about their holiday preferences. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "enjoys beach holidays",
+      "B": "prefers city breaks",
+      "C": "likes camping",
+      "D": "enjoys adventure trips",
+      "E": "prefers staying at home"
+    },
+    "answer": {
+      "1": "B",
+      "2": "D",
+      "3": "C",
+      "4": "A"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/92a9e2f5d94a0cf2ee9cf91f8917c4f1.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/63ff9d84de6d933bf2eaa2349203c2bb.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/f272a12e93541613f268ad9ed8400d46.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/884d4f64b373f30a4f988b113e4f5a5d.mp3"
+    ],
+    "transcript": {
+      "A": "For me, nothing beats exploring a new city. I love visiting museums, trying local restaurants, and just walking around...",
+      "B": "I crave excitement and new experiences, so I usually go for adventure trips like trekking or kayaking...",
+      "C": "Camping is my favourite way to spend a holiday. Being outdoors and sleeping under the stars is amazing...",
+      "D": "I’m happiest by the sea, relaxing on a beach with a good book and swimming whenever I feel like it..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T5",
+    "id": ["3559", "3561", "3562", "3564"],
+    "question": "Listen to four people talking about their shopping habits. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "likes shopping online",
+      "B": "enjoys window shopping",
+      "C": "prefers shopping with friends",
+      "D": "shops only when necessary",
+      "E": "enjoys shopping in big malls"
+    },
+    "answer": {
+      "1": "E",
+      "2": "C",
+      "3": "B",
+      "4": "A"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/f9af11c6d8225413e1b43193c147dff1.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/59b775a903981a6fc1f52796943eae47.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/ce6a674e1e04e44ac0b25c064c3a1af0.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/3af9e56e793c4fcdd6fc511502a37212.mp3"
+    ],
+    "transcript": {
+      "A": "I love visiting large shopping malls. They have everything under one roof, and the atmosphere is lively...",
+      "B": "For me, shopping is more fun with friends. We help each other choose and it becomes a social activity...",
+      "C": "Sometimes I just like walking around and looking at things, even if I don’t buy anything...",
+      "D": "I usually shop online. It saves time and I can compare prices easily..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T6",
+    "id": ["3577", "3578", "3580", "3582"],
+    "question": "Listen to four people talking about their favourite type of transport. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "likes travelling by car",
+      "B": "enjoys cycling",
+      "C": "prefers travelling by train",
+      "D": "likes flying",
+      "E": "enjoys walking"
+    },
+    "answer": {
+      "1": "D",
+      "2": "C",
+      "3": "B",
+      "4": "A"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/680d5a0ff998f76a0bbad108d613a906.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/d2d1f0e68c35f47b93c3d1c1e45727df.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/f832cf7bb01f847b8650532a9942c276.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/3c9d7d370a8a305a463db542f34c5416.mp3"
+    ],
+    "transcript": {
+      "A": "I always choose to fly when possible. It’s the fastest and most convenient way to travel long distances...",
+      "B": "For me, travelling by train is the best. I can read, relax, and enjoy the view out of the window...",
+      "C": "I prefer cycling. It keeps me fit and I can explore places at my own pace...",
+      "D": "Driving is my favourite. I enjoy the freedom of going wherever I want in my car..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T7",
+    "id": ["3595", "3597", "3598", "3600"],
+    "question": "Listen to four people talking about their favourite school subjects. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "likes history",
+      "B": "enjoys science",
+      "C": "prefers art",
+      "D": "likes physical education",
+      "E": "prefers mathematics"
+    },
+    "answer": {
+      "1": "B",
+      "2": "E",
+      "3": "A",
+      "4": "C"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/34fc28e1f0e431a762cdbd82dc139a2c.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/cf1b5b7f92f3b9c4d4cf93a3d4f60cdd.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/ea93d69c66f4b92c643bb5d0e40abf0b.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/af6c52aee90789f312f98a4e7c30ee41.mp3"
+    ],
+    "transcript": {
+      "A": "Science has always fascinated me. I love doing experiments and learning how things work...",
+      "B": "Mathematics is the subject I enjoy the most. Solving problems is like a puzzle for me...",
+      "C": "History is my favourite. Learning about the past gives me perspective on the present...",
+      "D": "I’m passionate about art. Drawing and painting help me express myself creatively..."
+    },
+  },
+    {
+    "exam_code": "L1.P2.T8",
+    "id": ["3613", "3614", "3616", "3618"],
+    "question": "Listen to four people talking about their favourite free-time activities. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "enjoys reading",
+      "B": "likes playing sports",
+      "C": "enjoys cooking",
+      "D": "prefers watching films",
+      "E": "likes playing video games"
+    },
+    "answer": {
+      "1": "E",
+      "2": "B",
+      "3": "A",
+      "4": "C"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/2f47c4b2d04e58d9d77db94e4e91d3d1.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/9e523ca8d775c72257a40ebc395f5c7f.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/ebc12e72df1ed79a771eea80c96dbf1c.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/20c7a3acbde88b6a5f09cc64665d2d17.mp3"
+    ],
+    "transcript": {
+      "A": "I spend most of my free time playing video games. It’s exciting and helps me relax after a long day...",
+      "B": "Sports are my go-to activity when I have time off. Football and basketball are my favourites...",
+      "C": "I love reading novels in my free time. They transport me to different worlds and spark my imagination...",
+      "D": "Cooking is something I truly enjoy. Trying new recipes is both fun and rewarding..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T9",
+    "id": ["3631", "3633", "3634", "3636"],
+    "question": "Listen to four people talking about the kind of houses they like. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "likes living in a flat",
+      "B": "prefers living in the countryside",
+      "C": "likes living in a big city",
+      "D": "enjoys living in a small house",
+      "E": "prefers living near the beach"
+    },
+    "answer": {
+      "1": "C",
+      "2": "E",
+      "3": "B",
+      "4": "A"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/2d7c229aa4ff870d7a5405c6e72ed0f2.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/7b7d88d4d59a6b0977c2a60604a6a799.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/91f7b0c3c87aeb4aab2377c527d1ec6a.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/b0a7f4e4100a9a2c82a7ce95e9e04f56.mp3"
+    ],
+    "transcript": {
+      "A": "I really enjoy the buzz of city life. Being surrounded by shops, restaurants, and people makes me feel alive...",
+      "B": "Living near the beach is my dream. The fresh air and sound of the waves are so relaxing...",
+      "C": "I prefer the peace and quiet of the countryside. It’s calm and much less stressful...",
+      "D": "A flat suits me best. It’s compact, easy to clean, and close to everything I need..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T10",
+    "id": ["3649", "3650", "3652", "3654"],
+    "question": "Listen to four people talking about how they use technology. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "uses technology for work",
+      "B": "enjoys using social media",
+      "C": "uses technology for studying",
+      "D": "likes online shopping",
+      "E": "uses technology for entertainment"
+    },
+    "answer": {
+      "1": "D",
+      "2": "A",
+      "3": "C",
+      "4": "B"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/aa51e6d4fd95ab278f9cf23548bc9c56.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/7e4e7c99acfb95f9430166d6e4710bc2.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/72b1ef612ed19c5f7ebd205f9f2c4942.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/b2dc2e9dd2f423fc793d8cc5bc707b36.mp3"
+    ],
+    "transcript": {
+      "A": "I often buy clothes and gadgets online. It’s convenient and usually cheaper than in stores...",
+      "B": "Technology is essential for my work. I use it to create documents, manage projects, and communicate with clients...",
+      "C": "For me, technology is a great tool for studying. I use apps and websites to improve my skills...",
+      "D": "I spend a lot of time on social media. It’s fun to connect with friends and see what they’re up to..."
+    }
+  },
+  {
+    "exam_code": "L1.P2.T11",
+    "id": ["3667", "3669", "3670", "3672"],
+    "question": "Listen to four people talking about their favourite seasons. Complete the sentences below.",
+    "speakers": ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
+    "options": {
+      "A": "likes summer",
+      "B": "enjoys winter",
+      "C": "prefers spring",
+      "D": "likes autumn",
+      "E": "doesn’t like any season"
+    },
+    "answer": {
+      "1": "A",
+      "2": "D",
+      "3": "B",
+      "4": "C"
+    },
+    "audio_links": [
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/3c2553f97e3c3cf2ef56d52eab4a347e.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/cc66c852a46b4bb10f9c5672515a0123.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/7cbf218e2e946e94b5a90cf304144f5d.mp3",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/8aaf905bfc49db524d5fa7d56b226231.mp3"
+    ],
+    "transcript": {
+      "A": "Summer is my favourite season. I love the long days, the sunshine, and going to the beach...",
+      "B": "I really enjoy autumn. The colours of the leaves are beautiful, and the weather is cool but not too cold...",
+      "C": "Winter is the best for me. I like the snow and the cosy feeling of staying indoors...",
+      "D": "Spring is wonderful. Flowers bloom, the weather gets warmer, and everything feels fresh and new..."
+    }
+  }
+
+
+]
 
 export const PART_3_DATA = [
   {

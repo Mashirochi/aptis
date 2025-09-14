@@ -27,6 +27,13 @@ export default function Part1() {
     setCurrentIndex((prev) => (prev + 1 < PART_1_DATA.length ? prev + 1 : 0));
   }
 
+
+  function previousQuestion() {
+    setSelected(null);
+    setShowAnswer(false);
+    setCurrentIndex((prev) => (prev - 1 >= 0 ? prev - 1 : PART_1_DATA.length - 1));
+  }
+
   function goToQuestion(index) {
     setCurrentIndex(index);
     setSelected(null);
@@ -35,19 +42,28 @@ export default function Part1() {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "Arial" }}>
+    <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Sidebar desktop */}
       <div
         className="sidebar"
         style={{
           width: 500,
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#f8fafc",
           padding: 20,
-          borderRight: "1px solid #ddd",
+          borderRight: "2px solid #e2e8f0",
           overflowY: "auto",
+          boxShadow: "2px 0 8px rgba(0,0,0,0.1)"
         }}
       >
-        <h3>Danh sách câu hỏi - Part 1</h3>
+        <h3 style={{
+          color: "#1f2937",
+          marginBottom: "20px",
+          fontSize: "18px",
+          fontWeight: "700",
+          textAlign: "center"
+        }}>
+          📋 Danh sách câu hỏi - Part 1
+        </h3>
         <div
           style={{
             marginTop: 15,
@@ -56,33 +72,26 @@ export default function Part1() {
             gap: "8px",
           }}
         >
-          {PART_1_DATA.map((question, index) => (
-            <div
-              key={question.key}
-              onClick={() => goToQuestion(index)}
-              style={{
-                width: 40,
-                height: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 5,
-                cursor: "pointer",
-                border: "1px solid #ddd",
-                backgroundColor:
-                  answeredQuestions[question.id] === true
-                    ? "#4caf50"
-                    : answeredQuestions[question.id] === false
-                    ? "#f44336"
-                    : currentIndex === index
-                    ? "#e3f2fd"
-                    : "white",
-                fontWeight: "bold",
-              }}
-            >
-              {index + 1}
-            </div>
-          ))}
+          {PART_1_DATA.map((question, index) => {
+            let className = "question-number";
+            if (answeredQuestions[question.id] === true) {
+              className += " correct";
+            } else if (answeredQuestions[question.id] === false) {
+              className += " incorrect";
+            } else if (currentIndex === index) {
+              className += " current";
+            }
+
+            return (
+              <div
+                key={question.key}
+                onClick={() => goToQuestion(index)}
+                className={className}
+              >
+                {index + 1}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -102,12 +111,21 @@ export default function Part1() {
           }}
         >
           <button
+            className="btn btn-secondary"
             onClick={() => setIsDrawerOpen(false)}
             style={{ marginBottom: 20 }}
           >
-            Đóng
+            ✖️ Đóng
           </button>
-          <h3>Danh sách câu hỏi - Part 1</h3>
+          <h3 style={{
+            color: "#1f2937",
+            marginBottom: "20px",
+            fontSize: "18px",
+            fontWeight: "700",
+            textAlign: "center"
+          }}>
+            📋 Danh sách câu hỏi - Part 1
+          </h3>
           <div
             style={{
               marginTop: 15,
@@ -116,33 +134,26 @@ export default function Part1() {
               gap: "8px",
             }}
           >
-            {PART_1_DATA.map((question, index) => (
-              <div
-                key={question.id}
-                onClick={() => goToQuestion(index)}
-                style={{
-                  width: 40,
-                  height: 40,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 5,
-                  cursor: "pointer",
-                  border: "1px solid #ddd",
-                  backgroundColor:
-                    answeredQuestions[question.id] === true
-                      ? "#4caf50"
-                      : answeredQuestions[question.id] === false
-                      ? "#f44336"
-                      : currentIndex === index
-                      ? "#e3f2fd"
-                      : "white",
-                  fontWeight: "bold",
-                }}
-              >
-                {index + 1}
-              </div>
-            ))}
+            {PART_1_DATA.map((question, index) => {
+              let className = "question-number";
+              if (answeredQuestions[question.id] === true) {
+                className += " correct";
+              } else if (answeredQuestions[question.id] === false) {
+                className += " incorrect";
+              } else if (currentIndex === index) {
+                className += " current";
+              }
+
+              return (
+                <div
+                  key={question.id}
+                  onClick={() => goToQuestion(index)}
+                  className={className}
+                >
+                  {index + 1}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -158,36 +169,57 @@ export default function Part1() {
       >
         {/* Nút mở drawer trên mobile */}
         <button
-          className="open-drawer-btn"
+          className="btn btn-secondary open-drawer-btn"
           onClick={() => setIsDrawerOpen(true)}
           style={{ marginBottom: 20, display: "none" }}
         >
-          Danh sách câu hỏi
+          📋 Danh sách câu hỏi
         </button>
 
-        <h2>Luyện thi nghe Part 1 - Đề: {currentQuestion.ma_de_thi || `Câu ${currentIndex + 1}`}</h2>
+        <h2 style={{ 
+          color: "#1f2937", 
+          marginBottom: "20px",
+          fontSize: "24px",
+          fontWeight: "700"
+        }}>
+          🎧 Part 1 - Câu {currentIndex + 1} / {PART_1_DATA.length}
+        </h2>
 
-        <div style={{ backgroundColor: "#f9f9f9", padding: 15, borderRadius: 5, marginBottom: 20 }}>
-          <p><strong>{currentQuestion.question}</strong></p>
+        <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
+          <p style={{ 
+            fontSize: "16px", 
+            lineHeight: "1.5", 
+            margin: 0,
+            color: "#374151"
+          }}>
+            <strong>📋 Đề bài:</strong> {currentQuestion.question}
+          </p>
         </div>
 
-        <audio
-          controls
-          src={currentQuestion.audio_link}
-          style={{ width: "100%" }}
-        />
+        <div className="card" style={{ padding: "16px", marginBottom: "20px" }}>
+          <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>🎵 Audio</h4>
+          <audio
+            controls
+            src={currentQuestion.audio_link}
+            style={{ 
+              width: "100%", 
+              height: "45px",
+              borderRadius: "8px"
+            }}
+          />
+        </div>
 
         <div style={{ marginTop: 20 }}>
           {Object.entries(currentQuestion.options).map(([key, text]) => {
             const isCorrect = key === currentQuestion.answer;
             const isSelected = key === selected;
-            let bgColor = "white";
-
+            
+            let className = "answer-option";
             if (showAnswer) {
-              if (isCorrect) bgColor = "#a0e7a0";
-              else if (isSelected && !isCorrect) bgColor = "#f7a0a0";
+              if (isCorrect) className += " correct";
+              else if (isSelected && !isCorrect) className += " incorrect";
             } else if (isSelected) {
-              bgColor = "#d0d0d0";
+              className += " selected";
             }
 
             return (
@@ -195,40 +227,81 @@ export default function Part1() {
                 key={key}
                 onClick={() => handleSelect(key)}
                 disabled={showAnswer}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: 10,
-                  marginBottom: 10,
-                  backgroundColor: bgColor,
-                  border: "1px solid #ccc",
-                  borderRadius: 5,
-                  cursor: showAnswer ? "default" : "pointer",
-                  textAlign: "left",
-                }}
+                className={className}
               >
-                {key}. {text}
+                <strong>{key}.</strong> {text}
               </button>
             );
           })}
         </div>
 
+        {/* Navigation buttons - always visible */}
+        <div style={{ 
+          marginTop: 30, 
+          display: "flex", 
+          gap: "12px", 
+          justifyContent: "center", 
+          flexWrap: "wrap" 
+        }}>
+          <button 
+            onClick={previousQuestion} 
+            className="btn btn-secondary"
+          >
+            ⬅️ Previous Question
+          </button>
+          <button 
+            onClick={nextQuestion} 
+            className="btn btn-primary"
+          >
+            Next Question ➡️
+          </button>
+        </div>
+
         {showAnswer && (
-          <div style={{ marginTop: 20 }}>
+          <div className="card" style={{ marginTop: 20 }}>
             {selected === currentQuestion.answer ? (
-              <p style={{ color: "green" }}>Chính xác! 🎉</p>
+              <p style={{ 
+                color: "#059669", 
+                fontSize: "18px", 
+                fontWeight: "600", 
+                textAlign: "center",
+                margin: "0 0 16px 0"
+              }}>
+                ✅ Chính xác! 🎉
+              </p>
             ) : (
-              <p style={{ color: "red" }}>
-                Sai rồi! Đáp án đúng là {currentQuestion.answer}.
+              <p style={{ 
+                color: "#dc2626", 
+                fontSize: "18px", 
+                fontWeight: "600", 
+                textAlign: "center",
+                margin: "0 0 16px 0"
+              }}>
+                ❌ Sai rồi! Đáp án đúng là <strong>{currentQuestion.answer}</strong>.
               </p>
             )}
-            <details>
-              <summary>Transcript (bản ghi)</summary>
-              <p>{currentQuestion.transcript}</p>
+            
+            <details style={{ marginTop: 16 }}>
+              <summary style={{ 
+                cursor: "pointer", 
+                fontSize: "16px", 
+                fontWeight: "600",
+                color: "#4f46e5",
+                marginBottom: "12px"
+              }}>
+                📝 Transcript (bản ghi)
+              </summary>
+              <div style={{ 
+                marginTop: 12, 
+                padding: 16, 
+                backgroundColor: "#f8fafc", 
+                borderRadius: 8,
+                lineHeight: "1.6",
+                border: "1px solid #e2e8f0"
+              }}>
+                {currentQuestion.transcript}
+              </div>
             </details>
-            <button onClick={nextQuestion} style={{ marginTop: 10 }}>
-              Câu tiếp theo
-            </button>
           </div>
         )}
       </div>

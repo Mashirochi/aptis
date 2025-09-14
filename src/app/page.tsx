@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function Home() {
   const parts = [
     { href: "part1", label: "Part 1" },
+    { href: "part2", label: "Part 2" },
     { href: "part3", label: "Part 3" },
     { href: "part4", label: "Part 4" },
   ];

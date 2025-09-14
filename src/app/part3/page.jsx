@@ -1,13 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { PART_3_DATA } from "../../utils/data";
+import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
 export default function Part3() {
+  const searchParams = useSearchParams();
+  const questionId = searchParams.get('questionId');
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Navigate to specific question if questionId is provided
+  useEffect(() => {
+    if (questionId) {
+      const questionIndex = PART_3_DATA.findIndex(q => q.exam_code === questionId);
+      if (questionIndex !== -1) {
+        setCurrentIndex(questionIndex);
+      }
+    }
+  }, [questionId]);
 
   const currentQuestion = PART_3_DATA[currentIndex];
 
@@ -35,6 +50,20 @@ export default function Part3() {
       ...prev,
       [currentQuestion.exam_code]: allCorrect,
     }));
+    
+    // Track incorrect answers
+    if (!allCorrect) {
+      saveIncorrectAnswer({
+        id: currentQuestion.exam_code,
+        part: 'part3',
+        questionData: currentQuestion,
+        userAnswer: selectedAnswers,
+        correctAnswer: currentQuestion.answers
+      });
+    } else {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(currentQuestion.exam_code, 'part3');
+    }
   }
 
   function previousQuestion() {
@@ -54,6 +83,11 @@ export default function Part3() {
     setSelectedAnswers({});
     setShowAnswer(false);
     setIsDrawerOpen(false);
+  }
+
+  function tryAgain() {
+    setSelectedAnswers({});
+    setShowAnswer(false);
   }
 
   return (
@@ -208,7 +242,27 @@ export default function Part3() {
           fontWeight: "700"
         }}>
           📝 Part 3 - Đề: {currentQuestion.exam_code}
+          {questionId && currentQuestion.exam_code === questionId && " 🎯"}
         </h2>
+
+        {questionId && currentQuestion.exam_code === questionId && (
+          <div className="card" style={{
+            marginBottom: 20,
+            backgroundColor: "#dbeafe",
+            border: "2px solid #3b82f6",
+            padding: "16px"
+          }}>
+            <p style={{
+              color: "#1e40af",
+              margin: 0,
+              fontSize: "16px",
+              fontWeight: "500",
+              textAlign: "center"
+            }}>
+              🎯 <strong>This question was incorrect.</strong> Practice it again to improve!
+            </p>
+          </div>
+        )}
 
         <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
           <p style={{ 
@@ -291,6 +345,14 @@ export default function Part3() {
           >
             ⬅️ Previous Question
           </button>
+          {showAnswer && (
+            <button 
+              onClick={tryAgain} 
+              className="btn btn-warning"
+            >
+              🔄 Try Again
+            </button>
+          )}
           <button 
             onClick={nextQuestion} 
             className="btn btn-primary"

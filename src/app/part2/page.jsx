@@ -1,14 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { PART_2_DATA } from "../../utils/data";
+import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
 export default function Part2() {
+  const searchParams = useSearchParams();
+  const questionId = searchParams.get('questionId');
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [currentSpeaker, setCurrentSpeaker] = useState(null);
+
+  // Navigate to specific question if questionId is provided
+  useEffect(() => {
+    if (questionId) {
+      const questionIndex = PART_2_DATA.findIndex(q => q.exam_code === questionId);
+      if (questionIndex !== -1) {
+        setCurrentIndex(questionIndex);
+      }
+    }
+  }, [questionId]);
 
   const currentQuestion = PART_2_DATA[currentIndex];
 
@@ -40,9 +55,13 @@ export default function Part2() {
     
     // Check if all speakers are answered correctly
     let allCorrect = true;
+    const incorrectSpeakers = [];
+    
     Object.keys(currentQuestion.answer).forEach((speakerNum) => {
-      if (selectedAnswers[speakerNum] !== currentQuestion.answer[speakerNum]) {
+      const isCorrect = selectedAnswers[speakerNum] === currentQuestion.answer[speakerNum];
+      if (!isCorrect) {
         allCorrect = false;
+        incorrectSpeakers.push(speakerNum);
       }
     });
     
@@ -50,6 +69,20 @@ export default function Part2() {
       ...prev,
       [currentQuestion.exam_code]: allCorrect,
     }));
+    
+    // Track incorrect answers
+    if (!allCorrect) {
+      saveIncorrectAnswer({
+        id: currentQuestion.exam_code,
+        part: 'part2',
+        questionData: currentQuestion,
+        userAnswer: selectedAnswers,
+        correctAnswer: currentQuestion.answer
+      });
+    } else {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(currentQuestion.exam_code, 'part2');
+    }
   }
 
   function goToQuestion(index) {
@@ -58,6 +91,12 @@ export default function Part2() {
     setShowAnswer(false);
     setCurrentSpeaker(null);
     setIsDrawerOpen(false);
+  }
+
+  function tryAgain() {
+    setSelectedAnswers({});
+    setShowAnswer(false);
+    setCurrentSpeaker(null);
   }
 
   function playSpeakerAudio(index) {
@@ -215,7 +254,27 @@ export default function Part2() {
           fontWeight: "700"
         }}>
           🎙️ Part 2 - Đề: {currentQuestion.exam_code}
+          {questionId && currentQuestion.exam_code === questionId && " 🎯"}
         </h2>
+
+        {questionId && currentQuestion.exam_code === questionId && (
+          <div className="card" style={{
+            marginBottom: 20,
+            backgroundColor: "#dbeafe",
+            border: "2px solid #3b82f6",
+            padding: "16px"
+          }}>
+            <p style={{
+              color: "#1e40af",
+              margin: 0,
+              fontSize: "16px",
+              fontWeight: "500",
+              textAlign: "center"
+            }}>
+              🎯 <strong>This question was incorrect.</strong> Practice it again to improve!
+            </p>
+          </div>
+        )}
 
         <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
           <p style={{ 
@@ -363,6 +422,14 @@ export default function Part2() {
           >
             ⬅️ Previous Question
           </button>
+          {showAnswer && (
+            <button 
+              onClick={tryAgain} 
+              className="btn btn-warning"
+            >
+              🔄 Try Again
+            </button>
+          )}
           <button 
             onClick={nextQuestion} 
             className="btn btn-primary"

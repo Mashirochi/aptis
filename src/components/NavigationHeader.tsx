@@ -1,11 +1,36 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getIncorrectAnswersCount } from "../utils/incorrectAnswers";
 
 export default function NavigationHeader() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [incorrectCount, setIncorrectCount] = useState(0);
   const pathname = usePathname();
+
+  // Update incorrect count on mount and when localStorage changes
+  useEffect(() => {
+    const updateCount = () => {
+      setIncorrectCount(getIncorrectAnswersCount());
+    };
+    
+    updateCount();
+    
+    // Listen for storage changes
+    const handleStorageChange = () => {
+      updateCount();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // Also listen for custom events when localStorage is updated from the same tab
+    window.addEventListener('incorrectAnswersUpdated', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('incorrectAnswersUpdated', handleStorageChange);
+    };
+  }, []);
 
   const navigationItems = [
     { href: "/", label: "Home", icon: "🏠" },
@@ -13,6 +38,7 @@ export default function NavigationHeader() {
     { href: "/part2", label: "Part 2", icon: "🎙️" },
     { href: "/part3", label: "Part 3", icon: "📝" },
     { href: "/part4", label: "Part 4", icon: "🎵" },
+    { href: "/incorrect", label: "Incorrect", icon: "❌", badge: incorrectCount },
   ];
 
   const toggleDrawer = () => {
@@ -30,8 +56,8 @@ export default function NavigationHeader() {
         position: "sticky",
         top: 0,
         zIndex: 999,
-        backgroundColor: "#fff",
-        borderBottom: "2px solid #e5e7eb",
+        backgroundColor: "var(--card-background)",
+        borderBottom: "2px solid var(--border-color)",
         boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
       }}>
         <div style={{
@@ -76,13 +102,33 @@ export default function NavigationHeader() {
                   alignItems: "center",
                   gap: "6px",
                   backgroundColor: pathname === item.href ? "#4f46e5" : "transparent",
-                  color: pathname === item.href ? "#fff" : "#374151",
-                  border: pathname === item.href ? "none" : "1px solid #d1d5db"
+                  color: pathname === item.href ? "#fff" : "var(--card-text)",
+                  border: pathname === item.href ? "none" : "1px solid var(--border-color)",
+                  position: "relative"
                 }}
                 className="nav-link"
               >
                 <span>{item.icon}</span>
                 {item.label}
+                {item.badge && item.badge > 0 && (
+                  <span style={{
+                    backgroundColor: "#ef4444",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: "20px",
+                    height: "20px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "absolute",
+                    top: "-4px",
+                    right: "-4px"
+                  }}>
+                    {item.badge > 99 ? "99+" : item.badge}
+                  </span>
+                )}
               </Link>
             ))}
           </nav>
@@ -129,7 +175,7 @@ export default function NavigationHeader() {
         right: isDrawerOpen ? 0 : "-300px",
         width: "300px",
         height: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--card-background)",
         zIndex: 1001,
         boxShadow: "-4px 0 12px rgba(0,0,0,0.15)",
         transition: "right 0.3s ease",
@@ -138,7 +184,7 @@ export default function NavigationHeader() {
         {/* Drawer Header */}
         <div style={{
           padding: "20px",
-          borderBottom: "1px solid #e5e7eb",
+          borderBottom: "1px solid var(--border-color)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between"
@@ -147,7 +193,7 @@ export default function NavigationHeader() {
             margin: 0,
             fontSize: "18px",
             fontWeight: "600",
-            color: "#374151"
+            color: "var(--card-text)"
           }}>
             Navigation
           </h3>
@@ -185,14 +231,32 @@ export default function NavigationHeader() {
                 fontSize: "16px",
                 fontWeight: "500",
                 transition: "all 0.2s ease",
-                backgroundColor: pathname === item.href ? "#4f46e5" : "#f9fafb",
-                color: pathname === item.href ? "#fff" : "#374151",
-                border: pathname === item.href ? "none" : "1px solid #e5e7eb"
+                backgroundColor: pathname === item.href ? "#4f46e5" : "var(--card-background)",
+                color: pathname === item.href ? "#fff" : "var(--card-text)",
+                border: pathname === item.href ? "none" : "1px solid var(--border-color)",
+                position: "relative"
               }}
               className="mobile-nav-link"
             >
               <span style={{ fontSize: "20px" }}>{item.icon}</span>
               {item.label}
+              {item.badge && item.badge > 0 && (
+                <span style={{
+                  backgroundColor: "#ef4444",
+                  color: "white",
+                  borderRadius: "50%",
+                  width: "24px",
+                  height: "24px",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginLeft: "auto"
+                }}>
+                  {item.badge > 99 ? "99+" : item.badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>

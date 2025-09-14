@@ -1,43 +1,106 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { PART_4_DATA } from "../../utils/data";
+import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
 export default function Part4() {
+  const searchParams = useSearchParams();
+  const questionId = searchParams.get('questionId');
+  
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selected, setSelected] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [showAnswers, setShowAnswers] = useState({});
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const currentQuestion = PART_4_DATA[currentIndex];
+  // Navigate to specific question if questionId is provided
+  useEffect(() => {
+    if (questionId) {
+      // Find the audio and question that contains this questionId
+      for (let audioIndex = 0; audioIndex < PART_4_DATA.length; audioIndex++) {
+        const audio = PART_4_DATA[audioIndex];
+        const questionExists = audio.questions.some(q => q.id.toString() === questionId);
+        if (questionExists) {
+          setCurrentIndex(audioIndex);
+          break;
+        }
+      }
+    }
+  }, [questionId]);
 
-  function handleSelect(option) {
-    if (showAnswer) return;
-    setSelected(option);
-    setShowAnswer(true);
+  const currentAudio = PART_4_DATA[currentIndex];
+
+  function handleSelect(questionId, option) {
+    if (showAnswers[questionId]) return;
+    
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: option,
+    }));
+    
+    setShowAnswers((prev) => ({
+      ...prev,
+      [questionId]: true,
+    }));
+    
+    const question = currentAudio.questions.find(q => q.id === questionId);
+    const isCorrect = option === question.answer;
+    
     setAnsweredQuestions((prev) => ({
       ...prev,
-      [currentQuestion.id]: option === currentQuestion.answer,
+      [questionId]: isCorrect,
     }));
+    
+    // Track incorrect answers
+    if (!isCorrect) {
+      saveIncorrectAnswer({
+        id: questionId,
+        part: 'part4',
+        questionData: question,
+        userAnswer: option,
+        correctAnswer: question.answer
+      });
+    } else {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(questionId, 'part4');
+    }
   }
 
-  function previousQuestion() {
-    setSelected(null);
-    setShowAnswer(false);
+  function previousAudio() {
+    setSelectedAnswers({});
+    setShowAnswers({});
     setCurrentIndex((prev) => (prev - 1 >= 0 ? prev - 1 : PART_4_DATA.length - 1));
   }
 
-  function nextQuestion() {
-    setSelected(null);
-    setShowAnswer(false);
+  function nextAudio() {
+    setSelectedAnswers({});
+    setShowAnswers({});
     setCurrentIndex((prev) => (prev + 1 < PART_4_DATA.length ? prev + 1 : 0));
   }
 
-  function goToQuestion(index) {
+  function goToAudio(index) {
     setCurrentIndex(index);
-    setSelected(null);
-    setShowAnswer(false);
+    setSelectedAnswers({});
+    setShowAnswers({});
     setIsDrawerOpen(false);
+  }
+
+  function tryAgainQuestion(questionId) {
+    setSelectedAnswers((prev) => {
+      const newAnswers = { ...prev };
+      delete newAnswers[questionId];
+      return newAnswers;
+    });
+    setShowAnswers((prev) => ({
+      ...prev,
+      [questionId]: false,
+    }));
+  }
+
+  function tryAgainAll() {
+    setSelectedAnswers({});
+    setShowAnswers({});
   }
 
   return (
@@ -61,21 +124,26 @@ export default function Part4() {
           fontWeight: "700",
           textAlign: "center"
         }}>
-          🎵 Danh sách câu hỏi - Part 4
+          🎵 Danh sách Audio - Part 4
         </h3>
         <div
           style={{
             marginTop: 15,
             display: "grid",
-            gridTemplateColumns: "repeat(8, 1fr)",
+            gridTemplateColumns: "repeat(4, 1fr)",
             gap: "8px",
           }}
         >
-          {PART_4_DATA.map((question, index) => {
+          {PART_4_DATA.map((audio, index) => {
             let className = "question-number";
-            if (answeredQuestions[question.id] === true) {
+            
+            // Check if all questions in this audio are answered correctly
+            const allCorrect = audio.questions.every(q => answeredQuestions[q.id] === true);
+            const hasIncorrect = audio.questions.some(q => answeredQuestions[q.id] === false);
+            
+            if (allCorrect) {
               className += " correct";
-            } else if (answeredQuestions[question.id] === false) {
+            } else if (hasIncorrect) {
               className += " incorrect";
             } else if (currentIndex === index) {
               className += " current";
@@ -83,11 +151,17 @@ export default function Part4() {
 
             return (
               <div
-                key={question.id}
-                onClick={() => goToQuestion(index)}
+                key={index}
+                onClick={() => goToAudio(index)}
                 className={className}
+                style={{
+                  width: 80,
+                  height: 40,
+                  fontSize: "12px",
+                  padding: "2px"
+                }}
               >
-                {index + 1}
+                Audio {index + 1}
               </div>
             );
           })}
@@ -123,21 +197,26 @@ export default function Part4() {
             fontWeight: "700",
             textAlign: "center"
           }}>
-            🎵 Danh sách câu hỏi - Part 4
+            🎵 Danh sách Audio - Part 4
           </h3>
           <div
             style={{
               marginTop: 15,
               display: "grid",
-              gridTemplateColumns: "repeat(8, 1fr)",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gap: "8px",
             }}
           >
-            {PART_4_DATA.map((question, index) => {
+            {PART_4_DATA.map((audio, index) => {
               let className = "question-number";
-              if (answeredQuestions[question.id] === true) {
+              
+              // Check if all questions in this audio are answered correctly
+              const allCorrect = audio.questions.every(q => answeredQuestions[q.id] === true);
+              const hasIncorrect = audio.questions.some(q => answeredQuestions[q.id] === false);
+              
+              if (allCorrect) {
                 className += " correct";
-              } else if (answeredQuestions[question.id] === false) {
+              } else if (hasIncorrect) {
                 className += " incorrect";
               } else if (currentIndex === index) {
                 className += " current";
@@ -145,11 +224,17 @@ export default function Part4() {
 
               return (
                 <div
-                  key={question.id}
-                  onClick={() => goToQuestion(index)}
+                  key={index}
+                  onClick={() => goToAudio(index)}
                   className={className}
+                  style={{
+                    width: 80,
+                    height: 40,
+                    fontSize: "12px",
+                    padding: "2px"
+                  }}
                 >
-                  {index + 1}
+                  Audio {index + 1}
                 </div>
               );
             })}
@@ -162,7 +247,7 @@ export default function Part4() {
         style={{
           flex: 1,
           padding: 20,
-          maxWidth: 700,
+          maxWidth: 900,
           margin: "0 auto",
         }}
       >
@@ -181,25 +266,14 @@ export default function Part4() {
           fontSize: "24px",
           fontWeight: "700"
         }}>
-          🎵 Part 4 - Câu {currentIndex + 1} / {PART_4_DATA.length}
+          🎵 Part 4 - Audio {currentIndex + 1} / {PART_4_DATA.length}
         </h2>
-
-        <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
-          <p style={{ 
-            fontSize: "16px", 
-            lineHeight: "1.5", 
-            margin: 0,
-            color: "#374151"
-          }}>
-            <strong>📋 Đề bài:</strong> {currentQuestion.question}
-          </p>
-        </div>
 
         <div className="card" style={{ padding: "16px", marginBottom: "20px" }}>
           <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>🎵 Audio</h4>
           <audio
             controls
-            src={currentQuestion.audio_link}
+            src={currentAudio.audio_link}
             style={{ 
               width: "100%", 
               height: "45px",
@@ -208,28 +282,126 @@ export default function Part4() {
           />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          {currentQuestion.options.map((option) => {
-            const isCorrect = option.key === currentQuestion.answer;
-            const isSelected = option.key === selected;
-            
-            let className = "answer-option";
-            if (showAnswer) {
-              if (isCorrect) className += " correct";
-              else if (isSelected && !isCorrect) className += " incorrect";
-            } else if (isSelected) {
-              className += " selected";
-            }
+        {/* Display all questions for this audio */}
+        <div style={{ marginBottom: 20 }}>
+          {currentAudio.questions.map((question, questionIndex) => {
+            const isAnswered = showAnswers[question.id];
+            const selectedAnswer = selectedAnswers[question.id];
+            const isCorrect = selectedAnswer === question.answer;
+            const isHighlighted = questionId && question.id.toString() === questionId;
 
             return (
-              <button
-                key={option.key}
-                onClick={() => handleSelect(option.key)}
-                disabled={showAnswer}
-                className={className}
+              <div 
+                key={question.id} 
+                className="card" 
+                style={{ 
+                  marginBottom: 20, 
+                  padding: "20px",
+                  border: isHighlighted ? "3px solid #3b82f6" : undefined,
+                  backgroundColor: isHighlighted ? "#eff6ff" : undefined,
+                  boxShadow: isHighlighted ? "0 0 20px rgba(59, 130, 246, 0.3)" : undefined
+                }}
               >
-                <strong>{option.key}.</strong> {option.text}
-              </button>
+                <div style={{ 
+                  display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: "center", 
+                  marginBottom: "16px" 
+                }}>
+                  <h3 style={{ 
+                    color: isHighlighted ? "#1d4ed8" : "#1f2937", 
+                    margin: 0,
+                    fontSize: "18px",
+                    fontWeight: "600"
+                  }}>
+                    Question {questionIndex + 1} {isHighlighted && "🎯"}
+                  </h3>
+                  {isAnswered && (
+                    <button 
+                      onClick={() => tryAgainQuestion(question.id)} 
+                      className="btn btn-warning"
+                      style={{ fontSize: "12px", padding: "6px 12px" }}
+                    >
+                      🔄 Try Again
+                    </button>
+                  )}
+                </div>
+
+                {isHighlighted && (
+                  <div style={{
+                    padding: "12px",
+                    backgroundColor: "#dbeafe",
+                    borderRadius: "8px",
+                    marginBottom: "16px",
+                    border: "1px solid #3b82f6"
+                  }}>
+                    <p style={{
+                      color: "#1e40af",
+                      margin: 0,
+                      fontSize: "14px",
+                      fontWeight: "500"
+                    }}>
+                      🎯 <strong>This question was incorrect.</strong> Practice it again!
+                    </p>
+                  </div>
+                )}
+
+                <div className="card" style={{ marginBottom: 16, backgroundColor: "#fef7ff", padding: "16px" }}>
+                  <p style={{ 
+                    fontSize: "16px", 
+                    lineHeight: "1.5", 
+                    margin: 0,
+                    color: "#374151"
+                  }}>
+                    <strong>📋 Đề bài:</strong> {question.question}
+                  </p>
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  {question.options.map((option) => {
+                    const isOptionCorrect = option.key === question.answer;
+                    const isSelected = option.key === selectedAnswer;
+                    
+                    let className = "answer-option";
+                    if (isAnswered) {
+                      if (isOptionCorrect) className += " correct";
+                      else if (isSelected && !isOptionCorrect) className += " incorrect";
+                    } else if (isSelected) {
+                      className += " selected";
+                    }
+
+                    return (
+                      <button
+                        key={option.key}
+                        onClick={() => handleSelect(question.id, option.key)}
+                        disabled={isAnswered}
+                        className={className}
+                        style={{ marginBottom: "8px" }}
+                      >
+                        <strong>{option.key}.</strong> {option.text}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {isAnswered && (
+                  <div style={{ 
+                    padding: "12px", 
+                    borderRadius: "8px", 
+                    backgroundColor: isCorrect ? "#f0fdf4" : "#fef2f2",
+                    border: `2px solid ${isCorrect ? "#10b981" : "#ef4444"}`
+                  }}>
+                    <p style={{ 
+                      color: isCorrect ? "#059669" : "#dc2626", 
+                      fontSize: "16px", 
+                      fontWeight: "600", 
+                      margin: 0
+                    }}>
+                      {isCorrect ? "✅ Chính xác! 🎉" : `❌ Sai rồi! Đáp án đúng là ${question.answer}.`}
+                    </p>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
@@ -243,44 +415,31 @@ export default function Part4() {
           flexWrap: "wrap" 
         }}>
           <button 
-            onClick={previousQuestion} 
+            onClick={previousAudio} 
             className="btn btn-secondary"
           >
-            ⬅️ Previous Question
+            ⬅️ Previous Audio
           </button>
           <button 
-            onClick={nextQuestion} 
+            onClick={tryAgainAll} 
+            className="btn btn-warning"
+          >
+            🔄 Try Again All
+          </button>
+          <button 
+            onClick={nextAudio} 
             className="btn btn-primary"
           >
-            Next Question ➡️
+            Next Audio ➡️
           </button>
         </div>
 
-        {showAnswer && (
+        {/* Show transcript when any question is answered */}
+        {Object.keys(showAnswers).some(qId => 
+          currentAudio.questions.some(q => q.id === parseInt(qId)) && showAnswers[qId]
+        ) && (
           <div className="card" style={{ marginTop: 20 }}>
-            {selected === currentQuestion.answer ? (
-              <p style={{ 
-                color: "#059669", 
-                fontSize: "18px", 
-                fontWeight: "600", 
-                textAlign: "center",
-                margin: "0 0 16px 0"
-              }}>
-                ✅ Chính xác! 🎉
-              </p>
-            ) : (
-              <p style={{ 
-                color: "#dc2626", 
-                fontSize: "18px", 
-                fontWeight: "600", 
-                textAlign: "center",
-                margin: "0 0 16px 0"
-              }}>
-                ❌ Sai rồi! Đáp án đúng là <strong>{currentQuestion.answer}</strong>.
-              </p>
-            )}
-            
-            <details style={{ marginTop: 16 }}>
+            <details>
               <summary style={{ 
                 cursor: "pointer", 
                 fontSize: "16px", 
@@ -299,7 +458,7 @@ export default function Part4() {
                 border: "1px solid #e2e8f0",
                 whiteSpace: "pre-line"
               }}>
-                {currentQuestion.transcript}
+                {currentAudio.transcript}
               </div>
             </details>
           </div>

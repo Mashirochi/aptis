@@ -1,13 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { PART_1_DATA } from "../../utils/data";
+import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
 
 export default function Part1() {
+  const searchParams = useSearchParams();
+  const questionId = searchParams.get('questionId');
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Navigate to specific question if questionId is provided
+  useEffect(() => {
+    if (questionId) {
+      const questionIndex = PART_1_DATA.findIndex(q => q.id.toString() === questionId);
+      if (questionIndex !== -1) {
+        setCurrentIndex(questionIndex);
+      }
+    }
+  }, [questionId]);
 
   const currentQuestion = PART_1_DATA[currentIndex];
 
@@ -15,10 +30,26 @@ export default function Part1() {
     if (showAnswer) return;
     setSelected(option);
     setShowAnswer(true);
+    
+    const isCorrect = option === currentQuestion.answer;
     setAnsweredQuestions((prev) => ({
       ...prev,
-      [currentQuestion.id]: option === currentQuestion.answer,
+      [currentQuestion.id]: isCorrect,
     }));
+    
+    // Track incorrect answers
+    if (!isCorrect) {
+      saveIncorrectAnswer({
+        id: currentQuestion.id,
+        part: 'part1',
+        questionData: currentQuestion,
+        userAnswer: option,
+        correctAnswer: currentQuestion.answer
+      });
+    } else {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(currentQuestion.id, 'part1');
+    }
   }
 
   function nextQuestion() {
@@ -39,6 +70,11 @@ export default function Part1() {
     setSelected(null);
     setShowAnswer(false);
     setIsDrawerOpen(false);
+  }
+
+  function tryAgain() {
+    setSelected(null);
+    setShowAnswer(false);
   }
 
   return (
@@ -183,7 +219,27 @@ export default function Part1() {
           fontWeight: "700"
         }}>
           🎧 Part 1 - Câu {currentIndex + 1} / {PART_1_DATA.length}
+          {questionId && currentQuestion.id.toString() === questionId && " 🎯"}
         </h2>
+
+        {questionId && currentQuestion.id.toString() === questionId && (
+          <div className="card" style={{
+            marginBottom: 20,
+            backgroundColor: "#dbeafe",
+            border: "2px solid #3b82f6",
+            padding: "16px"
+          }}>
+            <p style={{
+              color: "#1e40af",
+              margin: 0,
+              fontSize: "16px",
+              fontWeight: "500",
+              textAlign: "center"
+            }}>
+              🎯 <strong>This question was incorrect.</strong> Practice it again to improve!
+            </p>
+          </div>
+        )}
 
         <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
           <p style={{ 
@@ -249,6 +305,14 @@ export default function Part1() {
           >
             ⬅️ Previous Question
           </button>
+          {showAnswer && (
+            <button 
+              onClick={tryAgain} 
+              className="btn btn-warning"
+            >
+              🔄 Try Again
+            </button>
+          )}
           <button 
             onClick={nextQuestion} 
             className="btn btn-primary"

@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PART_2_DATA } from "../../utils/data";
-import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
+import { saveIncorrectAnswer, removeIncorrectAnswer, saveAnswerResult, getAnswerStatuses } from "../../utils/incorrectAnswers";
 
 function Part2Content() {
   const searchParams = useSearchParams();
@@ -24,6 +24,18 @@ function Part2Content() {
       }
     }
   }, [questionId]);
+
+  // Load saved answer statuses when component mounts
+  useEffect(() => {
+    const savedStatuses = getAnswerStatuses('part2');
+    const statusMap: Record<string, boolean> = {};
+    
+    Object.entries(savedStatuses).forEach(([id, isCorrect]) => {
+      statusMap[id] = isCorrect;
+    });
+    
+    setAnsweredQuestions(statusMap);
+  }, []);
 
   const currentQuestion = PART_2_DATA[currentIndex];
 
@@ -70,7 +82,10 @@ function Part2Content() {
       [currentQuestion.exam_code]: allCorrect,
     }));
     
-    // Track incorrect answers
+    // Save answer result (both correct and incorrect)
+    saveAnswerResult(currentQuestion.exam_code, 'part2', allCorrect);
+    
+    // Track incorrect answers for detailed review
     if (!allCorrect) {
       saveIncorrectAnswer({
         id: currentQuestion.exam_code,
@@ -107,18 +122,14 @@ function Part2Content() {
     <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Sidebar desktop */}
       <div
-        className="sidebar"
+        className="sidebar sidebar-bg"
         style={{
           width: 500,
-          backgroundColor: "#f8fafc",
           padding: 20,
-          borderRight: "2px solid #e2e8f0",
-          overflowY: "auto",
-          boxShadow: "2px 0 8px rgba(0,0,0,0.1)"
+          overflowY: "auto"
         }}
       >
         <h3 style={{
-          color: "#1f2937",
           marginBottom: "20px",
           fontSize: "18px",
           fontWeight: "700",
@@ -127,11 +138,9 @@ function Part2Content() {
           🎙️ Danh sách câu hỏi - Part 2
         </h3>
         <div
+          className="question-grid"
           style={{
-            marginTop: 15,
-            display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "8px",
           }}
         >
           {PART_2_DATA.map((question, index) => {
@@ -171,7 +180,7 @@ function Part2Content() {
             left: 0,
             width: "100%",
             height: "100%",
-            background: "white",
+            background: "var(--card-background)",
             zIndex: 1000,
             overflowY: "auto",
             padding: 20,
@@ -185,7 +194,6 @@ function Part2Content() {
             ✖️ Đóng
           </button>
           <h3 style={{
-            color: "#1f2937",
             marginBottom: "20px",
             fontSize: "18px",
             fontWeight: "700",
@@ -194,11 +202,9 @@ function Part2Content() {
             🎙️ Danh sách câu hỏi - Part 2
           </h3>
           <div
+            className="question-grid"
             style={{
-              marginTop: 15,
-              display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "8px",
             }}
           >
             {PART_2_DATA.map((question, index) => {
@@ -281,7 +287,7 @@ function Part2Content() {
             fontSize: "16px", 
             lineHeight: "1.5", 
             margin: 0,
-            color: "#374151"
+            color: "var(--foreground)"
           }}>
             <strong>📋 Hướng dẫn:</strong> {currentQuestion.question}
           </p>
@@ -289,11 +295,11 @@ function Part2Content() {
 
         {/* Audio players for each speaker */}
         <div className="card" style={{ padding: "20px", marginBottom: "20px" }}>
-          <h4 style={{ margin: "0 0 16px 0", color: "#374151" }}>🎵 Audio Players</h4>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+          <h4 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>🎵 Audio Players</h4>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",  gap: "16px" }}>
             {currentQuestion.speakers.map((speaker, index) => (
               <div key={index} style={{ textAlign: "center" }}>
-                <h5 style={{ margin: "0 0 8px 0", color: "#4f46e5", fontSize: "14px", fontWeight: "600" }}>
+                <h5 className="speaker-title" style={{ margin: "0 0 8px 0", fontSize: "14px", fontWeight: "600" }}>
                   {speaker}
                 </h5>
                 <audio
@@ -313,11 +319,11 @@ function Part2Content() {
 
         {/* Matching exercise */}
         <div className="card" style={{ padding: "20px", marginBottom: "20px" }}>
-          <h4 style={{ margin: "0 0 16px 0", color: "#374151" }}>🎯 Match Speakers to Options</h4>
+          <h4 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>🎯 Match Speakers to Options</h4>
           
           {/* Options */}
           <div style={{ marginBottom: "20px" }}>
-            <h5 style={{ color: "#6b7280", fontSize: "14px", marginBottom: "12px" }}>Available Options:</h5>
+            <h5 style={{ color: "var(--card-text)", fontSize: "14px", marginBottom: "12px" }}>Available Options:</h5>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
               {Object.entries(currentQuestion.options).map(([key, value]) => (
                 <div key={key} className="btn btn-secondary" style={{ 
@@ -340,11 +346,12 @@ function Part2Content() {
               const selectedAnswer = selectedAnswers[speakerNum];
               
               return (
-                <div key={index} style={{ 
+                <div key={index} className={`speaker-card ${currentSpeaker === index ? 'active' : ''}`} style={{ 
                   padding: "16px", 
-                  border: "2px solid #e5e7eb", 
+                  border: "2px solid var(--border-color)", 
                   borderRadius: "12px",
-                  backgroundColor: currentSpeaker === index ? "#fef3c7" : "#fff"
+                  backgroundColor: "var(--card-background)",
+                  borderColor: currentSpeaker === index ? "#3b82f6" : "var(--border-color)"
                 }}>
                   <div style={{ 
                     display: "flex", 
@@ -354,16 +361,14 @@ function Part2Content() {
                   }}>
                     <h5 style={{ 
                       margin: 0, 
-                      color: "#1f2937", 
+                      color: "var(--foreground)", 
                       fontSize: "16px", 
                       fontWeight: "600"
                     }}>
                       {speaker} (Question {speakerNum})
                     </h5>
                     {currentSpeaker === index && (
-                      <span style={{ 
-                        backgroundColor: "#fbbf24", 
-                        color: "#92400e", 
+                      <span className="speaker-playing-badge" style={{ 
                         padding: "4px 8px", 
                         borderRadius: "6px", 
                         fontSize: "12px",
@@ -452,7 +457,7 @@ function Part2Content() {
         {showAnswer && (
           <div className="card" style={{ marginTop: 20 }}>
             <h3 style={{ 
-              color: "#1f2937", 
+              color: "var(--foreground)", 
               marginBottom: "16px",
               fontSize: "18px",
               fontWeight: "600"
@@ -465,12 +470,12 @@ function Part2Content() {
               const correctOption = (currentQuestion.options as any)[correctAnswer];
               
               return (
-                <div key={speakerNum} style={{ 
+                <div key={speakerNum} className="result-card" style={{ 
                   marginBottom: "12px",
                   padding: "12px",
-                  backgroundColor: isCorrect ? "#f0fdf4" : "#fef2f2",
                   borderRadius: "8px",
-                  border: `2px solid ${isCorrect ? "#10b981" : "#ef4444"}`
+                  border: `2px solid ${isCorrect ? "#10b981" : "#ef4444"}`,
+                  backgroundColor: "var(--card-background)"
                 }}>
                   <p style={{ 
                     color: isCorrect ? "#059669" : "#dc2626",
@@ -482,7 +487,7 @@ function Part2Content() {
                   </p>
                   <p style={{ 
                     fontSize: "14px", 
-                    color: "#374151", 
+                    color: "var(--foreground)", 
                     margin: 0 
                   }}>
                     Your answer: <strong>{selectedAnswers[speakerNum] || "None"}</strong> ({selectedOption})

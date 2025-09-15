@@ -1,5 +1,14 @@
-// Utility functions for managing incorrect answers in localStorage
+// Utility functions for managing answer tracking in localStorage
 
+// Answer record interface for tracking both correct and incorrect answers
+export interface AnswerRecord {
+  id: string;
+  part: 'part1' | 'part2' | 'part3' | 'part4';
+  isCorrect: boolean;
+  timestamp: number;
+}
+
+// Incorrect answer interface for detailed tracking
 export interface IncorrectAnswer {
   id: string;
   part: 'part1' | 'part2' | 'part3' | 'part4';
@@ -9,14 +18,98 @@ export interface IncorrectAnswer {
   timestamp: number;
 }
 
-const STORAGE_KEY = 'listening_aptis_incorrect_answers';
+const ANSWER_RECORDS_KEY = 'listening_aptis_answer_records';
+const INCORRECT_ANSWERS_KEY = 'listening_aptis_incorrect_answers';
+
+// === ANSWER RECORDS (Correct/Incorrect tracking) ===
+
+// Save answer result (both correct and incorrect)
+export function saveAnswerResult(id: string, part: 'part1' | 'part2' | 'part3' | 'part4', isCorrect: boolean): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    const records = getAnswerRecords();
+    const existingIndex = records.findIndex(record => record.id === id && record.part === part);
+    
+    const newRecord: AnswerRecord = {
+      id,
+      part,
+      isCorrect,
+      timestamp: Date.now()
+    };
+    
+    if (existingIndex !== -1) {
+      records[existingIndex] = newRecord;
+    } else {
+      records.push(newRecord);
+    }
+    
+    localStorage.setItem(ANSWER_RECORDS_KEY, JSON.stringify(records));
+    
+    // Dispatch custom event to notify components
+    window.dispatchEvent(new Event('answerRecordsUpdated'));
+  } catch (error) {
+    console.error('Error saving answer result:', error);
+  }
+}
+
+// Get all answer records
+export function getAnswerRecords(): AnswerRecord[] {
+  if (typeof window === 'undefined') return [];
+  
+  try {
+    const stored = localStorage.getItem(ANSWER_RECORDS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error getting answer records:', error);
+    return [];
+  }
+}
+
+// Get answer records for a specific part
+export function getAnswerRecordsForPart(part: 'part1' | 'part2' | 'part3' | 'part4'): AnswerRecord[] {
+  return getAnswerRecords().filter(record => record.part === part);
+}
+
+// Check if a question was answered correctly
+export function isQuestionCorrect(id: string, part: 'part1' | 'part2' | 'part3' | 'part4'): boolean | null {
+  const records = getAnswerRecords();
+  const record = records.find(r => r.id === id && r.part === part);
+  return record ? record.isCorrect : null;
+}
+
+// Get answer statuses for multiple questions
+export function getAnswerStatuses(part: 'part1' | 'part2' | 'part3' | 'part4'): Record<string, boolean> {
+  const records = getAnswerRecordsForPart(part);
+  const statuses: Record<string, boolean> = {};
+  
+  records.forEach(record => {
+    statuses[record.id] = record.isCorrect;
+  });
+  
+  return statuses;
+}
+
+// Clear all answer records
+export function clearAnswerRecords(): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.removeItem(ANSWER_RECORDS_KEY);
+    window.dispatchEvent(new Event('answerRecordsUpdated'));
+  } catch (error) {
+    console.error('Error clearing answer records:', error);
+  }
+}
+
+// === INCORRECT ANSWERS (Detailed tracking for review) ===
 
 // Get all incorrect answers from localStorage
 export function getIncorrectAnswers(): IncorrectAnswer[] {
   if (typeof window === 'undefined') return [];
   
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(INCORRECT_ANSWERS_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
     console.error('Error reading incorrect answers from localStorage:', error);
@@ -48,7 +141,7 @@ export function saveIncorrectAnswer(answer: Omit<IncorrectAnswer, 'timestamp'>):
       incorrectAnswers.push(newAnswer);
     }
     
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(incorrectAnswers));
+    localStorage.setItem(INCORRECT_ANSWERS_KEY, JSON.stringify(incorrectAnswers));
     
     // Dispatch custom event to update UI
     window.dispatchEvent(new Event('incorrectAnswersUpdated'));
@@ -67,7 +160,7 @@ export function removeIncorrectAnswer(id: string, part: string): void {
       item => !(item.id === id && item.part === part)
     );
     
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredAnswers));
+    localStorage.setItem(INCORRECT_ANSWERS_KEY, JSON.stringify(filteredAnswers));
     
     // Dispatch custom event to update UI
     window.dispatchEvent(new Event('incorrectAnswersUpdated'));
@@ -86,7 +179,7 @@ export function clearAllIncorrectAnswers(): void {
   if (typeof window === 'undefined') return;
   
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(INCORRECT_ANSWERS_KEY);
     
     // Dispatch custom event to update UI
     window.dispatchEvent(new Event('incorrectAnswersUpdated'));
@@ -102,7 +195,7 @@ export function clearIncorrectAnswersByPart(part: 'part1' | 'part2' | 'part3' | 
   try {
     const incorrectAnswers = getIncorrectAnswers();
     const filteredAnswers = incorrectAnswers.filter(answer => answer.part !== part);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredAnswers));
+    localStorage.setItem(INCORRECT_ANSWERS_KEY, JSON.stringify(filteredAnswers));
     
     // Dispatch custom event to update UI
     window.dispatchEvent(new Event('incorrectAnswersUpdated'));

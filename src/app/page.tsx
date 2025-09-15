@@ -86,12 +86,12 @@ export default function Home() {
         }}
       />
       <div
+        className="gradient-bg"
         style={{
           minHeight: "100vh",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          background: "linear-gradient(135deg, #e0e7ff, #fdf4ff)",
+          alignItems: "center"
         }}
       >
         <div style={{ display: "grid", gap: "20px", padding: "20px" }}>
@@ -155,7 +155,9 @@ export default function Home() {
               fontWeight: "bold",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              lineHeight: "1",
+              fontFamily: "system-ui, -apple-system, sans-serif"
             }}>
               {incorrectCount > 99 ? "99+" : incorrectCount}
             </span>

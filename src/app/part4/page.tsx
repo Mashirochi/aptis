@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PART_4_DATA } from "../../utils/data";
-import { saveIncorrectAnswer, removeIncorrectAnswer } from "../../utils/incorrectAnswers";
+import { saveIncorrectAnswer, removeIncorrectAnswer, saveAnswerResult, getAnswerStatuses } from "../../utils/incorrectAnswers";
 
 function Part4Content() {
   const searchParams = useSearchParams();
@@ -29,6 +29,18 @@ function Part4Content() {
     }
   }, [questionId]);
 
+  // Load saved answer statuses when component mounts
+  useEffect(() => {
+    const savedStatuses = getAnswerStatuses('part4');
+    const statusMap: Record<number, boolean> = {};
+    
+    Object.entries(savedStatuses).forEach(([id, isCorrect]) => {
+      statusMap[parseInt(id)] = isCorrect;
+    });
+    
+    setAnsweredQuestions(statusMap);
+  }, []);
+
   const currentAudio = PART_4_DATA[currentIndex];
 
   function handleSelect(questionId: number, option: string) {
@@ -54,7 +66,10 @@ function Part4Content() {
       [questionId]: isCorrect,
     }));
     
-    // Track incorrect answers
+    // Save answer result (both correct and incorrect)
+    saveAnswerResult(questionId.toString(), 'part4', isCorrect);
+    
+    // Track incorrect answers for detailed review
     if (!isCorrect) {
       saveIncorrectAnswer({
         id: questionId.toString(),
@@ -109,18 +124,14 @@ function Part4Content() {
     <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Sidebar desktop */}
       <div
-        className="sidebar"
+        className="sidebar sidebar-bg"
         style={{
           width: 500,
-          backgroundColor: "#f8fafc",
           padding: 20,
-          borderRight: "2px solid #e2e8f0",
-          overflowY: "auto",
-          boxShadow: "2px 0 8px rgba(0,0,0,0.1)"
+          overflowY: "auto"
         }}
       >
         <h3 style={{
-          color: "#1f2937",
           marginBottom: "20px",
           fontSize: "18px",
           fontWeight: "700",
@@ -129,11 +140,9 @@ function Part4Content() {
           🎵 Danh sách Audio - Part 4
         </h3>
         <div
+          className="question-grid"
           style={{
-            marginTop: 15,
-            display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "8px",
           }}
         >
           {PART_4_DATA.map((audio, index) => {
@@ -179,7 +188,7 @@ function Part4Content() {
             left: 0,
             width: "100%",
             height: "100%",
-            background: "white",
+            background: "var(--card-background)",
             zIndex: 1000,
             overflowY: "auto",
             padding: 20,
@@ -193,7 +202,6 @@ function Part4Content() {
             ✖️ Đóng
           </button>
           <h3 style={{
-            color: "#1f2937",
             marginBottom: "20px",
             fontSize: "18px",
             fontWeight: "700",
@@ -202,11 +210,9 @@ function Part4Content() {
             🎵 Danh sách Audio - Part 4
           </h3>
           <div
+            className="question-grid"
             style={{
-              marginTop: 15,
-              display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "8px",
             }}
           >
             {PART_4_DATA.map((audio, index) => {
@@ -263,7 +269,7 @@ function Part4Content() {
         </button>
 
         <h2 style={{ 
-          color: "#1f2937", 
+          color: "var(--foreground)", 
           marginBottom: "20px",
           fontSize: "24px",
           fontWeight: "700"
@@ -272,7 +278,7 @@ function Part4Content() {
         </h2>
 
         <div className="card" style={{ padding: "16px", marginBottom: "20px" }}>
-          <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>🎵 Audio</h4>
+          <h4 style={{ margin: "0 0 12px 0", color: "var(--foreground)" }}>🎵 Audio</h4>
           <audio
             controls
             src={currentAudio.audio_link}
@@ -311,7 +317,7 @@ function Part4Content() {
                   marginBottom: "16px" 
                 }}>
                   <h3 style={{ 
-                    color: isHighlighted ? "#1d4ed8" : "#1f2937", 
+                    color: isHighlighted ? "#1d4ed8" : "var(--foreground)", 
                     margin: 0,
                     fontSize: "18px",
                     fontWeight: "600"
@@ -353,7 +359,7 @@ function Part4Content() {
                     fontSize: "16px", 
                     lineHeight: "1.5", 
                     margin: 0,
-                    color: "#374151"
+                    color: "var(--foreground)"
                   }}>
                     <strong>📋 Đề bài:</strong> {question.question}
                   </p>

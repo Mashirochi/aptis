@@ -6,8 +6,16 @@
   --border-color: #e5e7eb;
 }
 
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card-background: #1f2937;
+  --card-text: #f9fafb;
+  --border-color: #374151;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
     --card-background: #1f2937;
@@ -89,16 +97,14 @@ a {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  .btn-secondary {
-    background: linear-gradient(135deg, #374151, #4b5563);
-    color: #f9fafb;
-    border: 1px solid #6b7280;
-  }
-  
-  .btn-secondary:hover {
-    background: linear-gradient(135deg, #4b5563, #6b7280);
-  }
+.dark .btn-secondary {
+  background: linear-gradient(135deg, #374151, #4b5563);
+  color: #f9fafb;
+  border: 1px solid #6b7280;
+}
+
+.dark .btn-secondary:hover {
+  background: linear-gradient(135deg, #4b5563, #6b7280);
 }
 
 .btn-success {
@@ -160,10 +166,8 @@ a {
   min-height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  .gradient-bg {
-    background: linear-gradient(135deg, #0f172a, #1e1b4b, #164e63);
-  }
+.dark .gradient-bg {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #164e63);
 }
 
 /* Card Styles */
@@ -182,14 +186,12 @@ a {
   transform: translateY(-2px);
 }
 
-@media (prefers-color-scheme: dark) {
-  .card {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  }
+.dark .card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* Audio Player Enhancements */
@@ -207,23 +209,21 @@ audio::-webkit-media-controls-panel {
   border-radius: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  audio {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  
-  audio::-webkit-media-controls-panel {
-    background-color: var(--card-background);
-  }
-  
-  audio::-webkit-media-controls-play-button,
-  audio::-webkit-media-controls-timeline,
-  audio::-webkit-media-controls-time-remaining-display,
-  audio::-webkit-media-controls-current-time-display,
-  audio::-webkit-media-controls-mute-button,
-  audio::-webkit-media-controls-volume-slider {
-    filter: invert(1) hue-rotate(180deg);
-  }
+.dark audio {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.dark audio::-webkit-media-controls-panel {
+  background-color: var(--card-background);
+}
+
+.dark audio::-webkit-media-controls-play-button,
+.dark audio::-webkit-media-controls-timeline,
+.dark audio::-webkit-media-controls-time-remaining-display,
+.dark audio::-webkit-media-controls-current-time-display,
+.dark audio::-webkit-media-controls-mute-button,
+.dark audio::-webkit-media-controls-volume-slider {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 /* Question Number Styles */
@@ -240,29 +240,69 @@ audio::-webkit-media-controls-panel {
   border: 2px solid var(--border-color);
   background: var(--card-background);
   color: var(--card-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .question-number:hover {
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: #3b82f6;
 }
 
 .question-number.current {
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
   border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .question-number.correct {
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .question-number.incorrect {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   border-color: #ef4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.dark .question-number {
+  background: linear-gradient(135deg, #374151, #4b5563);
+  color: #f9fafb;
+  border-color: #6b7280;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark .question-number:hover {
+  background: linear-gradient(135deg, #4b5563, #6b7280);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border-color: #60a5fa;
+  transform: scale(1.05);
+}
+
+.dark .question-number.current {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+}
+
+.dark .question-number.correct {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+}
+
+.dark .question-number.incorrect {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border-color: #ef4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -431,6 +471,39 @@ audio::-webkit-media-controls-panel {
 .sidebar-bg {
   background-color: var(--card-background);
   border-right: 2px solid var(--border-color);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+}
+
+.dark .sidebar-bg {
+  background-color: #1f2937;
+  border-right: 2px solid #374151;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.3);
+}
+
+/* Sidebar title styling */
+.sidebar h3 {
+  color: var(--foreground) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.dark .sidebar h3 {
+  color: #f9fafb !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Question grid layout improvements */
+.question-grid {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+  background: var(--card-background);
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+.dark .question-grid {
+  background: #1a202c;
+  border: 1px solid #374151;
 }
 
 .drawer-bg {
@@ -441,6 +514,27 @@ audio::-webkit-media-controls-panel {
   background-color: var(--card-background);
   color: var(--card-text);
   border: 1px solid var(--border-color);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle-desktop {
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-desktop:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+.theme-toggle-mobile:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+@media (max-width: 768px) {
+  .theme-label {
+    display: none;
+  }
 }
 
 /* Transcript and details styling */
@@ -523,4 +617,337 @@ details div {
   h1, h2, h3, summary {
     color: var(--foreground) !important;
   }
+  
+  /* Specific fix for question instructions (đề bài) */
+  [style*="color: #374151"] {
+    color: var(--foreground) !important;
+  }
+  
+  /* Question instruction cards - ensure white text */
+  .card p strong,
+  .card p {
+    color: var(--foreground) !important;
+  }
+  
+  /* Override any hardcoded gray text colors in question instructions */
+  [style*="color: #6b7280"],
+  [style*="color: #9ca3af"],
+  [style*="color: #d1d5db"] {
+    color: var(--foreground) !important;
+  }
+  
+  /* Fix for Part 3 and Part 4 question numbers */
+  [style*="color: #1f2937"] {
+    color: var(--foreground) !important;
+  }
+  
+  /* Fix for headings in practice modes */
+  .card h3,
+  .card h4,
+  .card h5 {
+    color: var(--foreground) !important;
+  }
+  
+  /* Fix for paragraph text in cards */
+  .card p {
+    color: var(--card-text) !important;
+  }
+  
+  /* Ensure proper text contrast for emphasized content */
+  .card p strong {
+    color: var(--foreground) !important;
+  }
+}
+
+/* Dark mode class-based overrides for explicit theming */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--foreground) !important;
+}
+
+.dark p,
+.dark span,
+.dark div {
+  color: var(--card-text);
+}
+
+.dark .card p,
+.dark .card span {
+  color: var(--card-text) !important;
+}
+
+.dark .card p strong,
+.dark .card h3,
+.dark .card h4,
+.dark .card h5 {
+  color: var(--foreground) !important;
+}
+
+/* Fix for hardcoded colors in dark mode */
+.dark [style*="color: #1f2937"],
+.dark [style*="color: #374151"],
+.dark [style*="color: #6b7280"],
+.dark [style*="color: #9ca3af"] {
+  color: var(--foreground) !important;
+}
+
+.dark [style*="color: #d1d5db"] {
+  color: var(--card-text) !important;
+}
+
+/* Audio controls in dark mode */
+.dark audio {
+  filter: invert(0.9) hue-rotate(180deg) contrast(1.2);
+}
+
+/* Badge styling improvements */
+.badge-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-align: center;
+}
+
+.dark .badge-count {
+  background-color: #dc2626;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Part 2 speaker cards dark mode */
+.dark .speaker-card {
+  background-color: var(--card-background) !important;
+  border-color: var(--border-color) !important;
+  color: var(--card-text) !important;
+}
+
+.dark .speaker-card.active {
+  border-color: #3b82f6 !important;
+  background-color: var(--card-background) !important;
+}
+
+.dark .speaker-playing-badge {
+  background-color: var(--card-background) !important;
+  color: var(--card-text) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Speaker title colors in dark mode */
+.dark .speaker-title {
+  color: var(--card-text) !important;
+}
+
+/* Result card improvements for dark mode */
+.dark .result-card {
+  background-color: var(--card-background) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Theme dropdown improvements */
+.theme-dropdown {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+}
+
+.dark .theme-dropdown {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.theme-dropdown-item {
+  background: transparent;
+  border: none;
+  color: var(--card-text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.theme-dropdown-item:hover {
+  background-color: var(--border-color);
+}
+
+.theme-dropdown-item.active {
+  background-color: var(--border-color);
+}
+
+/* Fix for filter cards in incorrect answers page */
+.filter-card {
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  color: var(--card-text);
+  transition: all 0.2s ease;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.filter-card.active {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.dark .filter-card {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+  color: var(--card-text);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .filter-card.active {
+  background-color: #1e3a8a;
+  border-color: #3b82f6;
+  color: #dbeafe;
+}
+
+.filter-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.dark .filter-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.filter-card:not(.active):hover {
+  border-color: #3b82f6;
+}
+
+/* Question detail card improvements */
+.question-detail-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--card-text);
+}
+
+.dark .question-detail-card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+/* Practice mode text fixes */
+.practice-mode h4,
+.practice-mode h5,
+.practice-mode p {
+  color: var(--card-text);
+}
+
+.practice-mode h3,
+.practice-mode h4 {
+  color: var(--foreground) !important;
+}
+
+/* Interactive Practice Components */
+.practice-question {
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.option-button {
+  transition: all 0.2s ease;
+  border: 2px solid var(--border-color) !important;
+  background-color: var(--card-background) !important;
+  color: var(--card-text) !important;
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: #3b82f6 !important;
+  background-color: #eff6ff !important;
+  transform: translateY(-1px);
+}
+
+.option-button.selected {
+  border-color: #3b82f6 !important;
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.option-button.correct {
+  border-color: #10b981 !important;
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+.option-button.incorrect {
+  border-color: #ef4444 !important;
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+.speaker-card {
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.speaker-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.statement-card {
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.statement-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* Dark mode adjustments */
+.dark .option-button:hover:not(:disabled) {
+  background-color: #1e3a8a !important;
+}
+
+.dark .speaker-card:hover,
+.dark .statement-card:hover {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* Audio section styling */
+.audio-section h4,
+.audio-section h5 {
+  color: var(--foreground) !important;
+}
+
+.audio-section h5 {
+  color: var(--card-text) !important;
+}
+
+/* Answer comparison section */
+.answer-comparison {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--card-text);
+}
+
+.dark .answer-comparison {
+  background-color: #1f2937;
+  border-color: #374151;
 }

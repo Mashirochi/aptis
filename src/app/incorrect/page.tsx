@@ -10,6 +10,7 @@ import {
   saveIncorrectAnswer,
   IncorrectAnswer 
 } from "../../utils/incorrectAnswers";
+import { PART_1_DATA, PART_2_DATA, PART_3_DATA, PART_4_DATA } from "../../utils/data";
 
 export default function IncorrectAnswersPage() {
   const [incorrectAnswers, setIncorrectAnswers] = useState<IncorrectAnswer[]>([]);
@@ -18,6 +19,8 @@ export default function IncorrectAnswersPage() {
   const [practiceMode, setPracticeMode] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<any>(null);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [practiceAnswers, setPracticeAnswers] = useState<Record<string, any>>({});
+  const [practiceShowAnswer, setPracticeShowAnswer] = useState(false);
 
   // Load incorrect answers on component mount
   useEffect(() => {
@@ -56,6 +59,46 @@ export default function IncorrectAnswersPage() {
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
       setShowAnswer(false);
+      setPracticeAnswers({});
+      setPracticeShowAnswer(false);
+    }
+  }
+
+  function handlePracticeSubmit() {
+    if (practiceShowAnswer) return;
+    
+    const currentQuestion = incorrectAnswers[currentQuestionIndex];
+    let isCorrect = false;
+    
+    // Check if answer is correct based on part type
+    if (currentQuestion.part === 'part1') {
+      isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+    } else if (currentQuestion.part === 'part2') {
+      // For part 2, check if all speakers are correct
+      isCorrect = Object.keys(currentQuestion.correctAnswer).every(
+        speakerNum => practiceAnswers[speakerNum] === currentQuestion.correctAnswer[speakerNum]
+      );
+    } else if (currentQuestion.part === 'part3') {
+      // For part 3, check if all statements are correct
+      isCorrect = currentQuestion.correctAnswer.every(
+        (correctAns: any) => practiceAnswers[correctAns.number - 1] === correctAns.answer
+      );
+    } else if (currentQuestion.part === 'part4') {
+      isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+    }
+    
+    setPracticeShowAnswer(true);
+    
+    if (isCorrect) {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(currentQuestion.id, currentQuestion.part);
+      // Refresh the list
+      setTimeout(() => {
+        loadIncorrectAnswers();
+        if (currentQuestionIndex >= incorrectAnswers.length - 1) {
+          setCurrentQuestionIndex(0);
+        }
+      }, 2000);
     }
   }
 
@@ -105,6 +148,8 @@ export default function IncorrectAnswersPage() {
     }
     setSelectedAnswer(null);
     setShowAnswer(false);
+    setPracticeAnswers({});
+    setPracticeShowAnswer(false);
   }
 
   function previousQuestion() {
@@ -115,6 +160,8 @@ export default function IncorrectAnswersPage() {
     }
     setSelectedAnswer(null);
     setShowAnswer(false);
+    setPracticeAnswers({});
+    setPracticeShowAnswer(false);
   }
 
   const partCounts = {
@@ -126,6 +173,65 @@ export default function IncorrectAnswersPage() {
 
   const currentQuestion = practiceMode && incorrectAnswers.length > 0 ? incorrectAnswers[currentQuestionIndex] : null;
 
+  // Helper function to get full question data from data files
+  const getFullQuestionData = (question: IncorrectAnswer) => {
+    if (question.part === 'part1') {
+      return PART_1_DATA.find(q => q.id.toString() === question.id);
+    } else if (question.part === 'part2') {
+      return PART_2_DATA.find(q => q.exam_code === question.id);
+    } else if (question.part === 'part3') {
+      return PART_3_DATA.find(q => q.exam_code === question.id);
+    } else if (question.part === 'part4') {
+      // Find the audio that contains this question
+      for (const audio of PART_4_DATA) {
+        const foundQuestion = audio.questions.find(q => q.id.toString() === question.id);
+        if (foundQuestion) {
+          return { ...foundQuestion, audio_link: audio.audio_link };
+        }
+      }
+    }
+    return null;
+  };
+
+  // Helper function to handle practice answer submission
+  const handlePracticeAnswerSubmit = () => {
+    if (practiceShowAnswer) return;
+    
+    const currentQuestion = incorrectAnswers[currentQuestionIndex];
+    let isCorrect = false;
+    
+    // Check if answer is correct based on part type
+    if (currentQuestion.part === 'part1' || currentQuestion.part === 'part4') {
+      isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+    } else if (currentQuestion.part === 'part2') {
+      // For part 2, check if all speakers are correct
+      isCorrect = Object.keys(currentQuestion.correctAnswer).every(
+        speakerNum => practiceAnswers[speakerNum] === currentQuestion.correctAnswer[speakerNum]
+      );
+    } else if (currentQuestion.part === 'part3') {
+      // For part 3, check if all statements are correct
+      isCorrect = currentQuestion.correctAnswer.every(
+        (correctAns: any) => practiceAnswers[correctAns.number - 1] === correctAns.answer
+      );
+    }
+    
+    setPracticeShowAnswer(true);
+    
+    if (isCorrect) {
+      // Remove from incorrect answers if user got it right
+      removeIncorrectAnswer(currentQuestion.id, currentQuestion.part);
+      // Refresh the list
+      setTimeout(() => {
+        loadIncorrectAnswers();
+        if (currentQuestionIndex >= incorrectAnswers.length - 1) {
+          setCurrentQuestionIndex(0);
+        }
+      }, 2000);
+    }
+  };
+
+  const fullQuestionData = currentQuestion ? getFullQuestionData(currentQuestion) : null;
+
   return (
     <div className="gradient-bg" style={{ minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
@@ -135,7 +241,7 @@ export default function IncorrectAnswersPage() {
           <>
             <div className="card" style={{ marginBottom: "30px", textAlign: "center" }}>
               <h1 style={{ 
-                color: "#1f2937", 
+                color: "var(--foreground)", 
                 fontSize: "32px", 
                 fontWeight: "800",
                 margin: "0 0 16px 0"
@@ -143,7 +249,7 @@ export default function IncorrectAnswersPage() {
                 ❌ Incorrect Answers Review
               </h1>
               <p style={{ 
-                color: "#6b7280", 
+                color: "var(--card-text)", 
                 fontSize: "18px", 
                 margin: 0 
               }}>
@@ -159,22 +265,19 @@ export default function IncorrectAnswersPage() {
               marginBottom: "30px"
             }}>
               <div 
-                className="card" 
+                className={`filter-card ${selectedPart === 'all' ? 'active' : ''}`}
                 onClick={() => setSelectedPart('all')}
                 style={{ 
-                  textAlign: "center", 
-                  backgroundColor: selectedPart === 'all' ? "#dbeafe" : "#fef3c7",
-                  border: selectedPart === 'all' ? "2px solid #3b82f6" : "1px solid #e5e7eb",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
+                  textAlign: "center",
+                  cursor: "pointer"
                 }}
               >
-                <h3 style={{ color: selectedPart === 'all' ? "#1e40af" : "#92400e", margin: "0 0 8px 0" }}>📊 Total</h3>
-                <p style={{ fontSize: "24px", fontWeight: "bold", color: selectedPart === 'all' ? "#1e40af" : "#78350f", margin: 0 }}>
+                <h3 style={{ color: "inherit", margin: "0 0 8px 0" }}>📊 Total</h3>
+                <p style={{ fontSize: "24px", fontWeight: "bold", color: "inherit", margin: 0 }}>
                   {getIncorrectAnswers().length}
                 </p>
                 {selectedPart === 'all' && (
-                  <div style={{ marginTop: "8px", color: "#1e40af", fontSize: "12px", fontWeight: "500" }}>
+                  <div style={{ marginTop: "8px", color: "inherit", fontSize: "12px", fontWeight: "500" }}>
                     ✓ Active Filter
                   </div>
                 )}
@@ -183,30 +286,27 @@ export default function IncorrectAnswersPage() {
               {Object.entries(partCounts).map(([part, count]) => (
                 <div 
                   key={part} 
-                  className="card" 
+                  className={`filter-card ${selectedPart === part ? 'active' : ''}`}
                   onClick={() => setSelectedPart(part as any)}
                   style={{ 
                     textAlign: "center",
-                    backgroundColor: selectedPart === part ? "#dbeafe" : "#ffffff",
-                    border: selectedPart === part ? "2px solid #3b82f6" : "1px solid #e5e7eb",
                     cursor: "pointer",
-                    transition: "all 0.2s ease",
                     opacity: count === 0 ? 0.5 : 1
                   }}
                 >
-                  <h3 style={{ color: selectedPart === part ? "#1e40af" : "#374151", margin: "0 0 8px 0" }}>
+                  <h3 style={{ color: "inherit", margin: "0 0 8px 0" }}>
                     {part === 'part1' ? '🎧' : part === 'part2' ? '🎙️' : part === 'part3' ? '📝' : '🎵'} {part.toUpperCase()}
                   </h3>
-                  <p style={{ fontSize: "20px", fontWeight: "bold", color: selectedPart === part ? "#1e40af" : "#1f2937", margin: 0 }}>
+                  <p style={{ fontSize: "20px", fontWeight: "bold", color: "inherit", margin: 0 }}>
                     {count}
                   </p>
                   {selectedPart === part && (
-                    <div style={{ marginTop: "8px", color: "#1e40af", fontSize: "12px", fontWeight: "500" }}>
+                    <div style={{ marginTop: "8px", color: "inherit", fontSize: "12px", fontWeight: "500" }}>
                       ✓ Active Filter
                     </div>
                   )}
                   {count === 0 && (
-                    <div style={{ marginTop: "4px", color: "#9ca3af", fontSize: "12px" }}>
+                    <div style={{ marginTop: "4px", color: "var(--card-text)", fontSize: "12px" }}>
                       No errors
                     </div>
                   )}
@@ -225,7 +325,7 @@ export default function IncorrectAnswersPage() {
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <h3 style={{ 
-                    color: "#374151", 
+                    color: "var(--card-text)", 
                     margin: 0,
                     fontSize: "18px",
                     fontWeight: "600"
@@ -284,7 +384,7 @@ export default function IncorrectAnswersPage() {
                 <h3 style={{ color: "#059669", fontSize: "24px", margin: "0 0 16px 0" }}>
                   🎉 Great job!
                 </h3>
-                <p style={{ color: "#6b7280", fontSize: "18px", margin: "0 0 20px 0" }}>
+                <p style={{ color: "var(--card-text)", fontSize: "18px", margin: "0 0 20px 0" }}>
                   {selectedPart === 'all' 
                     ? "You have no incorrect answers to review!"
                     : `You have no incorrect answers in ${selectedPart.toUpperCase()}!`
@@ -306,7 +406,7 @@ export default function IncorrectAnswersPage() {
                     }}>
                       <div>
                         <h4 style={{ 
-                          color: "#1f2937", 
+                          color: "var(--foreground)", 
                           margin: "0 0 8px 0",
                           fontSize: "18px",
                           fontWeight: "600"
@@ -314,7 +414,7 @@ export default function IncorrectAnswersPage() {
                           {item.part === 'part1' ? '🎧' : item.part === 'part2' ? '🎙️' : item.part === 'part3' ? '📝' : '🎵'} {item.part.toUpperCase()} - {item.id}
                         </h4>
                         <p style={{ 
-                          color: "#6b7280", 
+                          color: "var(--card-text)", 
                           margin: "0 0 12px 0",
                           fontSize: "14px"
                         }}>
@@ -330,14 +430,12 @@ export default function IncorrectAnswersPage() {
                       </Link>
                     </div>
                     
-                    <div style={{ 
+                    <div className="question-detail-card" style={{ 
                       padding: "16px", 
-                      backgroundColor: "#fef2f2", 
-                      borderRadius: "8px",
-                      border: "1px solid #fecaca"
+                      borderRadius: "8px"
                     }}>
                       <p style={{ 
-                        color: "#374151", 
+                        color: "var(--card-text)", 
                         margin: "0 0 8px 0",
                         fontSize: "14px",
                         fontWeight: "500"
@@ -366,7 +464,7 @@ export default function IncorrectAnswersPage() {
           </>
         ) : (
           // Practice mode
-          currentQuestion && (
+          currentQuestion && fullQuestionData && (
             <>
               <div style={{ 
                 display: "flex", 
@@ -382,7 +480,7 @@ export default function IncorrectAnswersPage() {
                 </button>
                 
                 <h2 style={{ 
-                  color: "#1f2937", 
+                  color: "var(--foreground)", 
                   margin: 0,
                   fontSize: "24px",
                   fontWeight: "700"
@@ -406,31 +504,22 @@ export default function IncorrectAnswersPage() {
                 </div>
               </div>
 
-              {/* Practice Question Display */}
-              <div className="card" style={{ marginBottom: "20px" }}>
+              {/* Interactive Practice Question */}
+              <div className="card practice-mode" style={{ marginBottom: "20px" }}>
                 <h3 style={{ 
-                  color: "#1f2937", 
+                  color: "var(--foreground)", 
                   margin: "0 0 16px 0"
                 }}>
                   {currentQuestion.part === 'part1' ? '🎧' : currentQuestion.part === 'part2' ? '🎙️' : currentQuestion.part === 'part3' ? '📝' : '🎵'} {currentQuestion.part.toUpperCase()} - {currentQuestion.id}
                 </h3>
                 
-                {currentQuestion.questionData.question && (
-                  <p style={{ 
-                    color: "#374151", 
-                    marginBottom: "16px",
-                    fontSize: "16px"
-                  }}>
-                    <strong>Question:</strong> {currentQuestion.questionData.question}
-                  </p>
-                )}
-
-                {/* Audio Player */}
-                {currentQuestion.questionData.audio_link && (
+                {/* Audio Player - Part 1, 3, 4 */}
+                {(currentQuestion.part === 'part1' || currentQuestion.part === 'part3' || currentQuestion.part === 'part4') && fullQuestionData && 'audio_link' in fullQuestionData && fullQuestionData.audio_link && (
                   <div style={{ marginBottom: "20px" }}>
+                    <h4 style={{ margin: "0 0 12px 0", color: "var(--foreground)" }}>🎵 Audio</h4>
                     <audio
                       controls
-                      src={currentQuestion.questionData.audio_link}
+                      src={fullQuestionData.audio_link}
                       style={{ 
                         width: "100%", 
                         height: "45px",
@@ -441,18 +530,18 @@ export default function IncorrectAnswersPage() {
                 )}
 
                 {/* Multiple Audio Players for Part 2 */}
-                {currentQuestion.part === 'part2' && currentQuestion.questionData.audio_links && (
-                  <div style={{ marginBottom: "20px" }}>
-                    <h4 style={{ margin: "0 0 12px 0", color: "#374151" }}>🎵 Audio Players</h4>
+                {currentQuestion.part === 'part2' && fullQuestionData && 'audio_links' in fullQuestionData && fullQuestionData.audio_links && (
+                  <div className="audio-section" style={{ marginBottom: "20px" }}>
+                    <h4 style={{ margin: "0 0 12px 0", color: "var(--foreground)" }}>🎵 Audio Players</h4>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px" }}>
-                      {currentQuestion.questionData.speakers?.map((speaker: string, index: number) => (
+                      {'speakers' in fullQuestionData && fullQuestionData.speakers?.map((speaker: string, index: number) => (
                         <div key={index} style={{ textAlign: "center" }}>
-                          <h5 style={{ margin: "0 0 8px 0", color: "#4f46e5", fontSize: "14px" }}>
+                          <h5 style={{ margin: "0 0 8px 0", color: "var(--card-text)", fontSize: "14px" }}>
                             {speaker}
                           </h5>
                           <audio
                             controls
-                            src={currentQuestion.questionData.audio_links[index]}
+                            src={fullQuestionData.audio_links[index]}
                             style={{ 
                               width: "100%", 
                               height: "40px",
@@ -465,83 +554,280 @@ export default function IncorrectAnswersPage() {
                   </div>
                 )}
 
-                {/* Show previous answers */}
-                <div style={{ 
-                  padding: "16px", 
-                  backgroundColor: "#fef2f2", 
-                  borderRadius: "8px",
-                  border: "1px solid #fecaca",
-                  marginBottom: "20px"
-                }}>
-                  <p style={{ 
-                    color: "#dc2626", 
-                    margin: "0 0 8px 0",
-                    fontSize: "14px",
-                    fontWeight: "500"
-                  }}>
-                    <strong>❌ Your Previous Answer:</strong> {JSON.stringify(currentQuestion.userAnswer)}
-                  </p>
-                  <p style={{ 
-                    color: "#059669", 
-                    margin: 0,
-                    fontSize: "14px",
-                    fontWeight: "500"
-                  }}>
-                    <strong>✅ Correct Answer:</strong> {JSON.stringify(currentQuestion.correctAnswer)}
-                  </p>
-                </div>
+                {/* Interactive Practice Question */}
+                {currentQuestion.part === 'part1' && fullQuestionData && 'options' in fullQuestionData && typeof fullQuestionData.options === 'object' && !Array.isArray(fullQuestionData.options) && (
+                  <div className="practice-question" style={{ marginBottom: "20px" }}>
+                    <h4 style={{ color: "var(--foreground)", marginBottom: "16px" }}>
+                      {'question' in fullQuestionData && fullQuestionData.question}
+                    </h4>
+                    <div style={{ display: "grid", gap: "12px" }}>
+                      {Object.entries(fullQuestionData.options).map(([key, value]) => (
+                        <button
+                          key={key}
+                          onClick={() => setPracticeAnswers({ selectedOption: key })}
+                          disabled={practiceShowAnswer}
+                          className={`option-button ${
+                            practiceAnswers.selectedOption === key ? 'selected' : ''
+                          } ${
+                            practiceShowAnswer && key === currentQuestion.correctAnswer ? 'correct' : ''
+                          } ${
+                            practiceShowAnswer && practiceAnswers.selectedOption === key && key !== currentQuestion.correctAnswer ? 'incorrect' : ''
+                          }`}
+                          style={{
+                            padding: "12px 16px",
+                            border: "2px solid var(--border-color)",
+                            borderRadius: "8px",
+                            backgroundColor: "var(--card-background)",
+                            color: "var(--card-text)",
+                            cursor: practiceShowAnswer ? "default" : "pointer",
+                            textAlign: "left",
+                            width: "100%",
+                            fontSize: "16px",
+                            fontWeight: practiceAnswers.selectedOption === key ? "600" : "400"
+                          }}
+                        >
+                          <strong>{key}.</strong> {value}
+                        </button>
+                      ))}
+                    </div>
+                    {!practiceShowAnswer && practiceAnswers.selectedOption && (
+                      <button
+                        onClick={handlePracticeAnswerSubmit}
+                        className="btn btn-primary"
+                        style={{ marginTop: "16px", width: "100%" }}
+                      >
+                        Submit Answer
+                      </button>
+                    )}
+                  </div>
+                )}
 
-                {/* Try again message */}
-                <div className="card" style={{ 
-                  backgroundColor: "#f0f9ff", 
-                  border: "2px solid #3b82f6",
-                  textAlign: "center",
-                  padding: "20px"
-                }}>
-                  <h4 style={{ 
-                    color: "#1e40af", 
-                    margin: "0 0 12px 0"
-                  }}>
-                    🎯 Try Again!
-                  </h4>
-                  <p style={{ 
-                    color: "#1e40af", 
-                    margin: "0 0 16px 0"
-                  }}>
-                    Practice this question again. If you get it right, it will be removed from your incorrect answers list.
-                  </p>
-                  
-                  <Link 
-                    href={`/${currentQuestion.part}?questionId=${currentQuestion.id}`}
-                    className="btn btn-primary"
-                  >
-                    📖 Practice in {currentQuestion.part.toUpperCase()}
-                  </Link>
-                </div>
+                {/* Part 2 - Speaker Matching */}
+                {currentQuestion.part === 'part2' && fullQuestionData && 'options' in fullQuestionData && typeof fullQuestionData.options === 'object' && !Array.isArray(fullQuestionData.options) && (
+                  <div className="practice-question" style={{ marginBottom: "20px" }}>
+                    <h4 style={{ color: "var(--foreground)", marginBottom: "16px" }}>
+                      {'question' in fullQuestionData && fullQuestionData.question}
+                    </h4>
+                    <div style={{ display: "grid", gap: "20px" }}>
+                      {Object.keys(currentQuestion.correctAnswer).map((speakerNum) => (
+                        <div key={speakerNum} className="speaker-card" style={{ 
+                          padding: "16px",
+                          border: "2px solid var(--border-color)",
+                          borderRadius: "8px",
+                          backgroundColor: "var(--card-background)"
+                        }}>
+                          <h5 style={{ color: "var(--foreground)", margin: "0 0 12px 0" }}>
+                            Speaker {speakerNum}
+                          </h5>
+                          <div style={{ display: "grid", gap: "8px" }}>
+                            {Object.entries(fullQuestionData.options).map(([key, value]) => (
+                              <button
+                                key={key}
+                                onClick={() => setPracticeAnswers(prev => ({ ...prev, [speakerNum]: key }))}
+                                disabled={practiceShowAnswer}
+                                className={`option-button ${
+                                  practiceAnswers[speakerNum] === key ? 'selected' : ''
+                                } ${
+                                  practiceShowAnswer && key === currentQuestion.correctAnswer[speakerNum] ? 'correct' : ''
+                                } ${
+                                  practiceShowAnswer && practiceAnswers[speakerNum] === key && key !== currentQuestion.correctAnswer[speakerNum] ? 'incorrect' : ''
+                                }`}
+                                style={{
+                                  padding: "8px 12px",
+                                  border: "1px solid var(--border-color)",
+                                  borderRadius: "6px",
+                                  backgroundColor: practiceAnswers[speakerNum] === key ? "#3b82f6" : "var(--card-background)",
+                                  color: practiceAnswers[speakerNum] === key ? "white" : "var(--card-text)",
+                                  cursor: practiceShowAnswer ? "default" : "pointer",
+                                  textAlign: "left",
+                                  width: "100%",
+                                  fontSize: "14px"
+                                }}
+                              >
+                                <strong>{key}.</strong> {value}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {!practiceShowAnswer && Object.keys(currentQuestion.correctAnswer).every(speaker => practiceAnswers[speaker]) && (
+                      <button
+                        onClick={handlePracticeAnswerSubmit}
+                        className="btn btn-primary"
+                        style={{ marginTop: "16px", width: "100%" }}
+                      >
+                        Submit Answer
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Part 3 - True/False/Both */}
+                {currentQuestion.part === 'part3' && fullQuestionData && 'statements' in fullQuestionData && 'options' in fullQuestionData && Array.isArray(fullQuestionData.options) && (
+                  <div className="practice-question" style={{ marginBottom: "20px" }}>
+                    <h4 style={{ color: "var(--foreground)", marginBottom: "16px" }}>
+                      {'question' in fullQuestionData && fullQuestionData.question}
+                    </h4>
+                    <div style={{ display: "grid", gap: "16px" }}>
+                      {fullQuestionData.statements?.map((statement: string, index: number) => (
+                        <div key={index} className="statement-card" style={{ 
+                          padding: "16px",
+                          border: "2px solid var(--border-color)",
+                          borderRadius: "8px",
+                          backgroundColor: "var(--card-background)"
+                        }}>
+                          <p style={{ color: "var(--card-text)", margin: "0 0 12px 0", fontSize: "16px" }}>
+                            <strong>{index + 1}.</strong> {statement}
+                          </p>
+                          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                            {fullQuestionData.options.map((option: string) => (
+                              <button
+                                key={option}
+                                onClick={() => setPracticeAnswers(prev => ({ ...prev, [index]: option }))}
+                                disabled={practiceShowAnswer}
+                                className={`option-button ${
+                                  practiceAnswers[index] === option ? 'selected' : ''
+                                } ${
+                                  practiceShowAnswer && option === currentQuestion.correctAnswer[index]?.answer ? 'correct' : ''
+                                } ${
+                                  practiceShowAnswer && practiceAnswers[index] === option && option !== currentQuestion.correctAnswer[index]?.answer ? 'incorrect' : ''
+                                }`}
+                                style={{
+                                  padding: "8px 16px",
+                                  border: "1px solid var(--border-color)",
+                                  borderRadius: "6px",
+                                  backgroundColor: practiceAnswers[index] === option ? "#3b82f6" : "var(--card-background)",
+                                  color: practiceAnswers[index] === option ? "white" : "var(--card-text)",
+                                  cursor: practiceShowAnswer ? "default" : "pointer",
+                                  fontSize: "14px",
+                                  fontWeight: "500"
+                                }}
+                              >
+                                {option}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {!practiceShowAnswer && fullQuestionData.statements?.every((_: any, index: number) => practiceAnswers[index]) && (
+                      <button
+                        onClick={handlePracticeAnswerSubmit}
+                        className="btn btn-primary"
+                        style={{ marginTop: "16px", width: "100%" }}
+                      >
+                        Submit Answer
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Part 4 - Multiple Choice */}
+                {currentQuestion.part === 'part4' && fullQuestionData && 'options' in fullQuestionData && Array.isArray(fullQuestionData.options) && (
+                  <div className="practice-question" style={{ marginBottom: "20px" }}>
+                    <h4 style={{ color: "var(--foreground)", marginBottom: "16px" }}>
+                      {'question' in fullQuestionData && fullQuestionData.question}
+                    </h4>
+                    <div style={{ display: "grid", gap: "12px" }}>
+                      {fullQuestionData.options.map((option: any) => (
+                        <button
+                          key={option.key}
+                          onClick={() => setPracticeAnswers({ selectedOption: option.key })}
+                          disabled={practiceShowAnswer}
+                          className={`option-button ${
+                            practiceAnswers.selectedOption === option.key ? 'selected' : ''
+                          } ${
+                            practiceShowAnswer && option.key === currentQuestion.correctAnswer ? 'correct' : ''
+                          } ${
+                            practiceShowAnswer && practiceAnswers.selectedOption === option.key && option.key !== currentQuestion.correctAnswer ? 'incorrect' : ''
+                          }`}
+                          style={{
+                            padding: "12px 16px",
+                            border: "2px solid var(--border-color)",
+                            borderRadius: "8px",
+                            backgroundColor: "var(--card-background)",
+                            color: "var(--card-text)",
+                            cursor: practiceShowAnswer ? "default" : "pointer",
+                            textAlign: "left",
+                            width: "100%",
+                            fontSize: "16px",
+                            fontWeight: practiceAnswers.selectedOption === option.key ? "600" : "400"
+                          }}
+                        >
+                          <strong>{option.key}.</strong> {option.text}
+                        </button>
+                      ))}
+                    </div>
+                    {!practiceShowAnswer && practiceAnswers.selectedOption && (
+                      <button
+                        onClick={handlePracticeAnswerSubmit}
+                        className="btn btn-primary"
+                        style={{ marginTop: "16px", width: "100%" }}
+                      >
+                        Submit Answer
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {showAnswer && (
+              {practiceShowAnswer && (
                 <div className="card" style={{ 
-                  backgroundColor: selectedAnswer === currentQuestion.correctAnswer || 
-                    (typeof selectedAnswer === 'object' && JSON.stringify(selectedAnswer) === JSON.stringify(currentQuestion.correctAnswer))
-                    ? "#f0fdf4" : "#fef2f2",
+                  backgroundColor: "var(--card-background)",
                   border: `2px solid ${
-                    selectedAnswer === currentQuestion.correctAnswer || 
-                    (typeof selectedAnswer === 'object' && JSON.stringify(selectedAnswer) === JSON.stringify(currentQuestion.correctAnswer))
-                    ? "#10b981" : "#ef4444"
+                    (() => {
+                      let isCorrect = false;
+                      if (currentQuestion.part === 'part1' || currentQuestion.part === 'part4') {
+                        isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+                      } else if (currentQuestion.part === 'part2') {
+                        isCorrect = Object.keys(currentQuestion.correctAnswer).every(
+                          speakerNum => practiceAnswers[speakerNum] === currentQuestion.correctAnswer[speakerNum]
+                        );
+                      } else if (currentQuestion.part === 'part3') {
+                        isCorrect = currentQuestion.correctAnswer.every(
+                          (correctAns: any) => practiceAnswers[correctAns.number - 1] === correctAns.answer
+                        );
+                      }
+                      return isCorrect ? "#10b981" : "#ef4444";
+                    })()
                   }`
                 }}>
                   <h4 style={{ 
-                    color: selectedAnswer === currentQuestion.correctAnswer || 
-                      (typeof selectedAnswer === 'object' && JSON.stringify(selectedAnswer) === JSON.stringify(currentQuestion.correctAnswer))
-                      ? "#059669" : "#dc2626",
+                    color: (() => {
+                      let isCorrect = false;
+                      if (currentQuestion.part === 'part1' || currentQuestion.part === 'part4') {
+                        isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+                      } else if (currentQuestion.part === 'part2') {
+                        isCorrect = Object.keys(currentQuestion.correctAnswer).every(
+                          speakerNum => practiceAnswers[speakerNum] === currentQuestion.correctAnswer[speakerNum]
+                        );
+                      } else if (currentQuestion.part === 'part3') {
+                        isCorrect = currentQuestion.correctAnswer.every(
+                          (correctAns: any) => practiceAnswers[correctAns.number - 1] === correctAns.answer
+                        );
+                      }
+                      return isCorrect ? "#059669" : "#dc2626";
+                    })(),
                     margin: "0 0 12px 0"
                   }}>
-                    {selectedAnswer === currentQuestion.correctAnswer || 
-                      (typeof selectedAnswer === 'object' && JSON.stringify(selectedAnswer) === JSON.stringify(currentQuestion.correctAnswer))
-                      ? "🎉 Correct! This question has been removed from your incorrect answers." 
-                      : "❌ Still incorrect. Keep practicing!"
-                    }
+                    {(() => {
+                      let isCorrect = false;
+                      if (currentQuestion.part === 'part1' || currentQuestion.part === 'part4') {
+                        isCorrect = practiceAnswers.selectedOption === currentQuestion.correctAnswer;
+                      } else if (currentQuestion.part === 'part2') {
+                        isCorrect = Object.keys(currentQuestion.correctAnswer).every(
+                          speakerNum => practiceAnswers[speakerNum] === currentQuestion.correctAnswer[speakerNum]
+                        );
+                      } else if (currentQuestion.part === 'part3') {
+                        isCorrect = currentQuestion.correctAnswer.every(
+                          (correctAns: any) => practiceAnswers[correctAns.number - 1] === correctAns.answer
+                        );
+                      }
+                      return isCorrect
+                        ? "🎉 Correct! This question has been removed from your incorrect answers." 
+                        : "❌ Still incorrect. Keep practicing!";
+                    })()}
                   </h4>
                 </div>
               )}

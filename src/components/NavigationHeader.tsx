@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getIncorrectAnswersCount } from "../utils/incorrectAnswers";
+import ThemeToggle from "./ThemeToggle";
 
 export default function NavigationHeader() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -131,6 +132,9 @@ export default function NavigationHeader() {
                 )}
               </Link>
             ))}
+            
+            {/* Theme Toggle for Desktop */}
+            <ThemeToggle />
           </nav>
 
           {/* Mobile Menu Button */}
@@ -206,7 +210,7 @@ export default function NavigationHeader() {
               cursor: "pointer",
               padding: "4px",
               borderRadius: "4px",
-              color: "#6b7280"
+              color: "var(--card-text)"
             }}
           >
             ✕
@@ -259,6 +263,11 @@ export default function NavigationHeader() {
               )}
             </Link>
           ))}
+          
+          {/* Theme Toggle for Mobile */}
+          <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "1px solid var(--border-color)" }}>
+            <ThemeToggle isMobile={true} />
+          </div>
         </nav>
       </div>
 

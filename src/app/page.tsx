@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getIncorrectAnswersCount } from "../utils/incorrectAnswers";
+import Head from "next/head";
 
 export default function Home() {
   const parts = [
@@ -37,16 +38,63 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #e0e7ff, #fdf4ff)",
-      }}
-    >
-      <div style={{ display: "grid", gap: "20px", padding: "20px" }}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Course",
+            "name": "APTIS Listening Practice Course",
+            "description": "Comprehensive English listening practice for APTIS test preparation with 4 distinct parts",
+            "provider": {
+              "@type": "Organization",
+              "name": "Listening APTIS",
+              "url": "https://listening-aptis.vercel.app"
+            },
+            "educationalLevel": "Intermediate to Advanced",
+            "learningResourceType": "Practice Exercises",
+            "teaches": "English Listening Comprehension",
+            "coursePrerequisites": "Basic English knowledge",
+            "hasCourseInstance": [
+              {
+                "@type": "CourseInstance",
+                "name": "Part 1 - Basic Listening",
+                "description": "Multiple choice listening exercises",
+                "url": "https://listening-aptis.vercel.app/part1"
+              },
+              {
+                "@type": "CourseInstance",
+                "name": "Part 2 - Speaker Matching",
+                "description": "Speaker identification and matching exercises",
+                "url": "https://listening-aptis.vercel.app/part2"
+              },
+              {
+                "@type": "CourseInstance",
+                "name": "Part 3 - Statement Analysis",
+                "description": "True/False statement evaluation exercises",
+                "url": "https://listening-aptis.vercel.app/part3"
+              },
+              {
+                "@type": "CourseInstance",
+                "name": "Part 4 - Extended Listening",
+                "description": "Complex listening tasks with multiple questions",
+                "url": "https://listening-aptis.vercel.app/part4"
+              }
+            ]
+          })
+        }}
+      />
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "linear-gradient(135deg, #e0e7ff, #fdf4ff)",
+        }}
+      >
+        <div style={{ display: "grid", gap: "20px", padding: "20px" }}>
         {parts.map((part) => (
           <Link
             key={part.href}
@@ -115,5 +163,6 @@ export default function Home() {
         )}
       </div>
     </div>
+    </>
   );
 }

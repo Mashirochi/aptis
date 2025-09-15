@@ -276,7 +276,7 @@ function Part2Content() {
           </div>
         )}
 
-        <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
+        <div className="card" style={{ marginBottom: 20, backgroundColor: "var(--card-background)", color: "var(--card-text)" }}>
           <p style={{ 
             fontSize: "16px", 
             lineHeight: "1.5", 
@@ -498,7 +498,7 @@ function Part2Content() {
                 cursor: "pointer", 
                 fontSize: "16px", 
                 fontWeight: "600",
-                color: "#4f46e5",
+                color: "var(--foreground)",
                 marginBottom: "12px"
               }}>
                 📝 Transcripts (bản ghi)
@@ -508,13 +508,14 @@ function Part2Content() {
                   <div key={speaker} style={{ 
                     marginBottom: 16, 
                     padding: 16, 
-                    backgroundColor: "#f8fafc", 
+                    backgroundColor: "var(--card-background)", 
                     borderRadius: 8,
-                    border: "1px solid #e2e8f0"
+                    border: "1px solid var(--border-color)",
+                    color: "var(--card-text)"
                   }}>
                     <h6 style={{ 
                       margin: "0 0 8px 0", 
-                      color: "#4f46e5", 
+                      color: "var(--foreground)", 
                       fontSize: "14px", 
                       fontWeight: "600" 
                     }}>
@@ -523,7 +524,7 @@ function Part2Content() {
                     <p style={{ 
                       margin: 0, 
                       lineHeight: "1.6",
-                      color: "#374151"
+                      color: "var(--card-text)"
                     }}>
                       {text}
                     </p>

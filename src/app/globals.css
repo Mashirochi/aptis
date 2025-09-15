@@ -198,11 +198,32 @@ audio {
   height: 40px;
   border-radius: 8px;
   outline: none;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
 }
 
 audio::-webkit-media-controls-panel {
-  background-color: #f8fafc;
+  background-color: var(--card-background);
   border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  audio {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  
+  audio::-webkit-media-controls-panel {
+    background-color: var(--card-background);
+  }
+  
+  audio::-webkit-media-controls-play-button,
+  audio::-webkit-media-controls-timeline,
+  audio::-webkit-media-controls-time-remaining-display,
+  audio::-webkit-media-controls-current-time-display,
+  audio::-webkit-media-controls-mute-button,
+  audio::-webkit-media-controls-volume-slider {
+    filter: invert(1) hue-rotate(180deg);
+  }
 }
 
 /* Question Number Styles */
@@ -420,4 +441,86 @@ audio::-webkit-media-controls-panel {
   background-color: var(--card-background);
   color: var(--card-text);
   border: 1px solid var(--border-color);
+}
+
+/* Transcript and details styling */
+details {
+  background-color: var(--card-background);
+  color: var(--card-text);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+details summary {
+  color: var(--foreground) !important;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+details[open] summary {
+  margin-bottom: 16px;
+}
+
+/* Transcript content styling */
+details div {
+  background-color: var(--card-background) !important;
+  color: var(--card-text) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px;
+  padding: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Override any hardcoded transcript colors */
+[style*="backgroundColor: #f8fafc"] {
+  background-color: var(--card-background) !important;
+}
+
+[style*="border: 1px solid #e2e8f0"] {
+  border-color: var(--border-color) !important;
+}
+
+/* Ensure all text in transcript areas is visible */
+@media (prefers-color-scheme: dark) {
+  details,
+  details summary,
+  details div,
+  details p {
+    color: var(--card-text) !important;
+  }
+  
+  details summary {
+    color: var(--foreground) !important;
+  }
+}
+
+/* Additional dark mode overrides for better visibility */
+@media (prefers-color-scheme: dark) {
+  /* Force dark mode styles for any remaining hardcoded colors */
+  [style*="color: #4f46e5"] {
+    color: var(--foreground) !important;
+  }
+  
+  [style*="backgroundColor: #fef7ff"] {
+    background-color: var(--card-background) !important;
+  }
+  
+  /* Audio player dark mode improvements */
+  audio {
+    filter: invert(0.9) hue-rotate(180deg) contrast(1.2);
+  }
+  
+  /* Ensure all text elements are visible */
+  h1, h2, h3, h4, h5, h6,
+  p, span, div, summary {
+    color: var(--card-text);
+  }
+  
+  h1, h2, h3, summary {
+    color: var(--foreground) !important;
+  }
 }

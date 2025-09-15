@@ -348,7 +348,7 @@ function Part4Content() {
                   </div>
                 )}
 
-                <div className="card" style={{ marginBottom: 16, backgroundColor: "#fef7ff", padding: "16px" }}>
+                <div className="card" style={{ marginBottom: 16, backgroundColor: "var(--card-background)", padding: "16px", color: "var(--card-text)" }}>
                   <p style={{ 
                     fontSize: "16px", 
                     lineHeight: "1.5", 
@@ -446,7 +446,7 @@ function Part4Content() {
                 cursor: "pointer", 
                 fontSize: "16px", 
                 fontWeight: "600",
-                color: "#4f46e5",
+                color: "var(--foreground)",
                 marginBottom: "12px"
               }}>
                 📝 Transcript (bản ghi)
@@ -454,11 +454,12 @@ function Part4Content() {
               <div style={{ 
                 marginTop: 12, 
                 padding: 16, 
-                backgroundColor: "#f8fafc", 
+                backgroundColor: "var(--card-background)", 
                 borderRadius: 8,
                 lineHeight: "1.6",
-                border: "1px solid #e2e8f0",
-                whiteSpace: "pre-line"
+                border: "1px solid var(--border-color)",
+                whiteSpace: "pre-line",
+                color: "var(--card-text)"
               }}>
                 {currentAudio.transcript}
               </div>

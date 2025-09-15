@@ -241,7 +241,7 @@ function Part1Content() {
           </div>
         )}
 
-        <div className="card" style={{ marginBottom: 20, backgroundColor: "#fef7ff" }}>
+        <div className="card" style={{ marginBottom: 20, backgroundColor: "var(--card-background)", color: "var(--card-text)" }}>
           <p style={{ 
             fontSize: "16px", 
             lineHeight: "1.5", 
@@ -350,7 +350,7 @@ function Part1Content() {
                 cursor: "pointer", 
                 fontSize: "16px", 
                 fontWeight: "600",
-                color: "#4f46e5",
+                color: "var(--foreground)",
                 marginBottom: "12px"
               }}>
                 📝 Transcript (bản ghi)
@@ -358,10 +358,11 @@ function Part1Content() {
               <div style={{ 
                 marginTop: 12, 
                 padding: 16, 
-                backgroundColor: "#f8fafc", 
+                backgroundColor: "var(--card-background)", 
                 borderRadius: 8,
                 lineHeight: "1.6",
-                border: "1px solid #e2e8f0"
+                border: "1px solid var(--border-color)",
+                color: "var(--card-text)"
               }}>
                 {currentQuestion.transcript}
               </div>

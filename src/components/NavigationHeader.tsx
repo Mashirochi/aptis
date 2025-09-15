@@ -145,7 +145,7 @@ export default function NavigationHeader() {
               display: "none",
               padding: "8px",
               backgroundColor: "var(--card-background)",
-              border: "1px solid var(--border-color)",
+              border: "none",
               fontSize: "24px",
               cursor: "pointer",
               borderRadius: "6px",

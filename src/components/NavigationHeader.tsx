@@ -144,12 +144,13 @@ export default function NavigationHeader() {
             style={{
               display: "none",
               padding: "8px",
-              backgroundColor: "transparent",
-              border: "none",
+              backgroundColor: "var(--card-background)",
+              border: "1px solid var(--border-color)",
               fontSize: "24px",
               cursor: "pointer",
               borderRadius: "6px",
-              transition: "background-color 0.2s ease"
+              transition: "all 0.2s ease",
+              color: "var(--foreground)"
             }}
           >
             ☰

@@ -9,6 +9,46 @@
   "orientation": "portrait-primary",
   "categories": ["education", "productivity"],
   "lang": "en",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Part 1 Practice",
+      "short_name": "Part 1",
+      "description": "Start Part 1 listening practice",
+      "url": "/part1",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Part 2 Practice",
+      "short_name": "Part 2", 
+      "description": "Start Part 2 listening practice",
+      "url": "/part2",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Part 3 Practice",
+      "short_name": "Part 3",
+      "description": "Start Part 3 listening practice", 
+      "url": "/part3",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Part 4 Practice",
+      "short_name": "Part 4",
+      "description": "Start Part 4 listening practice",
+      "url": "/part4",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Review Incorrect",
+      "short_name": "Review",
+      "description": "Review incorrect answers",
+      "url": "/incorrect",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",

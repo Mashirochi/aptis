@@ -859,6 +859,27 @@ details div {
   box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
 }
 
+.dropdown-link:hover {
+  background-color: #f3f4f6 !important;
+  color: #4f46e5 !important;
+}
+
+.dark .dropdown-link:hover {
+  background-color: #374151 !important;
+  color: #60a5fa !important;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.dark .dropdown-menu {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
 .mobile-nav-link:hover {
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -1037,6 +1058,291 @@ details div {
   border-color: #ef4444 !important;
   background-color: #ef4444 !important;
   color: white !important;
+}
+
+/* Reading Part 2 Layout Styles */
+/* Desktop Sidebar - Always visible on desktop */
+@media (min-width: 769px) {
+  .desktop-sidebar {
+    display: block !important;
+    background: linear-gradient(135deg, var(--card-background) 0%, rgba(79, 70, 229, 0.05) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .main-content {
+    margin-left: 320px !important;
+    padding: 40px 30px !important;
+  }
+  
+  .mobile-drawer,
+  .mobile-only {
+    display: none !important;
+  }
+  
+  /* Desktop Header Display */
+  .desktop-header-info,
+  .desktop-description,
+  .desktop-title {
+    display: block !important;
+  }
+  
+  .mobile-instruction {
+    display: none !important;
+  }
+  
+  /* Desktop Action Buttons */
+  .desktop-action-buttons {
+    display: flex !important;
+  }
+  
+  .mobile-action-buttons {
+    display: none !important;
+  }
+  
+  /* Hide floating button on desktop */
+  .mobile-questions-btn {
+    display: none !important;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+  .desktop-sidebar {
+    display: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    minHeight: 100vh !important;
+  }
+  
+  .mobile-drawer {
+    display: block !important;
+  }
+  
+  /* Mobile Header Adjustments */
+  .desktop-header-info,
+  .desktop-description,
+  .desktop-title {
+    display: none !important;
+  }
+  
+  .mobile-instruction {
+    display: block !important;
+  }
+  
+  /* Mobile Action Buttons */
+  .mobile-action-buttons {
+    display: flex !important;
+  }
+  
+  .desktop-action-buttons {
+    display: none !important;
+  }
+  
+  /* Hide arrow controls on mobile */
+  .arrow-control {
+    display: none !important;
+  }
+  
+  /* Sentence cards for mobile - simple style */
+  .sentence-card {
+    padding: 16px !important;
+    marginBottom: 8px !important;
+    minHeight: 60px !important;
+    marginLeft: 8px !important;
+    marginRight: 8px !important;
+    borderRadius: 8px !important;
+    border: 2px solid #e5e7eb !important;
+    backgroundColor: white !important;
+    boxShadow: none !important;
+  }
+  
+  .sentence-card div[style*="paddingRight"] {
+    paddingRight: 50px !important;
+  }
+  
+  /* Mobile content styling */
+  .reading-main-content {
+    padding: 20px 0 !important;
+    margin: 0 !important;
+    borderRadius: 0 !important;
+    boxShadow: none !important;
+    border: none !important;
+    background: #f9fafb !important;
+    width: 100% !important;
+    minHeight: 100vh !important;
+  }
+  
+  /* Hide floating button on mobile when using bottom buttons */
+  .mobile-questions-btn {
+    display: none !important;
+  }
+  
+  /* Remove desktop navigation buttons */
+  .nav-buttons {
+    display: none !important;
+  }
+  
+  /* Full screen sortable container */
+  div[ref="sortableRef"] {
+    padding: 0 !important;
+    marginBottom: 20px !important;
+  }
+  
+  /* Mobile main container */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    backgroundColor: #f9fafb !important;
+  }
+}
+
+/* Reading Part 2 Sidebar Styling */
+.reading-sidebar {
+  background: linear-gradient(135deg, var(--card-background) 0%, rgba(79, 70, 229, 0.05) 100%);
+  border-right: 2px solid rgba(79, 70, 229, 0.1);
+}
+
+.reading-sidebar h3 {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Question Grid Buttons */
+.question-grid-btn {
+  background: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-grid-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.2);
+  border-color: #4f46e5;
+}
+
+.question-grid-btn.active {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-color: #4f46e5;
+  color: white;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+}
+
+.question-grid-btn.correct {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: #10b981;
+  color: white;
+}
+
+.question-grid-btn.incorrect {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: white;
+}
+
+/* Dark mode adjustments for sidebar */
+.dark .reading-sidebar {
+  background: linear-gradient(135deg, var(--card-background) 0%, rgba(79, 70, 229, 0.1) 100%);
+  border-right-color: rgba(79, 70, 229, 0.2);
+}
+
+.dark .question-grid-btn {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Sentence Cards Enhancement */
+.sentence-card {
+  background: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.sentence-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sentence-card:hover::before {
+  opacity: 1;
+}
+
+.sentence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(79, 70, 229, 0.3);
+}
+
+/* Arrow Controls Enhancement */
+.arrow-control {
+  background: linear-gradient(135deg, var(--card-background), rgba(79, 70, 229, 0.05));
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.arrow-control:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-color: #4f46e5;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+.arrow-control:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Main content area improvements */
+.reading-main-content {
+  background: var(--background);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Button improvements */
+.btn-gradient {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
 .speaker-card {

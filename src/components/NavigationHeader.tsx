@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,6 +10,8 @@ import PWAInstallButton from "./PWAInstallButton";
 export default function NavigationHeader() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [isListeningDropdownOpen, setIsListeningDropdownOpen] = useState(false);
+  const [isReadingDropdownOpen, setIsReadingDropdownOpen] = useState(false);
   const pathname = usePathname();
 
   // Update incorrect count on mount and when localStorage changes
@@ -39,10 +42,43 @@ export default function NavigationHeader() {
 
   const navigationItems = [
     { href: "/", label: "Home", icon: "🏠" },
+    {
+      label: "Listening",
+      icon: "🎧",
+      isDropdown: true,
+      items: [
+        { href: "/part1", label: "Part 1", icon: "🎧" },
+        { href: "/part2", label: "Part 2", icon: "🎙️" },
+        { href: "/part3", label: "Part 3", icon: "📝" },
+        { href: "/part4", label: "Part 4", icon: "🎵" },
+      ]
+    },
+    {
+      label: "Reading",
+      icon: "📖",
+      isDropdown: true,
+      items: [
+        { href: "/reading/part1", label: "Reading 1", icon: "📖" },
+        { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
+      ]
+    },
+    {
+      href: "/incorrect",
+      label: "Incorrect",
+      icon: "❌",
+      badge: incorrectCount,
+    },
+  ];
+  
+  // All navigation items flattened for mobile drawer
+  const flatNavigationItems = [
+    { href: "/", label: "Home", icon: "🏠" },
     { href: "/part1", label: "Part 1", icon: "🎧" },
     { href: "/part2", label: "Part 2", icon: "🎙️" },
     { href: "/part3", label: "Part 3", icon: "📝" },
     { href: "/part4", label: "Part 4", icon: "🎵" },
+    { href: "/reading/part1", label: "Reading 1", icon: "📖" },
+    { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
     {
       href: "/incorrect",
       label: "Incorrect",
@@ -107,56 +143,130 @@ export default function NavigationHeader() {
               alignItems: "center",
             }}
           >
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  textDecoration: "none",
-                  fontSize: "16px",
-                  fontWeight: "500",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  backgroundColor:
-                    pathname === item.href ? "#4f46e5" : "transparent",
-                  color: pathname === item.href ? "#fff" : "var(--card-text)",
-                  border:
-                    pathname === item.href
-                      ? "none"
-                      : "1px solid var(--border-color)",
-                  position: "relative",
-                }}
-                className="nav-link"
-              >
-                <span>{item.icon}</span>
-                {item.label}
-                {item.badge !== undefined && (
-                  <span
+            {navigationItems.map((item, index) => {
+              if (item.isDropdown) {
+                const isOpen = item.label === "Listening" ? isListeningDropdownOpen : isReadingDropdownOpen;
+                const setIsOpen = item.label === "Listening" ? setIsListeningDropdownOpen : setIsReadingDropdownOpen;
+                const hasActiveChild = item.items?.some(subItem => pathname === subItem.href);
+                
+                return (
+                  <div
+                    key={item.label}
+                    style={{ position: "relative" }}
+                    onMouseEnter={() => setIsOpen(true)}
+                    onMouseLeave={() => setIsOpen(false)}
+                  >
+                    <button
+                      style={{
+                        padding: "8px 16px",
+                        borderRadius: "8px",
+                        background: hasActiveChild ? "#4f46e5" : "transparent",
+                        border: hasActiveChild ? "none" : "1px solid var(--border-color)",
+                        color: hasActiveChild ? "#fff" : "var(--card-text)",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <span>{item.icon}</span>
+                      {item.label}
+                      <span style={{ fontSize: "12px", marginLeft: "4px" }}>▼</span>
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    {isOpen && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "100%",
+                          left: 0,
+                          backgroundColor: "var(--card-background)",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                          minWidth: "180px",
+                          zIndex: 1000,
+                          marginTop: "4px",
+                        }}
+                      >
+                        {item.items?.map((subItem) => (
+                          <Link
+                            key={subItem.href}
+                            href={subItem.href}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              padding: "12px 16px",
+                              textDecoration: "none",
+                              color: pathname === subItem.href ? "#4f46e5" : "var(--card-text)",
+                              backgroundColor: pathname === subItem.href ? "#f3f4f6" : "transparent",
+                              fontWeight: pathname === subItem.href ? "600" : "500",
+                              transition: "all 0.2s ease",
+                            }}
+                            className="dropdown-link"
+                          >
+                            <span>{subItem.icon}</span>
+                            {subItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              } else {
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href!}
                     style={{
-                      backgroundColor: item.badge > 0 ? "#ef4444" : "#10b981",
-                      color: "white",
-                      borderRadius: "50%",
-                      width: "20px",
-                      height: "20px",
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      padding: "8px 16px",
+                      borderRadius: "8px",
+                      textDecoration: "none",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      transition: "all 0.2s ease",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "-4px",
-                      right: "-4px",
+                      gap: "6px",
+                      backgroundColor: pathname === item.href ? "#4f46e5" : "transparent",
+                      color: pathname === item.href ? "#fff" : "var(--card-text)",
+                      border: pathname === item.href ? "none" : "1px solid var(--border-color)",
+                      position: "relative",
                     }}
+                    className="nav-link"
                   >
-                    {item.badge > 99 ? "99+" : item.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
+                    <span>{item.icon}</span>
+                    {item.label}
+                    {item.badge !== undefined && (
+                      <span
+                        style={{
+                          backgroundColor: item.badge > 0 ? "#ef4444" : "#10b981",
+                          color: "white",
+                          borderRadius: "50%",
+                          width: "20px",
+                          height: "20px",
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          position: "absolute",
+                          top: "-4px",
+                          right: "-4px",
+                        }}
+                      >
+                        {item.badge > 99 ? "99+" : item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              }
+            })}
 
             {/* PWA Install Button */}
             <PWAInstallButton />
@@ -257,10 +367,10 @@ export default function NavigationHeader() {
 
         {/* Navigation Items */}
         <nav style={{ padding: "20px" }}>
-          {navigationItems.map((item) => (
+          {flatNavigationItems.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={item.href!}
               onClick={closeDrawer}
               style={{
                 display: "flex",

@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { PART_3_DATA } from "../../utils/data";
@@ -106,7 +107,8 @@ function Part3Content() {
   }
 
   return (
-    <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <>
+      <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Sidebar desktop */}
       <div
         className="sidebar sidebar-bg"
@@ -438,7 +440,8 @@ function Part3Content() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }
 

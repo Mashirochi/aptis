@@ -6,13 +6,20 @@ import { usePathname } from "next/navigation";
 import { getIncorrectAnswersCount } from "../utils/incorrectAnswers";
 import ThemeToggle from "./ThemeToggle";
 import PWAInstallButton from "./PWAInstallButton";
+import DataManager from "./DataManager";
 
 export default function NavigationHeader() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [isListeningDropdownOpen, setIsListeningDropdownOpen] = useState(false);
   const [isReadingDropdownOpen, setIsReadingDropdownOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
+
+  // Prevent hydration mismatch by ensuring component is mounted
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Update incorrect count on mount and when localStorage changes
   useEffect(() => {
@@ -95,6 +102,49 @@ export default function NavigationHeader() {
     setIsDrawerOpen(false);
   };
 
+  // Prevent hydration issues with dynamic content
+  if (!isMounted) {
+    return (
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 999,
+          backgroundColor: "var(--card-background)",
+          borderBottom: "2px solid var(--border-color)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "12px 20px",
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        >
+          <Link
+            href="/"
+            style={{
+              fontSize: "24px",
+              fontWeight: "bold",
+              color: "#4f46e5",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            🎧 Listening APTIS
+          </Link>
+          <div style={{ width: "200px" }} />
+        </div>
+      </header>
+    );
+  }
+
   return (
     <>
       {/* Header */}
@@ -153,8 +203,8 @@ export default function NavigationHeader() {
                   <div
                     key={item.label}
                     style={{ position: "relative" }}
-                    onMouseEnter={() => setIsOpen(true)}
-                    onMouseLeave={() => setIsOpen(false)}
+                    onMouseEnter={() => isMounted && setIsOpen(true)}
+                    onMouseLeave={() => isMounted && setIsOpen(false)}
                   >
                     <button
                       style={{
@@ -178,7 +228,7 @@ export default function NavigationHeader() {
                     </button>
                     
                     {/* Dropdown Menu */}
-                    {isOpen && (
+                    {isMounted && isOpen && (
                       <div
                         style={{
                           position: "absolute",
@@ -271,6 +321,9 @@ export default function NavigationHeader() {
             {/* PWA Install Button */}
             <PWAInstallButton />
 
+            {/* Data Manager */}
+            <DataManager />
+
             {/* Theme Toggle for Desktop */}
             <ThemeToggle />
           </nav>
@@ -297,7 +350,7 @@ export default function NavigationHeader() {
       </header>
 
       {/* Mobile Drawer Overlay */}
-      {isDrawerOpen && (
+      {isMounted && isDrawerOpen && (
         <div
           style={{
             position: "fixed",
@@ -319,7 +372,7 @@ export default function NavigationHeader() {
         style={{
           position: "fixed",
           top: 0,
-          right: isDrawerOpen ? 0 : "-300px",
+          right: isMounted && isDrawerOpen ? 0 : "-300px",
           width: "300px",
           height: "100%",
           backgroundColor: "var(--card-background)",
@@ -429,6 +482,17 @@ export default function NavigationHeader() {
             <PWAInstallButton />
           </div>
 
+          {/* Data Manager for Mobile */}
+          <div
+            style={{
+              marginTop: "20px",
+              paddingTop: "20px",
+              borderTop: "1px solid var(--border-color)",
+            }}
+          >
+            <DataManager />
+          </div>
+
           {/* Theme Toggle for Mobile */}
           <div
             style={{
@@ -441,8 +505,6 @@ export default function NavigationHeader() {
           </div>
         </nav>
       </div>
-
-      {/* CSS styles moved to globals.css to prevent hydration mismatch */}
     </>
   );
 }

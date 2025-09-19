@@ -237,7 +237,7 @@ function ReadingPart1Content() {
                 {/* Header */}
                 <div style={{ marginBottom: 30 }}>
                     <h1 style={{ 
-                        color: "#1f2937", 
+                        color: "var(--foreground)", 
                         marginBottom: 10,
                         fontSize: "28px",
                         fontWeight: "700",
@@ -247,7 +247,7 @@ function ReadingPart1Content() {
                     </h1>
                     <p style={{ 
                         textAlign: "center", 
-                        color: "#6b7280", 
+                        color: "var(--card-text)", 
                         fontSize: "16px",
                         margin: 0
                     }}>
@@ -279,7 +279,7 @@ function ReadingPart1Content() {
                     <div className="card" style={{ marginBottom: 20 }}>
                         <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>
                             🎯 Current Set: {ALL_QUESTION_SETS[currentSet].name} 
-                            <span style={{ fontSize: "14px", fontWeight: "normal", color: "#6b7280" }}>
+                            <span style={{ fontSize: "14px", fontWeight: "normal", color: "var(--card-text)" }}>
                                 ({ALL_QUESTION_SETS[currentSet].questions.length} questions)
                             </span>
                         </h3>
@@ -349,19 +349,19 @@ function ReadingPart1Content() {
                             <div style={{ fontSize: "24px", fontWeight: "bold", color: "#059669" }}>
                                 {Object.values(answeredQuestions).filter(Boolean).length}
                             </div>
-                            <div style={{ fontSize: "14px", color: "#6b7280" }}>Correct</div>
+                            <div style={{ fontSize: "14px", color: "var(--card-text)" }}>Correct</div>
                         </div>
                         <div style={{ textAlign: "center", padding: "12px", backgroundColor: "var(--card-background)", borderRadius: "8px" }}>
                             <div style={{ fontSize: "24px", fontWeight: "bold", color: "#dc2626" }}>
                                 {Object.values(answeredQuestions).filter(val => val === false).length}
                             </div>
-                            <div style={{ fontSize: "14px", color: "#6b7280" }}>Incorrect</div>
+                            <div style={{ fontSize: "14px", color: "var(--card-text)" }}>Incorrect</div>
                         </div>
                         <div style={{ textAlign: "center", padding: "12px", backgroundColor: "var(--card-background)", borderRadius: "8px" }}>
                             <div style={{ fontSize: "24px", fontWeight: "bold", color: "#3b82f6" }}>
                                 {currentQuestions.length - Object.keys(answeredQuestions).length}
                             </div>
-                            <div style={{ fontSize: "14px", color: "#6b7280" }}>Remaining</div>
+                            <div style={{ fontSize: "14px", color: "var(--card-text)" }}>Remaining</div>
                         </div>
                     </div>
                 </div>

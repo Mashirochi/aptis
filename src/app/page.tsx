@@ -8,8 +8,9 @@ export default function Home() {
     { href: "part1", label: "Part 1" },
     { href: "part2", label: "Part 2" },
     { href: "part3", label: "Part 3" },
-    { href: "part4", label: "Part 5" },
-    { href: "reading/part1", label: "Reading" },
+    { href: "part4", label: "Part 4" },
+    { href: "reading/part1", label: "Reading p1" },
+    { href: "reading/part2", label: "Reading p2" },
   ];
 
   const [hovered, setHovered] = useState<string | null>(null);

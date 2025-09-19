@@ -405,7 +405,7 @@ function Part4Content() {
                       fontWeight: "600", 
                       margin: 0
                     }}>
-                      {isCorrect ? <span style={{color: "black"}}>✅ Chính xác! 🎉</span> : `❌ Sai rồi! Đáp án đúng là ${question.answer}.`}
+                      {isCorrect ? "✅ Chính xác! 🎉" : `❌ Sai rồi! Đáp án đúng là ${question.answer}.`}
                     </p>
                   </div>
                 )}

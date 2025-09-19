@@ -67,6 +67,7 @@ export default function NavigationHeader() {
       items: [
         { href: "/reading/part1", label: "Reading 1", icon: "📖" },
         { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
+        { href: "/reading/part3", label: "Reading 3", icon: "🏷️" },
       ]
     },
     {
@@ -86,6 +87,7 @@ export default function NavigationHeader() {
     { href: "/part4", label: "Part 4", icon: "🎵" },
     { href: "/reading/part1", label: "Reading 1", icon: "📖" },
     { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
+    { href: "/reading/part3", label: "Reading 3", icon: "🏷️" },
     {
       href: "/incorrect",
       label: "Incorrect",

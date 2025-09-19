@@ -641,6 +641,23 @@ details div {
     background-color: var(--card-background) !important;
   }
   
+  /* Correct/Incorrect answer feedback colors in media query dark mode */
+  [style*="backgroundColor: #dcfce7"] {
+    background-color: #065f46 !important;
+  }
+
+  [style*="backgroundColor: #fef2f2"] {
+    background-color: #991b1b !important;
+  }
+
+  [style*="color: #059669"] {
+    color: #dcfce7 !important;
+  }
+
+  [style*="color: #dc2626"] {
+    color: #fee2e2 !important;
+  }
+  
   /* Audio player dark mode improvements */
   audio {
     background-color: #4b5563 !important;
@@ -753,6 +770,23 @@ details div {
 
 .dark [style*="color: #d1d5db"] {
   color: var(--card-text) !important;
+}
+
+/* Correct/Incorrect answer feedback colors in dark mode */
+.dark [style*="backgroundColor: #dcfce7"] {
+  background-color: #065f46 !important;
+}
+
+.dark [style*="backgroundColor: #fef2f2"] {
+  background-color: #991b1b !important;
+}
+
+.dark [style*="color: #059669"] {
+  color: #dcfce7 !important;
+}
+
+.dark [style*="color: #dc2626"] {
+  color: #fee2e2 !important;
 }
 
 /* Audio controls in dark mode */
@@ -1403,4 +1437,127 @@ details div {
 .dark .answer-comparison {
   background-color: #1f2937;
   border-color: #374151;
+}
+
+/* Sortable Drag and Drop Styles for Reading Part 2 */
+.sortable-ghost {
+  opacity: 0.5 !important;
+  background: #e0e7ff !important;
+  border: 2px dashed #3b82f6 !important;
+  transform: scale(0.99) !important;
+}
+
+.sortable-chosen {
+  background: #dbeafe !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+  z-index: 999 !important;
+}
+
+.sortable-drag {
+  background: var(--card-background) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+  transform: rotate(2deg) !important;
+  z-index: 1000 !important;
+  border: 2px solid #3b82f6 !important;
+}
+
+.sortable-fallback {
+  background: var(--card-background) !important;
+  border: 2px solid #3b82f6 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+  opacity: 1 !important;
+  transform: rotate(3deg) !important;
+  z-index: 9999 !important;
+  cursor: grabbing !important;
+  pointer-events: none !important;
+}
+
+/* Mobile sortable styles - no animations */
+.sortable-ghost-mobile {
+  opacity: 0.6 !important;
+  background: var(--border-color) !important;
+}
+
+.sortable-chosen-mobile {
+  background: #dbeafe !important;
+  border: 2px solid #3b82f6 !important;
+}
+
+.sortable-drag-mobile {
+  background: var(--card-background) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode sortable styles */
+.dark .sortable-chosen {
+  background: #1e3a8a !important;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4) !important;
+}
+
+.dark .sortable-drag {
+  background: var(--card-background) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Sentence card enhancements */
+.sentence-card {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  position: relative;
+  touch-action: manipulation;
+}
+
+.sentence-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.dark .sentence-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Reading Part 2 specific mobile styles */
+@media (max-width: 768px) {
+  .sentence-card {
+    padding: 12px !important;
+    margin: 6px 0 !important;
+  }
+  
+  .sentence-card div[style*="gap: 12"] {
+    gap: 8px !important;
+  }
+  
+  /* Slightly reduce rotation on mobile for better UX */
+  .sortable-drag {
+    transform: rotate(1deg) !important;
+  }
+}
+
+/* Drag handle styling */
+.drag-handle {
+  cursor: grab;
+  touch-action: manipulation;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Result indicators */
+.result-indicator {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

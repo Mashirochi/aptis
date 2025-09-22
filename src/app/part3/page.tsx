@@ -272,12 +272,11 @@ function Part3Content() {
           </div>
         )}
 
-        <div className="card" style={{ marginBottom: 20, backgroundColor: "var(--card-background)", color: "var(--card-text)" }}>
-          <p style={{ 
+        <div className="card question-instruction" style={{ marginBottom: 20, backgroundColor: "var(--card-background)" }}>
+          <p className="instruction-text" style={{ 
             fontSize: "16px", 
             lineHeight: "1.5", 
-            margin: 0,
-            color: "var(--foreground)"
+            margin: 0
           }}>
             <strong>📋 Hướng dẫn:</strong> {currentQuestion.question}
           </p>
@@ -303,11 +302,10 @@ function Part3Content() {
             
             return (
               <div key={index} className="card" style={{ marginBottom: 20, padding: 20 }}>
-                <p style={{ 
+                <p className="statement-text" style={{ 
                   fontSize: "16px", 
                   fontWeight: "600", 
-                  marginBottom: "12px",
-                  color: "var(--foreground)"
+                  marginBottom: "12px"
                 }}>
                   <strong>{index + 1}. {statement}</strong>
                 </p>

@@ -328,7 +328,6 @@ function ReadingPart2Content() {
           }}>
             {currentExerciseData.title}
           </h2>
-
         </div>
 
         {/* Instructions */}
@@ -343,7 +342,7 @@ function ReadingPart2Content() {
         </div>
 
         {/* Sortable Sentences */}
-        <div className="card" style={{ marginBottom: 24 }}>
+        <div className="card sortable-container" style={{ marginBottom: 24 }}>
           <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>
             ✋ Drag to Reorder ({shuffledSentences.length} sentences)
           </h3>
@@ -571,15 +570,29 @@ function ReadingPart2Content() {
           
           .main-content {
             padding: 16px !important;
+            margin: 0 !important;
+          }
+          
+          .sortable-container {
+            margin: 16px 0 !important;
+            padding: 16px !important;
           }
           
           .sentence-card {
             padding: 12px !important;
+            margin: 8px 0 !important;
             cursor: grab;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
           }
           
           .sentence-card:active {
             cursor: grabbing;
+          }
+          
+          .card {
+            margin: 12px 0 !important;
+            padding: 16px !important;
           }
         }
         

@@ -752,23 +752,6 @@ export const PART_1_DATA = [
       "Friend 1: Hey, Sarah! Are you excited about our trip next week?\nFriend 2: Hi, Mike! Yes, I can’t wait! I’ve been looking forward to it for a long time.\nFriend 1: Me too! But I heard the weather is going to be cold and wet. We should prepare for that.\nFriend 2: Oh no! I hope it doesn’t rain too much. We need to pack our rain jackets and warm clothes.\nFriend 1: Definitely! I’ll also bring an umbrella just in case.\nFriend 2: Good idea! Let’s plan some fun indoor activities if the weather is bad.\nFriend 1: Yes! We can visit museums or try some local food. It will still be a great trip!",
   },
   {
-    key: "47",
-    ma_de_thi: "L1.P1.T4",
-    id: "3337",
-    question:
-      "A man is talking about his holiday. How is he going to travel to the city?",
-    options: {
-      A: "By car",
-      B: "By train",
-      C: "By bus",
-    },
-    answer: "B",
-    audio_link:
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/05cb4ca2b4a038ff3840c5958a670fd1.mp3",
-    transcript:
-      "Hello, everyone! I want to share my plans for the holiday. This year, I’m going to travel to the city for a few days. I’m very excited because I love exploring new places. I plan to visit some interesting museums and try different foods at local restaurants. The best part is that I will travel by train, which is fun and also very cheap! I will leave early in the morning to enjoy the day. I can’t wait to see all the sights and take lots of pictures! It will be an amazing holiday!",
-  },
-  {
     key: "48",
     ma_de_thi: "L1.P1.T4",
     id: "33371",
@@ -822,7 +805,7 @@ export const PART_1_DATA = [
   {
     key: "51",
     ma_de_thi: "L1.P1.T5",
-    id: "3339",
+    id: "3340",
     question: "Listen to a tour guide. Where is the office located?",
     options: {
       A: "Next to the park",
@@ -874,7 +857,7 @@ export const PART_1_DATA = [
     ma_de_thi: "L1.P1.T5",
     id: "3343",
     question:
-      "An author is talking about her daily routine. When does she usually write?",
+      "What is the color of this house?",
     options: {
       A: "Blue",
       B: "Green",
@@ -2329,7 +2312,7 @@ export const PART_1_DATA = [
     },
     answer: "C",
     audio_link:
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/78d030a92d39d16",
+      "https://luyenthi.aptistests.vn/api/source/thitructuyen/78d030a92d39d168797425d5ae2add46.mp3",
     transcript:
       "Man: I'm not impressed with this new restaurant. Honestly, we shouldn't have chosen to eat here. The prices are high, and I'm not even sure if the food is good or not. But what really bothers me is the slow service. It's taking forever to get our orders. It’s been 25 minutes and I’m so hungry!",
   },
@@ -3714,76 +3697,9 @@ export const PART_2_DATA = [
       D: "I like to start my day with music as soon as I wake up. It helps me feel energized and ready for whatever lies ahead. As soon as I get out of bed, I turn on my favorite playlist, which is usually full of upbeat, happy songs. It’s like my morning ritual, setting the mood for the day and getting me in a good headspace. Music really helps kick-start my mornings on a positive note!",
     },
   },
-  {
-    exam_code: "L1.P2.T15",
-    id: ["4065", "4066", "4067", "4068"],
-    question:
-      "Listen to the opinions of four people about their purposes of using the Internet. Complete the sentence below.",
-    speakers: ["Speaker A", "Speaker B", "Speaker C", "Speaker D"],
-    options: {
-      A: "complete school assignments",
-      B: "learn courses",
-      C: "find transport information",
-      D: "watch film",
-      E: "communicate with friends",
-    },
-    answer: {
-      "1": "D",
-      "2": "E",
-      "3": "A",
-      "4": "C",
-    },
-    audio_links: [
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/b3de23cc37a8fe8622e633c2cfa5f209.mp3",
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/6f76ceeffed2741782a7b1afeb8b103a.mp3",
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/cb0f341eb7eff89b1483d52cd13d480e.mp3",
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/36a0c3a919cd1312014c58b36d64a086.mp3",
-    ],
-    transcript: {
-      A: "I spend quite a bit of my free time online, mostly because I love watching movies. The Internet makes it so easy to find a wide variety of films, from the latest releases to old classics. I can stream them directly on my laptop or TV without needing to go out and buy DVDs or rent movies. I just pick a film and relax. It’s the best way to unwind after a long day, and I can watch whatever I want, whenever I want.",
-      B: "The main reason I use the Internet is to stay in touch with my friends. It’s great because I can talk to people who live far away without any issues. Whether it's through social media, video calls, or messaging apps, the Internet allows me to communicate easily and quickly. My best friend loves using the Internet for studying online courses, but that’s not really for me. I prefer just chatting and staying connected through messages and calls.",
-      C: "For me, the Internet is an essential tool for completing my school assignments. I use it to research information, find articles, and access educational websites that help me understand my subjects better. It’s so convenient because I can find everything I need online without having to spend hours in the library. I also use it to download notes and submit my homework. It has really made studying more efficient, and I can work from anywhere, whether it’s at home or on the go.",
-      D: "Whenever I need to plan a trip or get somewhere, I always use the Internet to find transportation details. I can check train schedules, bus routes, and even look up flights. It helps me figure out the best way to travel, and I can even buy tickets online. I like how I can get real-time updates about delays or changes. It makes traveling much easier and saves me the hassle of standing in line at stations or airports.",
-    },
-  },
 ];
 
 export const PART_3_DATA = [
-  {
-    exam_code: "L1.P3.T1",
-    ids: ["3631", "3633", "3634", "3635"],
-    question:
-      "Two professional educators are talking about university. Read the opinions below and decide whose opinion matches the statements, the man, the woman, or both the man and the woman. You can listen to the discussion twice.",
-    statements: [
-      "The internet makes education more accessible.",
-      "Social interactions are essential to university life.",
-      "Diverse curriculum is not always a good thing.",
-      "Competitions between universities should be encouraged.",
-    ],
-    options: ["MAN", "WOMAN", "BOTH"],
-    answers: [
-      {
-        number: 1,
-        answer: "BOTH",
-      },
-      {
-        number: 2,
-        answer: "MAN",
-      },
-      {
-        number: 3,
-        answer: "WOMAN",
-      },
-      {
-        number: 4,
-        answer: "MAN",
-      },
-    ],
-    audio_link:
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/32e9628b9c5de47f8eee389efe55ec63.mp3",
-    transcript:
-      'Woman: That looks interesting. What are you up to?\n\nMan: Oh, I just came across this interesting report about universities and how they’re evolving in the digital age. It talked about the impact of the internet, student experiences, and even competition between institutions. It got me thinking, there’s so much to unpack when it comes to how education is changing, don’t you think?\n\nWoman: Yeah, I’ve been reading about similar things lately. It’s amazing how different opinions can be on what makes a good university experience.  I think we can both agree that the internet has made education more accessible. It’s great how people from different backgrounds can now access high-quality education without being physically on campus.\n\nMan: Absolutely, I agree with that. It’s a game-changer for those who can’t afford to relocate or attend in person. But I still believe that social interactions are a crucial part of university life. Online education can never truly replace the friendships, group work, and networking that happen in a physical setting.\n\nWoman: Hmm, I’m not so sure. While social interactions can be important, I think online learning allows students to focus more on their studies without all the distractions of campus life. Not everyone benefits from that kind of environment.\n\nMan: I see your point, but I think universities provide a unique space for students to develop their social skills alongside their academic ones. Another thing I’m really in favour of is encouraging competition between universities. When universities compete, it drives innovation and pushes them to offer better resources.\n\nWoman: I disagree there. Competition can sometimes lead to universities focusing too much on rankings and flashy features instead of the quality of education. It can become more about marketing than genuine improvement.\n\nMan: That’s a fair concern. But competition also forces universities to constantly improve, which can benefit students in the long run. What about the diversity in curricula? I’m curious where you stand on that.\n\nWoman: To be honest, I’m not a fan of having too many options in the curriculum. A diverse curriculum sounds good in theory, but it can overwhelm students and take away from the depth of learning in core subjects.\n\nMan: I can see that perspective, but I think having variety gives students the flexibility to explore different fields. It can be especially beneficial for those who are unsure of their career paths."',
-  },
   {
     exam_code: "L1.P3.T2",
     ids: ["3503", "3504", "3506", "3507"],
@@ -3827,9 +3743,7 @@ export const PART_3_DATA = [
     statements: [
       "1. Young people are becoming more interested in politics",
       "Social media has changed political activism",
-
       "People are better informed political issues",
-
       "More women are likely to participate in politics",
     ],
     options: ["MAN", "WOMAN", "BOTH"],
@@ -3855,41 +3769,6 @@ export const PART_3_DATA = [
       "https://luyenthi.aptistests.vn/api/source/thitructuyen/7a2c1063784e3d4d9b3f56055a7f272a.mp3",
     transcript:
       "Woman: Politics have been a very common topic lately. I’ve noticed that young people are becoming much more interested in politics lately. It’s great to see them engaging in discussions and activism.\nMan: I completely agree! It’s refreshing to see younger generations taking a stand on important issues.\nWoman: I also think social media plays a big role in this. Platforms like Twitter and Instagram help spread political information quickly and connect people with similar interests.\nMan: Actually I believe people are becoming better informed about politics not because of social media but through traditional news sources. Many are actively seeking information to understand the issues better.\nWoman: I see your point, but I think social media has a unique impact. It allows for diverse voices to be heard that might not be represented in mainstream media.\nMan: It’s also encouraging to see more women pursuing careers in politics. It brings different perspectives to the table, which is essential for a balanced approach to governance.\nWoman: Absolutely! More representation is always a positive step forward.",
-  },
-  {
-    exam_code: "L1.P3.4",
-    ids: ["3666", "3667", "3668", "3669"],
-    question:
-      "A man and a woman are talking about urban farming. Read the opinions below and decide whose opinion matches the statements, the man, the woman, or both the man and the woman. You can listen to the discussion twice.",
-    statements: [
-      "Living space is more important than farming space.",
-      "Farming space is appealing.",
-      "Farming space will benefit the urban economy.",
-      "Farming space is in need of more food.",
-    ],
-    options: ["MAN", "WOMAN", "BOTH"],
-    answers: [
-      {
-        number: 1,
-        answer: "WOMAN",
-      },
-      {
-        number: 2,
-        answer: "BOTH",
-      },
-      {
-        number: 3,
-        answer: "MAN",
-      },
-      {
-        number: 4,
-        answer: "WOMAN",
-      },
-    ],
-    audio_link:
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/f94b0261551b26a9eadca90f130382f1.mp3",
-    transcript:
-      'Man: "I’ve been reading a report on urban farming and its potential impact on city life. It’s fascinating how cities are starting to embrace this concept to tackle issues like food security and environmental sustainability. It got me thinking about how this could reshape urban living."\nWoman: "I find the idea of urban farming intriguing too, but I believe living space is more important than farming space. People need proper homes to thrive."\nMan: "I understand that perspective, but I have to say, farming space in urban areas is really appealing. It brings a bit of nature into the city and can enhance the overall environment."\nWoman: "I agree with that. Urban farming does have a lot of visual and ecological benefits. However, we really need to focus on the fact that there’s a pressing need for more food in our cities. That should be a priority."\nMan: "That\'s a valid point, but I think farming space will also benefit the urban economy. It creates jobs and stimulates local businesses, which is essential for growth."\nWoman: "I see where you\'re coming from, but while boosting the economy is great, we can\'t overlook the immediate need for more food. Urban farming can help, but it shouldn\'t replace the need for larger-scale solutions to food shortages."\nMan: "I agree that food scarcity is a serious issue, but if we can implement urban farming effectively, it can definitely contribute to alleviating that problem while also strengthening the economy."',
   },
   {
     exam_code: "L1.P3.T5",
@@ -4100,41 +3979,6 @@ export const PART_3_DATA = [
       "https://luyenthi.aptistests.vn/api/source/thitructuyen/2520bda516dacb9a4a70ef6b0ed7935d.mp3",
     transcript:
       "Man: It seems like every workplace is going through so many changes lately. But honestly, I think Continuity is still very important. When things remain steady, it gives people a sense of security. If everything changes too fast, it’s hard for employees to keep up and the organization can lose its way. Continuity is important in keeping everyone focused.\n\nWoman: I get where you're coming from, but I feel like these days, nothing is certain. Job security isn't something we can rely on anymore. There’s always the risk of layoffs, especially with the economy being unpredictable. People are moving from job to job more than ever before, and you can’t always count on staying in one place for long.\n\nMan: That’s definitely a concern. But regardless of job security or stability, one thing we both can agree on is that job satisfaction is a huge motivator. When people love what they do, they’re more likely to stay, even when times get tough. It’s the main reason many of us keep pushing through the challenges.\n\nWoman: Absolutely! I think when people are satisfied with their work, they’re willing to go the extra mile. It’s not just about the paycheck; it’s about feeling fulfilled. That’s what really makes the difference in the workplace.\nMan: You’re right. And another thing that’s making a difference is technology. It’s been a game-changer for the economy, making things faster and more efficient. The growth we’ve seen in so many industries is because of how we’ve embraced new technologies. It’s definitely helping businesses thrive.",
-  },
-  {
-    exam_code: "L1.P3.T11",
-    ids: ["4126", "4127", "4128", "4129"],
-    question:
-      "Listen to two people discussing singers and music. Read the opinions below and decide whose opinion matches the statements, the man, the woman, or both the man and the woman.",
-    statements: [
-      "Singer can be good models for the young.",
-      "Taste in music is a highly personal thing.",
-      "Music is a universal language.",
-      "Music can be used to manipulate people’s feelings.",
-    ],
-    options: ["MAN", "WOMAN", "BOTH"],
-    answers: [
-      {
-        number: 1,
-        answer: "WOMAN",
-      },
-      {
-        number: 2,
-        answer: "BOTH",
-      },
-      {
-        number: 3,
-        answer: "MAN",
-      },
-      {
-        number: 4,
-        answer: "BOTH",
-      },
-    ],
-    audio_link:
-      "https://luyenthi.aptistests.vn/api/source/thitructuyen/33b7dba26aca3221e439b343ae79a64d.mp3",
-    transcript:
-      "Woman: You know, I really believe that singers can be good role models for young people. Their influence can inspire kids to pursue their dreams and express themselves. Just think about how many young artists start singing because they look up to someone famous.\n\nMan: I’m not so sure about that. While some singers may have positive messages, others don’t always set the best example. Sometimes their lifestyles can be quite the opposite of what we’d want kids to emulate.\n\nWoman: Fair point, but I think many young fans look up to their favorite artists and adopt their values. Artists like Taylor Swift or Ed Sheeran often promote kindness and hard work.\n\nMan: I get that. But when it comes to taste in music, it’s such a highly personal thing. What resonates with one person might not resonate with another. I mean, I might love rock while my friend prefers classical!\n\nWoman: Absolutely! Everyone has their own preferences, and that’s what makes music so interesting. It’s like a reflection of our individual personalities.\n\nMan: Exactly! And speaking of music, I believe it’s a universal language that connects people from different cultures. You can go anywhere in the world and find someone who enjoys music.\n\nWoman: I don’t fully agree with that. While music can connect people, its meanings can vary greatly between cultures. A song that makes one group happy might not even be understood by another.\n\nMan: True, but one thing we can both agree on is that music can be used to manipulate people’s feelings, whether in advertising or emotional moments in movies.\n\nWoman: Definitely! It’s amazing how a song can evoke such strong emotions in us. Just think about those movie soundtracks that give you chills or make you cry. Music has that incredible power.\n\nMan: Right? It’s fascinating how a simple melody can tap into our emotions so deeply.",
   },
   {
     exam_code: "L1.P3.T12",
@@ -4368,50 +4212,6 @@ export const PART_4_DATA = [
     ]
   },
   {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/66180fb18c2170ca368409d01041c428.mp3",
-    "transcript": "Announcer: Good evening, everyone! Today, we’re excited to talk about the latest novel by popular author James Parker. He is known for his softer, romantic stories like Whispers of the Heart, which have touched the hearts of many readers. However, his new novel, Shadow in the Night, is quite different.\nIn Shadow in the Night, Parker explores a thrilling world of suspense and mystery. He moves away from his gentle love stories to deliver an exciting plot filled with unexpected twists. The tension in this book is much higher, showing that he can write in different styles.\nWhile many readers are excited about this new direction, I believe it’s important for Parker to pay attention to the critics’ advice as he works on his next book. Their feedback can help him improve his writing and find the right balance between romance and thrill that fans appreciate. Stay tuned for more updates on this talented author!",
-    "questions": [
-      {
-        "id": 3508,
-        "question": "Listen to an announcer talking about a newly released novel and answer the questions below. What does the announcer say about the new novel?",
-        "options": [
-          {
-            "key": "A",
-            "text": "It is different from his earlier works."
-          },
-          {
-            "key": "B",
-            "text": "It is romantic and soft."
-          },
-          {
-            "key": "C",
-            "text": "It is less famous than his earlier works."
-          }
-        ],
-        "answer": "A"
-      },
-      {
-        "id": 3509,
-        "question": "Listen to an announcer talking about a newly released novel and answer the questions below. What does the announcer say the writer should do in the future?",
-        "options": [
-          {
-            "key": "A",
-            "text": "The writer should continue to write this genre."
-          },
-          {
-            "key": "B",
-            "text": "The writer should go back to his original genre."
-          },
-          {
-            "key": "C",
-            "text": "He should listen to critics before writing his next work."
-          }
-        ],
-        "answer": "C"
-      }
-    ]
-  },
-  {
     "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/22779876eec3d753dbac444695590127.mp3",
     "transcript": "Good morning, everyone! Today, I want to talk about professionalism and how it has changed over the years. To be seen as a professional, it’s essential to be friendly, open-minded, and willing to help others. An optimistic attitude not only makes a good impression but also creates a better work environment.\nAdditionally, with the rapid changes in technology and globalization, our definition of professionalism is no longer the same as it was 40 years ago. In the past, being professional often meant simply dressing well and following strict rules. Now, it includes being adaptable, understanding different cultures, and using technology effectively.\nAs we continue to evolve in our careers, we must embrace these changes and redefine what it means to be a professional. By doing so, we can better meet the needs of our diverse workplaces and succeed in today’s fast-paced world. Thank you!",
     "questions": [
@@ -4500,81 +4300,6 @@ export const PART_4_DATA = [
     ]
   },
   {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/fa9552742bfe14613720424d3d4f9d8a.mp3",
-    "transcript": "Radio MC: Good afternoon, everyone! Today, we’re diving into the life of a beloved musician who has decided to retire from singing professionally. Unlike in the past, where he would inform his fans and then make a comeback, this time he’s serious about stepping away for good.\nHis talent has always shone through, and many believe he could have achieved even greater success with his recent albums. However, the long break he took between projects made it difficult for him to regain his previous momentum. Fans were excited to see him return, but the gap left some wondering if he could still capture the magic he once had.\nAs he prepares for this new chapter in his life, we can only reflect on the incredible music he’s given us over the years. He leaves behind a rich legacy that will inspire future generations of artists. Stay tuned for more updates on this iconic musician!",
-    "questions": [
-      {
-        "id": 3541,
-        "question": "The radio is talking about a musician’s career and latest albums. Listen and choose the correct answer. What has the musician decided regarding his singing career?",
-        "options": [
-          {
-            "key": "A",
-            "text": "He will retire from singing professionally."
-          },
-          {
-            "key": "B",
-            "text": "He will make a comeback after a long break."
-          },
-          {
-            "key": "C",
-            "text": "He will inform fans about new albums."
-          }
-        ],
-        "answer": "A"
-      },
-      {
-        "id": 3542,
-        "question": "The radio is talking about a musician’s career and latest albums. Listen and choose the correct answer. What could the musician have achieved with his recent albums?",
-        "options": [
-          {
-            "key": "A",
-            "text": "He could have been more successful."
-          },
-          {
-            "key": "B",
-            "text": "He could have inspired future generations in general."
-          },
-          {
-            "key": "C",
-            "text": "He could have gotten a bigger fan base."
-          }
-        ],
-        "answer": "A"
-      }
-    ]
-  },
-  {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/f120a04fb1e40d7c9426737ff6188826.mp3",
-    "transcript": "A famous TV series called Mystery City was recently broadcasted, and it caught the audience’s attention from the start. The first episode was filled with suspense and surprising twists that left viewers eager for more. The engaging storyline and strong characters made it easy for people to connect with the show, which quickly became a topic of conversation. Social media buzzed with reactions and theories, making it a true phenomenon.\nBeyond just entertaining, Mystery City has also helped its network reach new customers. The show attracted a diverse audience, including younger viewers who might not have watched traditional TV before. This is important for marketing because it shows how a single series can expand a network’s reach and boost subscriptions. With clever promotions and partnerships, the series brought in new fans who may now explore other shows on the platform.\nOverall, Mystery City is not just a popular series; it’s a powerful tool for building a community around a brand. The combination of captivating storytelling and strategic marketing has made it a success that other networks will likely try to replicate. As the series continues, it will be interesting to see how it evolves and what new customers it brings in!",
-    "questions": [
-      {
-        "id": 3670,
-        "question": "Listen to a critic talking about a newly broadcasted TV series. Listen to a critic talking about a newly broadcasted TV series. A. It didn’t receive enough investment at the early stage. B. It was overlooked by critics. C. It caught the audience’s attention from the start.",
-        "options": [],
-        "answer": "C"
-      },
-      {
-        "id": 3671,
-        "question": "Listen to a critic talking about a newly broadcasted TV series. According to the expert, what is the series’ potential?",
-        "options": [
-          {
-            "key": "A",
-            "text": "It helps to reach new customers."
-          },
-          {
-            "key": "B",
-            "text": "New seasons will be produced due to great demand."
-          },
-          {
-            "key": "C",
-            "text": "It inspires young filmmakers to follow a new movie-making style."
-          }
-        ],
-        "answer": "A"
-      }
-    ]
-  },
-  {
     "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/612f0c61b79ab6728bc93adc7d280ca0.mp3",
     "transcript": "Advertising in sports has become a double-edged sword. Many fans grow tired of seeing the same commercials repeatedly during games and events. This constant bombardment can lead to frustration, causing viewers to feel disconnected from the sport they love. When ads overshadow the actual games, it detracts from the excitement and intensity that fans crave, making them less enthusiastic about tuning in. Therefore, many TV series have been damaged by overexposure.\nIn terms of Sports, overexposure can generate negative publicity for the sport itself. Fans may start to associate their favorite teams and players with annoying advertisements rather than the thrilling action on the field. This shift in perception can affect attendance at games and viewership on TV, as people become disillusioned with the sport's focus on commercial interests. As a result, teams and leagues must carefully consider how much advertising they allow, ensuring it doesn’t take away from the game experience.\nIn the end, while advertising can bring in revenue and promote the sport, it’s crucial to find a balance. Too much exposure can lead to viewer fatigue and diminish the overall appeal of the series. By prioritizing the game itself and minimizing intrusive ads, sports organizations can maintain fan engagement and protect their brand image.",
     "questions": [
@@ -4650,37 +4375,6 @@ export const PART_4_DATA = [
     ]
   },
   {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/495c1148c297e9605f4d88ed962b8841.mp3",
-    "transcript": "Reviewer: Today, I want to share my thoughts on a fascinating book about the life of renowned scientist Dr. Emily Carter. One of the standout features of this book is that the way of writing is exciting for readers. The author has a talent for bringing complex scientific concepts to life, making it an engaging experience.\nWhile some may expect a heavy focus on technical details, this book skillfully balances science with storytelling, ensuring that it remains accessible. It’s definitely not more of a textbook than a biography; instead, it invites readers into the scientist's world in a relatable way.\nOverall, I’d say it has been written for a general audience. The author’s aim seems to be to inspire curiosity about science and encourage readers from all backgrounds to appreciate the contributions of Dr. Carter. Unlike other works that are only suitable for experts in the field, this book truly welcomes everyone to explore the life of an extraordinary scientist.",
-    "questions": [
-      {
-        "id": 3379,
-        "question": "Listen to an expert talking about the importance of sleep and answer the questions below. The most important things to help sleep well is A. The media overemphasize the subject. B. Beds are best for sleeping. C. Resting sufficiently is necessary.",
-        "options": [],
-        "answer": "Blocking noise and light is the key"
-      },
-      {
-        "id": 3380,
-        "question": "Listen to an expert talking about the importance of sleep and answer the questions below. According to the expert, what is the public attitude towards sleeping?",
-        "options": [
-          {
-            "key": "A",
-            "text": "???"
-          },
-          {
-            "key": "B",
-            "text": "The young generation tend to have unhealthy sleeping habits."
-          },
-          {
-            "key": "C",
-            "text": "Sleeping quality has deteriorated over time."
-          }
-        ],
-        "answer": "The media overemphasize the subject."
-      }
-    ]
-  },
-  {
     "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/de5b6c7291c3ed008de74d0626bbc451.mp3",
     "transcript": "A famous TV series called Mystery City was recently broadcasted, and it caught the audience’s attention from the start. The first episode was filled with suspense and surprising twists that left viewers eager for more. The engaging storyline and strong characters made it easy for people to connect with the show, which quickly became a topic of conversation. Social media buzzed with reactions and theories, making it a true phenomenon.\nBeyond just entertaining, Mystery City has also helped its network reach new customers. The show attracted a diverse audience, including younger viewers who might not have watched traditional TV before. This is important for marketing because it shows how a single series can expand a network’s reach and boost subscriptions. With clever promotions and partnerships, the series brought in new fans who may now explore other shows on the platform.\nOverall, Mystery City is not just a popular series; it’s a powerful tool for building a community around a brand. The combination of captivating storytelling and strategic marketing has made it a success that other networks will likely try to replicate. As the series continues, it will be interesting to see how it evolves and what new customers it brings in!",
     "questions": [
@@ -4721,50 +4415,6 @@ export const PART_4_DATA = [
           }
         ],
         "answer": "A"
-      }
-    ]
-  },
-  {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/041d7be04bc5ec5c7708c7e6040547f2.mp3",
-    "transcript": "Advertising in sports has become a double-edged sword. Many fans grow tired of seeing the same commercials repeatedly during games and events. This constant bombardment can lead to frustration, causing viewers to feel disconnected from the sport they love. When ads overshadow the actual games, it detracts from the excitement and intensity that fans crave, making them less enthusiastic about tuning in. Therefore, many TV series have been damaged by overexposure.\nIn terms of Sports, overexposure can generate negative publicity for the sport itself. Fans may start to associate their favorite teams and players with annoying advertisements rather than the thrilling action on the field. This shift in perception can affect attendance at games and viewership on TV, as people become disillusioned with the sport's focus on commercial interests. As a result, teams and leagues must carefully consider how much advertising they allow, ensuring it doesn’t take away from the game experience.\nIn the end, while advertising can bring in revenue and promote the sport, it’s crucial to find a balance. Too much exposure can lead to viewer fatigue and diminish the overall appeal of the series. By prioritizing the game itself and minimizing intrusive ads, sports organizations can maintain fan engagement and protect their brand image.",
-    "questions": [
-      {
-        "id": 3254,
-        "question": "Listen to an advertising expert talking about the advertising industry. What does the expert say about the negative side of advertising?",
-        "options": [
-          {
-            "key": "A",
-            "text": "Series are damaged by overexposure."
-          },
-          {
-            "key": "B",
-            "text": "Advertisements might sometimes be repetitive which is annoying."
-          },
-          {
-            "key": "C",
-            "text": "Advertising costs the same amount of money to produce a movie."
-          }
-        ],
-        "answer": "A"
-      },
-      {
-        "id": 3255,
-        "question": "Listen to an advertising expert talking about the advertising industry. In what way can advertising affect sports?",
-        "options": [
-          {
-            "key": "A",
-            "text": "They help to attract more fans."
-          },
-          {
-            "key": "B",
-            "text": "They can boost ticket sales and sales of sports related items."
-          },
-          {
-            "key": "C",
-            "text": "They can generate negative publicity for the sport."
-          }
-        ],
-        "answer": "C"
       }
     ]
   },
@@ -5422,50 +5072,6 @@ export const PART_4_DATA = [
           {
             "key": "C",
             "text": "To discuss happiness in the media"
-          }
-        ],
-        "answer": "B"
-      }
-    ]
-  },
-  {
-    "audio_link": "https://luyenthi.aptistests.vn/api/source/thitructuyen/3ceba5c121eefea1c9cea80710f6bb32.mp3",
-    "transcript": "Good morning, everyone! Today, I want to talk about professionalism and how it has changed over the years. To be seen as a professional, it’s essential to be friendly, open-minded, and willing to help others. An optimistic attitude not only makes a good impression but also creates a better work environment.\nAdditionally, with the rapid changes in technology and globalization, our definition of professionalism is no longer the same as it was 40 years ago. In the past, being professional often meant simply dressing well and following strict rules. Now, it includes being adaptable, understanding different cultures, and using technology effectively.\nAs we continue to evolve in our careers, we must embrace these changes and redefine what it means to be a professional. By doing so, we can better meet the needs of our diverse workplaces and succeed in today’s fast-paced world. Thank you!",
-    "questions": [
-      {
-        "id": 4050,
-        "question": "An expert talking about Professionalism. Choose the correct answers. What does the expert say what being professional is all about?",
-        "options": [
-          {
-            "key": "A",
-            "text": "To maintain positive attitude"
-          },
-          {
-            "key": "B",
-            "text": "To create good working environment"
-          },
-          {
-            "key": "C",
-            "text": "To make good impressions"
-          }
-        ],
-        "answer": "A"
-      },
-      {
-        "id": 4051,
-        "question": "An expert talking about Professionalism. Choose the correct answers. What does the expert say about the definition of professionalism?",
-        "options": [
-          {
-            "key": "A",
-            "text": "It is the same of 40 years ago."
-          },
-          {
-            "key": "B",
-            "text": "Our definition of it is changing."
-          },
-          {
-            "key": "C",
-            "text": "It will not change anymore."
           }
         ],
         "answer": "B"

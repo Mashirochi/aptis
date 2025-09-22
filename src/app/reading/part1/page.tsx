@@ -210,11 +210,10 @@ function ReadingPart1Content() {
 
                 {showAnswer && (
                     <div style={{ marginTop: 16, padding: 12, borderRadius: 8, backgroundColor: isCorrect ? "#dcfce7" : "#fef2f2" }}>
-                        <p style={{ 
+                        <p className={isCorrect ? "correct-answer-text" : "incorrect-answer-text"} style={{ 
                             margin: 0, 
                             fontSize: "14px", 
-                            fontWeight: "600",
-                            color: isCorrect ? "#059669" : "#dc2626"
+                            fontWeight: "600"
                         }}>
                             {isCorrect ? "✅ Correct!" : `❌ Incorrect. The correct answer is: ${question.correctAnswer}`}
                         </p>

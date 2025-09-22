@@ -1152,9 +1152,9 @@ details div {
   
   .main-content {
     margin-left: 0 !important;
-    padding: 0 !important;
-    width: 100vw !important;
-    minHeight: 100vh !important;
+    padding: 16px !important;
+    width: 100% !important;
+    min-height: 100vh !important;
   }
   
   .mobile-drawer {
@@ -1186,56 +1186,25 @@ details div {
     display: none !important;
   }
   
-  /* Sentence cards for mobile - simple style */
+  /* Sentence cards for mobile - improved responsive style */
   .sentence-card {
-    padding: 16px !important;
-    marginBottom: 8px !important;
-    minHeight: 60px !important;
-    marginLeft: 8px !important;
-    marginRight: 8px !important;
-    borderRadius: 8px !important;
-    border: 2px solid #e5e7eb !important;
-    backgroundColor: white !important;
-    boxShadow: none !important;
+    padding: 12px !important;
+    margin: 8px 0 !important;
+    min-height: auto !important;
+    border-radius: 8px !important;
+    border: 2px solid var(--border-color) !important;
+    background-color: var(--card-background) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
   }
   
   .sentence-card div[style*="paddingRight"] {
-    paddingRight: 50px !important;
-  }
-  
-  /* Mobile content styling */
-  .reading-main-content {
-    padding: 20px 0 !important;
-    margin: 0 !important;
-    borderRadius: 0 !important;
-    boxShadow: none !important;
-    border: none !important;
-    background: #f9fafb !important;
-    width: 100% !important;
-    minHeight: 100vh !important;
-  }
-  
-  /* Hide floating button on mobile when using bottom buttons */
-  .mobile-questions-btn {
-    display: none !important;
+    padding-right: 50px !important;
   }
   
   /* Remove desktop navigation buttons */
   .nav-buttons {
     display: none !important;
-  }
-  
-  /* Full screen sortable container */
-  div[ref="sortableRef"] {
-    padding: 0 !important;
-    marginBottom: 20px !important;
-  }
-  
-  /* Mobile main container */
-  main {
-    padding: 0 !important;
-    margin: 0 !important;
-    backgroundColor: #f9fafb !important;
   }
 }
 
@@ -1559,5 +1528,93 @@ details div {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Question instruction text styling for Part 3 and Part 4 */
+.question-instruction {
+  background-color: var(--card-background) !important;
+}
+
+.instruction-text,
+.instruction-text strong,
+.statement-text,
+.statement-text strong {
+  color: #1f2937 !important;
+}
+
+/* Answer text styles for light mode */
+.correct-answer-text {
+  color: #059669 !important;
+}
+
+.incorrect-answer-text {
+  color: #dc2626 !important;
+}
+
+/* Dark mode specific overrides for instruction text */
+.dark .instruction-text,
+.dark .instruction-text strong,
+.dark .statement-text,
+.dark .statement-text strong {
+  color: #f9fafb !important;
+}
+
+/* Dark mode answer text styles */
+.dark .correct-answer-text {
+  color: #10b981 !important;
+}
+
+.dark .incorrect-answer-text {
+  color: #f87171 !important;
+}
+
+/* Additional dark mode fixes for card content */
+.dark .card p,
+.dark .card p strong {
+  color: #f9fafb !important;
+}
+
+.dark details div {
+  color: #f9fafb !important;
+  background-color: #1f2937 !important;
+}
+
+.dark details summary {
+  color: #f9fafb !important;
+}
+
+/* Media query based overrides for system dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .instruction-text,
+  :root:not(.light) .instruction-text strong,
+  :root:not(.light) .statement-text,
+  :root:not(.light) .statement-text strong {
+    color: #f9fafb !important;
+  }
+  
+  /* Answer text styles for system dark mode */
+  :root:not(.light) .correct-answer-text {
+    color: #10b981 !important;
+  }
+  
+  :root:not(.light) .incorrect-answer-text {
+    color: #f87171 !important;
+  }
+  
+  /* Additional fixes for transcript visibility */
+  :root:not(.light) details div {
+    color: #f9fafb !important;
+    background-color: #1f2937 !important;
+  }
+  
+  :root:not(.light) details summary {
+    color: #f9fafb !important;
+  }
+  
+  /* Ensure all card text is visible */
+  :root:not(.light) .card p,
+  :root:not(.light) .card p strong {
+    color: #f9fafb !important;
   }
 }

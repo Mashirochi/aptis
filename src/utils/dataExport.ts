@@ -4,26 +4,24 @@ export interface ExportedData {
   timestamp: string;
   version: string;
   data: {
-    'reading-part2-progress'?: any;
-    'part1-progress'?: any;
-    'part2-progress'?: any;
-    'part3-progress'?: any;
-    'part4-progress'?: any;
-    'incorrect-answers'?: any;
-    'answer-statuses'?: any;
+    'reading_part1_answers'?: any;
+    'reading_part2_completed'?: any;
+    'reading_part3_completed'?: any;
+    'listening_aptis_incorrect_answers'?: any;
+    'listening_aptis_answer_records'?: any;
+    'theme'?: any;
     [key: string]: any;
   };
 }
 
 // Keys that should be included in the export
 const EXPORTABLE_KEYS = [
-  'reading-part2-progress',
-  'part1-progress', 
-  'part2-progress',
-  'part3-progress',
-  'part4-progress',
-  'incorrect-answers',
-  'answer-statuses'
+  'reading_part1_answers',
+  'reading_part2_completed',
+  'reading_part3_completed',
+  'listening_aptis_incorrect_answers',
+  'listening_aptis_answer_records',
+  'theme' // Include theme preference
 ];
 
 export function exportLocalStorageData(): string {
@@ -47,6 +45,7 @@ export function exportLocalStorageData(): string {
       }
     });
 
+    console.log('Export data:', exportData); // Debug log
     return JSON.stringify(exportData, null, 2);
   } catch (error) {
     console.error('Error exporting localStorage data:', error);
@@ -57,6 +56,7 @@ export function exportLocalStorageData(): string {
 export function importLocalStorageData(jsonData: string): void {
   try {
     const importData: ExportedData = JSON.parse(jsonData);
+    console.log('Import data:', importData); // Debug log
     
     // Validate the imported data structure
     if (!importData.data || typeof importData.data !== 'object') {
@@ -69,6 +69,7 @@ export function importLocalStorageData(jsonData: string): void {
         try {
           const jsonValue = typeof value === 'string' ? value : JSON.stringify(value);
           localStorage.setItem(key, jsonValue);
+          console.log(`Imported ${key}:`, value); // Debug log
         } catch (e) {
           console.warn(`Failed to import ${key}:`, e);
         }
@@ -135,33 +136,39 @@ export function getDataSummary(): {
     let lastUpdated: string | null = null;
 
     // Count progress items
-    EXPORTABLE_KEYS.forEach(key => {
-      if (key.includes('progress')) {
-        const data = localStorage.getItem(key);
-        if (data) {
-          try {
-            const parsed = JSON.parse(data);
+    let progressKeys = ['reading_part1_answers', 'reading_part2_completed', 'reading_part3_completed'];
+    progressKeys.forEach(key => {
+      const data = localStorage.getItem(key);
+      if (data) {
+        try {
+          const parsed = JSON.parse(data);
+          if (key === 'reading_part1_answers') {
+            // This is an object with answers
             totalProgress += Object.keys(parsed).length;
-          } catch (e) {
-            // Ignore parsing errors
+          } else {
+            // These are completion arrays or objects
+            totalProgress += Array.isArray(parsed) ? parsed.length : Object.keys(parsed).length;
           }
+        } catch (e) {
+          // If it's a simple value, count as 1
+          totalProgress += 1;
         }
       }
     });
 
     // Count incorrect answers
-    const incorrectData = localStorage.getItem('incorrect-answers');
+    const incorrectData = localStorage.getItem('listening_aptis_incorrect_answers');
     if (incorrectData) {
       try {
         const parsed = JSON.parse(incorrectData);
-        incorrectAnswers = Object.keys(parsed).length;
+        incorrectAnswers = parsed.length || 0; // It's an array, not an object
       } catch (e) {
         // Ignore parsing errors
       }
     }
 
     // Get last updated timestamp (approximate)
-    const answerStatuses = localStorage.getItem('answer-statuses');
+    const answerStatuses = localStorage.getItem('listening_aptis_answer_records');
     if (answerStatuses) {
       try {
         const parsed = JSON.parse(answerStatuses);

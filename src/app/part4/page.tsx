@@ -354,12 +354,11 @@ function Part4Content() {
                   </div>
                 )}
 
-                <div className="card" style={{ marginBottom: 16, backgroundColor: "var(--card-background)", padding: "16px", color: "var(--card-text)" }}>
-                  <p style={{ 
+                <div className="card question-instruction" style={{ marginBottom: 16, backgroundColor: "var(--card-background)", padding: "16px" }}>
+                  <p className="instruction-text" style={{ 
                     fontSize: "16px", 
                     lineHeight: "1.5", 
-                    margin: 0,
-                    color: "var(--foreground)"
+                    margin: 0
                   }}>
                     <strong>📋 Đề bài:</strong> {question.question}
                   </p>
@@ -396,11 +395,11 @@ function Part4Content() {
                   <div style={{ 
                     padding: "12px", 
                     borderRadius: "8px", 
-                    backgroundColor: isCorrect ? "#f0fdf4" : "#fef2f2",
+                    backgroundColor: isCorrect ? "#f0fdf4 !important" : "#fef2f2 !important",
                     border: `2px solid ${isCorrect ? "#10b981" : "#ef4444"}`
                   }}>
                     <p style={{ 
-                      color: isCorrect ? "#059669" : "#dc2626", 
+                      color: isCorrect ? "#059669 !important" : "#dc2626 !important", 
                       fontSize: "16px", 
                       fontWeight: "600", 
                       margin: 0

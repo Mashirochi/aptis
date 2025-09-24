@@ -4,32 +4,32 @@ import { useSearchParams } from "next/navigation";
 import Sortable from "sortablejs";
 import { READING_PART_2 } from "../../../utils/part2";
 
-// Define the interface for reading exercises
-interface ReadingExercise {
-  key: number;
-  title: string;
-  sentences: string[];
-}
-
 function ReadingPart2Content() {
   const searchParams = useSearchParams();
-  const exerciseKey = parseInt(searchParams.get('exercise') || '1');
-  
+  const exerciseKey = parseInt(searchParams.get("exercise") || "1");
+
   const [currentExercise, setCurrentExercise] = useState<number>(0);
-  const [shuffledSentences, setShuffledSentences] = useState<string[]>([]);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
   const [originalOrder, setOriginalOrder] = useState<string[]>([]);
+  const [fixedTitle, setFixedTitle] = useState<string>("");
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [attempts, setAttempts] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-  const [completedExercises, setCompletedExercises] = useState<Record<number, boolean>>({});
-  
+  const [completedExercises, setCompletedExercises] = useState<
+    Record<number, boolean>
+  >({});
+
   const sortableRef = useRef<HTMLDivElement>(null);
   const sortableInstance = useRef<Sortable | null>(null);
 
   // Initialize exercise based on URL parameter
   useEffect(() => {
-    if (exerciseKey && exerciseKey >= 1 && exerciseKey <= READING_PART_2.length) {
+    if (
+      exerciseKey &&
+      exerciseKey >= 1 &&
+      exerciseKey <= READING_PART_2.length
+    ) {
       const exerciseIndex = exerciseKey - 1;
       setCurrentExercise(exerciseIndex);
     }
@@ -38,39 +38,50 @@ function ReadingPart2Content() {
   // Load completed exercises from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('reading_part2_completed');
+      const saved = localStorage.getItem("reading_part2_completed");
       if (saved) {
         setCompletedExercises(JSON.parse(saved));
       }
     } catch (error) {
-      console.error('Error loading completed exercises:', error);
+      console.error("Error loading completed exercises:", error);
     }
   }, []);
 
   // Save completed exercises to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('reading_part2_completed', JSON.stringify(completedExercises));
+      localStorage.setItem(
+        "reading_part2_completed",
+        JSON.stringify(completedExercises)
+      );
     } catch (error) {
-      console.error('Error saving completed exercises:', error);
+      console.error("Error saving completed exercises:", error);
     }
   }, [completedExercises]);
 
-  // Initialize sortable and shuffle sentences when exercise changes
+  // Initialize sortable and shuffle options when exercise changes
   useEffect(() => {
     const exercise = READING_PART_2[currentExercise];
     if (exercise) {
-      const sentences = [...exercise.sentences];
-      setOriginalOrder([...sentences]);
-      
-      // Shuffle sentences (but keep first sentence in place if it's marked as opening)
-      const sentencesToShuffle = [...sentences];
-      for (let i = sentencesToShuffle.length - 1; i > 0; i--) {
+      const allSentences = [...exercise.sentences];
+      // Set the first sentence as fixed title
+      setFixedTitle(exercise.title);
+
+      // Take only the first 5 sentences for options (excluding the title)
+      const options = allSentences.slice(0, 5);
+      setOriginalOrder([...options]);
+
+      // Shuffle the options
+      const optionsToShuffle = [...options];
+      for (let i = optionsToShuffle.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [sentencesToShuffle[i], sentencesToShuffle[j]] = [sentencesToShuffle[j], sentencesToShuffle[i]];
+        [optionsToShuffle[i], optionsToShuffle[j]] = [
+          optionsToShuffle[j],
+          optionsToShuffle[i],
+        ];
       }
-      
-      setShuffledSentences(sentencesToShuffle);
+
+      setShuffledOptions(optionsToShuffle);
       setIsCompleted(false);
       setShowAnswer(false);
       setAttempts(0);
@@ -83,10 +94,12 @@ function ReadingPart2Content() {
       sortableInstance.current = Sortable.create(sortableRef.current, {
         animation: 150,
         onEnd: (evt) => {
-          // Update the sentences array based on new order
+          // Update the options array based on new order
           const items = Array.from(sortableRef.current?.children || []);
-          const newOrder = items.map(item => item.getAttribute('data-sentence')).filter(Boolean) as string[];
-          setShuffledSentences(newOrder);
+          const newOrder = items
+            .map((item) => item.getAttribute("data-option"))
+            .filter(Boolean) as string[];
+          setShuffledOptions(newOrder);
         },
       });
     }
@@ -97,37 +110,39 @@ function ReadingPart2Content() {
         sortableInstance.current = null;
       }
     };
-  }, [shuffledSentences.length]);
+  }, [shuffledOptions.length]);
 
   const currentExerciseData = READING_PART_2[currentExercise];
 
   const checkAnswer = () => {
-    setAttempts(prev => prev + 1);
-    const isCorrect = JSON.stringify(shuffledSentences) === JSON.stringify(originalOrder);
-    
+    setAttempts((prev) => prev + 1);
+    const isCorrect =
+      JSON.stringify(shuffledOptions) === JSON.stringify(originalOrder);
+
     if (isCorrect) {
       setIsCompleted(true);
-      setCompletedExercises(prev => ({
+      setCompletedExercises((prev) => ({
         ...prev,
-        [currentExerciseData.key]: true
+        [currentExerciseData.key]: true,
       }));
     }
-    
+
     setShowAnswer(true);
   };
 
   const resetExercise = () => {
     const exercise = READING_PART_2[currentExercise];
     if (exercise) {
-      const sentences = [...exercise.sentences];
-      
+      const allSentences = [...exercise.sentences];
+      const options = allSentences.slice(1, 6);
+
       // Shuffle again
-      for (let i = sentences.length - 1; i > 0; i--) {
+      for (let i = options.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [sentences[i], sentences[j]] = [sentences[j], sentences[i]];
+        [options[i], options[j]] = [options[j], options[i]];
       }
-      
-      setShuffledSentences(sentences);
+
+      setShuffledOptions(options);
       setIsCompleted(false);
       setShowAnswer(false);
     }
@@ -155,26 +170,35 @@ function ReadingPart2Content() {
   }
 
   return (
-    <div className="gradient-bg" style={{ display: "flex", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <div
+      className="gradient-bg"
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
       {/* Desktop Sidebar */}
       <div
         className="sidebar sidebar-bg desktop-sidebar"
         style={{
           width: 320,
           padding: 20,
-          overflowY: "auto"
+          overflowY: "auto",
         }}
       >
-        <h3 style={{
-          marginBottom: "24px",
-          fontSize: "20px",
-          fontWeight: "700",
-          textAlign: "center",
-          color: "var(--foreground)"
-        }}>
+        <h3
+          style={{
+            marginBottom: "24px",
+            fontSize: "20px",
+            fontWeight: "700",
+            textAlign: "center",
+            color: "var(--foreground)",
+          }}
+        >
           📖 Exercises
         </h3>
-        
+
         <div
           className="question-grid"
           style={{
@@ -185,7 +209,7 @@ function ReadingPart2Content() {
         >
           {READING_PART_2.map((exercise, index) => {
             let className = "question-number";
-            
+
             if (completedExercises[exercise.key]) {
               className += " correct";
             } else if (currentExercise === index) {
@@ -201,7 +225,7 @@ function ReadingPart2Content() {
                   fontSize: "14px",
                   padding: "8px 4px",
                   textAlign: "center",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 title={exercise.title}
               >
@@ -213,9 +237,24 @@ function ReadingPart2Content() {
 
         {/* Progress Summary */}
         <div className="card" style={{ marginTop: 24, padding: 16 }}>
-          <h4 style={{ margin: "0 0 12px 0", color: "var(--foreground)", fontSize: "16px" }}>📊 Progress</h4>
+          <h4
+            style={{
+              margin: "0 0 12px 0",
+              color: "var(--foreground)",
+              fontSize: "16px",
+            }}
+          >
+            📊 Progress
+          </h4>
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#059669", marginBottom: 4 }}>
+            <div
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                color: "#059669",
+                marginBottom: 4,
+              }}
+            >
               {Object.values(completedExercises).filter(Boolean).length}
             </div>
             <div style={{ fontSize: "14px", color: "var(--card-text)" }}>
@@ -248,17 +287,19 @@ function ReadingPart2Content() {
           >
             ✖️ Close
           </button>
-          
-          <h3 style={{
-            marginBottom: "20px",
-            fontSize: "18px",
-            fontWeight: "700",
-            textAlign: "center",
-            color: "var(--foreground)"
-          }}>
+
+          <h3
+            style={{
+              marginBottom: "20px",
+              fontSize: "18px",
+              fontWeight: "700",
+              textAlign: "center",
+              color: "var(--foreground)",
+            }}
+          >
             📖 Reading Part 2 Exercises
           </h3>
-          
+
           <div
             className="question-grid"
             style={{
@@ -269,7 +310,7 @@ function ReadingPart2Content() {
           >
             {READING_PART_2.map((exercise, index) => {
               let className = "question-number";
-              
+
               if (completedExercises[exercise.key]) {
                 className += " correct";
               } else if (currentExercise === index) {
@@ -285,7 +326,7 @@ function ReadingPart2Content() {
                     fontSize: "12px",
                     padding: "8px 4px",
                     textAlign: "center",
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                   title={exercise.title}
                 >
@@ -310,43 +351,60 @@ function ReadingPart2Content() {
 
         {/* Header */}
         <div style={{ marginBottom: 30 }}>
-          <h1 style={{ 
-            color: "var(--foreground)", 
-            marginBottom: 10,
-            fontSize: "28px",
-            fontWeight: "700",
-            textAlign: "center"
-          }}>
+          <h1
+            style={{
+              color: "var(--foreground)",
+              marginBottom: 10,
+              fontSize: "28px",
+              fontWeight: "700",
+              textAlign: "center",
+            }}
+          >
             📖 Reading Part 2 - Exercise {currentExerciseData.key}
           </h1>
-          <h2 style={{ 
-            color: "var(--card-text)", 
-            marginBottom: 10,
-            fontSize: "20px",
-            fontWeight: "500",
-            textAlign: "center"
-          }}>
+          <h2
+            style={{
+              color: "var(--card-text)",
+              marginBottom: 10,
+              fontSize: "20px",
+              fontWeight: "500",
+              textAlign: "center",
+            }}
+          >
             {currentExerciseData.title}
           </h2>
         </div>
 
         {/* Instructions */}
         <div className="card" style={{ marginBottom: 24 }}>
-          <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>📋 Instructions</h3>
-          <ul style={{ color: "var(--card-text)", lineHeight: 1.6, margin: 0, paddingLeft: 20 }}>
-            <li>Read all the sentences carefully</li>
-            <li>Drag and drop sentences to arrange them in logical order</li>
-            <li>Click "Check Answer" when you think you have the correct order</li>
-            <li>The sentences should form a coherent paragraph when arranged correctly</li>
+          <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>
+            📋 Instructions
+          </h3>
+          <ul
+            style={{
+              color: "var(--card-text)",
+              lineHeight: 1.6,
+              margin: 0,
+              paddingLeft: 20,
+            }}
+          >
+            <li>Read the fixed title above carefully</li>
+            <li>
+              Drag and drop the 5 options below to arrange them in logical order
+            </li>
+            <li>
+              Click "Check Answer" when you think you have the correct order
+            </li>
+            <li>The options should follow the title in a coherent sequence</li>
           </ul>
         </div>
 
-        {/* Sortable Sentences */}
+        {/* Sortable Options */}
         <div className="card sortable-container" style={{ marginBottom: 24 }}>
           <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>
-            ✋ Drag to Reorder ({shuffledSentences.length} sentences)
+            ✋ Drag to Reorder (5 options)
           </h3>
-          
+
           <div
             ref={sortableRef}
             style={{
@@ -354,88 +412,103 @@ function ReadingPart2Content() {
               border: "2px dashed var(--border-color)",
               borderRadius: 12,
               padding: 16,
-              backgroundColor: "var(--background)"
+              backgroundColor: "var(--background)",
             }}
           >
-            {shuffledSentences.map((sentence, index) => (
-              <div
-                key={sentence}
-                data-sentence={sentence}
-                className="sentence-card"
-                style={{
-                  padding: 16,
-                  margin: "8px 0",
-                  backgroundColor: "var(--card-background)",
-                  border: `2px solid ${showAnswer && isCompleted ? '#10b981' : 'var(--border-color)'}`,
-                  borderRadius: 12,
-                  cursor: "move",
-                  transition: "all 0.2s ease",
-                  position: "relative",
-                  color: "var(--card-text)"
-                }}
-              >
-                <div style={{ 
-                  display: "flex", 
-                  alignItems: "flex-start", 
-                  gap: 12 
-                }}>
-                  <div style={{
-                    minWidth: 24,
-                    height: 24,
-                    backgroundColor: "var(--border-color)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                    fontWeight: "bold",
+            {fixedTitle}
+            {shuffledOptions.map((option, index) => {
+              return (
+                <div
+                  key={option}
+                  data-option={option}
+                  className="option-card"
+                  style={{
+                    padding: 16,
+                    margin: "8px 0",
+                    backgroundColor: "var(--card-background)",
+                    border: `2px solid ${
+                      showAnswer && isCompleted
+                        ? "#10b981"
+                        : "var(--border-color)"
+                    }`,
+                    borderRadius: 12,
+                    cursor: "move",
+                    transition: "all 0.2s ease",
+                    position: "relative",
                     color: "var(--card-text)",
-                    marginTop: 2
-                  }}>
-                    {index + 1}
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        minWidth: 24,
+                        height: 24,
+                        backgroundColor: "var(--border-color)",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        color: "var(--card-text)",
+                        marginTop: 2,
+                      }}
+                    >
+                      {index + 1}
+                    </div>
+                    <div style={{ flex: 1, lineHeight: 1.5 }}>{option}</div>
                   </div>
-                  <div style={{ flex: 1, lineHeight: 1.5 }}>
-                    {sentence}
-                  </div>
-                  <div style={{
-                    fontSize: "18px",
-                    color: "var(--card-text)",
-                    opacity: 0.5,
-                    cursor: "grab"
-                  }}>
-                    ⋮⋮
-                  </div>
+
+                  {/* Show correct position indicator */}
+                  {showAnswer && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        backgroundColor:
+                          option === originalOrder[index]
+                            ? "#10b981"
+                            : "#ef4444",
+                        color: "white",
+                        borderRadius: "50%",
+                        width: 24,
+                        height: 24,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {option === originalOrder[index] ? "✓" : "✗"}
+                    </div>
+                  )}
                 </div>
-                
-                {/* Show correct position indicator */}
-                {showAnswer && (
-                  <div style={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    backgroundColor: sentence === originalOrder[index] ? "#10b981" : "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    width: 24,
-                    height: 24,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                    fontWeight: "bold"
-                  }}>
-                    {sentence === originalOrder[index] ? "✓" : "✗"}
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="card" style={{ textAlign: "center", marginBottom: 24 }}>
-          <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>🎮 Actions</h3>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+          <h3 style={{ margin: "0 0 16px 0", color: "var(--foreground)" }}>
+            🎮 Actions
+          </h3>
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             {!showAnswer && (
               <>
                 <button
@@ -454,7 +527,7 @@ function ReadingPart2Content() {
                 </button>
               </>
             )}
-            
+
             {showAnswer && (
               <button
                 onClick={resetExercise}
@@ -465,10 +538,16 @@ function ReadingPart2Content() {
               </button>
             )}
           </div>
-          
+
           {/* Attempts counter */}
           {attempts > 0 && (
-            <div style={{ marginTop: 12, color: "var(--card-text)", fontSize: "14px" }}>
+            <div
+              style={{
+                marginTop: 12,
+                color: "var(--card-text)",
+                fontSize: "14px",
+              }}
+            >
               Attempts: {attempts}
             </div>
           )}
@@ -476,32 +555,55 @@ function ReadingPart2Content() {
 
         {/* Result Display */}
         {showAnswer && (
-          <div className="card" style={{ 
-            marginBottom: 24,
-            backgroundColor: isCompleted ? "#065f46" : "#7f1d1d",
-            border: `2px solid ${isCompleted ? "#10b981" : "#ef4444"}`
-          }}>
+          <div
+            className="card"
+            style={{
+              marginBottom: 24,
+              backgroundColor: isCompleted ? "#065f46" : "#7f1d1d",
+              border: `2px solid ${isCompleted ? "#10b981" : "#ef4444"}`,
+            }}
+          >
             <div style={{ textAlign: "center", marginBottom: 16 }}>
-              <h3 style={{ 
-                margin: 0,
-                color: isCompleted ? "#dcfce7" : "#fecaca",
-                fontSize: "20px"
-              }}>
-                {isCompleted ? "🎉 Excellent! Perfect Order!" : "❌ Not quite right. Try again!"}
+              <h3
+                style={{
+                  margin: 0,
+                  color: isCompleted ? "#dcfce7" : "#fecaca",
+                  fontSize: "20px",
+                }}
+              >
+                {isCompleted
+                  ? "🎉 Excellent! Perfect Order!"
+                  : "❌ Not quite right. Try again!"}
               </h3>
             </div>
-            
+
             {!isCompleted && (
               <div>
-                <h4 style={{ 
-                  margin: "16px 0 12px 0", 
-                  color: "#fecaca",
-                  fontSize: "16px"
-                }}>
+                <h4
+                  style={{
+                    margin: "16px 0 12px 0",
+                    color: "#fecaca",
+                    fontSize: "16px",
+                  }}
+                >
                   💡 Correct Order:
                 </h4>
+                <div
+                  style={{
+                    padding: 12,
+                    margin: "4px 0",
+                    backgroundColor: "#065f46",
+                    border: "2px solid #10b981",
+                    borderRadius: 8,
+                    color: "#dcfce7",
+                    fontSize: "14px",
+                    marginBottom: 8,
+                  }}
+                >
+                  <strong>Title:</strong> {fixedTitle}
+                </div>
                 <div>
-                  {originalOrder.map((sentence, index) => (
+                  {originalOrder.map((option, index) => (
                     <div
                       key={index}
                       style={{
@@ -511,10 +613,10 @@ function ReadingPart2Content() {
                         border: "2px solid #10b981",
                         borderRadius: 8,
                         color: "#dcfce7",
-                        fontSize: "14px"
+                        fontSize: "14px",
                       }}
                     >
-                      <strong>{index + 1}.</strong> {sentence}
+                      <strong>{index + 1}.</strong> {option}
                     </div>
                   ))}
                 </div>
@@ -524,24 +626,26 @@ function ReadingPart2Content() {
         )}
 
         {/* Navigation */}
-        <div style={{ 
-          display: "flex", 
-          gap: "12px", 
-          justifyContent: "center", 
-          flexWrap: "wrap",
-          marginTop: 30 
-        }}>
-          <button 
-            onClick={previousExercise} 
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginTop: 30,
+          }}
+        >
+          <button
+            onClick={previousExercise}
             disabled={currentExercise === 0}
             className="btn btn-secondary"
             style={{ minWidth: 120 }}
           >
             ⬅️ Previous
           </button>
-          
-          <button 
-            onClick={nextExercise} 
+
+          <button
+            onClick={nextExercise}
             disabled={currentExercise === READING_PART_2.length - 1}
             className="btn btn-secondary"
             style={{ minWidth: 120 }}
@@ -553,49 +657,49 @@ function ReadingPart2Content() {
 
       {/* Simple CSS for basic SortableJS effect */}
       <style jsx>{`
-        .sentence-card {
+        .option-card {
           margin: 4px 0;
           cursor: move;
         }
-        
+
         /* Mobile responsive */
         @media (max-width: 768px) {
           .desktop-sidebar {
             display: none !important;
           }
-          
+
           .mobile-only {
             display: block !important;
           }
-          
+
           .main-content {
             padding: 16px !important;
             margin: 0 !important;
           }
-          
+
           .sortable-container {
             margin: 16px 0 !important;
             padding: 16px !important;
           }
-          
-          .sentence-card {
+
+          .option-card {
             padding: 12px !important;
             margin: 8px 0 !important;
             cursor: grab;
             border-radius: 8px !important;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
           }
-          
-          .sentence-card:active {
+
+          .option-card:active {
             cursor: grabbing;
           }
-          
+
           .card {
             margin: 12px 0 !important;
             padding: 16px !important;
           }
         }
-        
+
         @media (min-width: 769px) {
           .mobile-only {
             display: none !important;
@@ -608,18 +712,22 @@ function ReadingPart2Content() {
 
 export default function ReadingPart2() {
   return (
-    <Suspense fallback={
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh',
-        fontSize: '18px',
-        color: 'var(--foreground)'
-      }}>
-        Loading Reading Part 2...
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            fontSize: "18px",
+            color: "var(--foreground)",
+          }}
+        >
+          Loading Reading Part 2...
+        </div>
+      }
+    >
       <ReadingPart2Content />
     </Suspense>
   );

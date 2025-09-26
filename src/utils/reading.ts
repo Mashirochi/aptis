@@ -720,7 +720,7 @@ export const questions1_23 = [
     questionStart: "Yesterday, we visited a",
     answerOptions: ["modern", "old", "small"],
     questionEnd: "village.",
-    correctAnswer: "old",
+    correctAnswer: "small",
   },
   {
     questionStart: "We",
@@ -732,7 +732,7 @@ export const questions1_23 = [
     questionStart: "There is a",
     answerOptions: ["garage", "garden", "kitchen"],
     questionEnd: "in the house.",
-    correctAnswer: "kitchen",
+    correctAnswer: "garden",
   },
   {
     questionStart: "There are a lot of",
@@ -771,12 +771,141 @@ export const questions1_24 = [
     questionStart: "For snacks, we",
     answerOptions: ["eat", "order", "prepare"],
     questionEnd: "popcorn and fruit smoothies.",
-    correctAnswer: "order",
+    correctAnswer: "prepare",
   },
   {
     questionStart: "On weekends, we",
     answerOptions: ["buy", "watch", "write"],
     questionEnd: "videos on our smart TV.",
     correctAnswer: "watch",
+  },
+];
+
+export const questions1_26 = [
+  {
+    questionStart: "I don't want you to",
+    answerOptions: ["have", "miss", "take"],
+    questionEnd: "this happiness.",
+    correctAnswer: "miss",
+  },
+  {
+    questionStart: "I have",
+    answerOptions: ["called", "met", "visited"],
+    questionEnd: "you earlier but you were not there.",
+    correctAnswer: "called",
+  },
+  {
+    questionStart: "Can you be",
+    answerOptions: ["available", "free", "ready"],
+    questionEnd: "at 7 p.m.?",
+    correctAnswer: "ready",
+  },
+  {
+    questionStart: "I can",
+    answerOptions: ["meet", "pick", "take"],
+    questionEnd: "you at your place.",
+    correctAnswer: "meet",
+  },
+  {
+    questionStart: "Don't eat a lot for the",
+    answerOptions: ["dinner", "meal", "party"],
+    questionEnd: "because we are going to have a cake.",
+    correctAnswer: "dinner",
+  },
+];
+export const questions1_27 = [
+  {
+    questionStart: "I had a chance to visit",
+    answerOptions: ["farm", "market", "school"],
+    questionEnd: "where my uncle lives.",
+    correctAnswer: "farm",
+  },
+  {
+    questionStart: "It was really",
+    answerOptions: ["angry", "boring", "excited"],
+    questionEnd: "to play with my cousins every day.",
+    correctAnswer: "excited",
+  },
+  {
+    questionStart: "Sometimes, they",
+    answerOptions: ["found", "helped", "left"],
+    questionEnd: "me alone in a field.",
+    correctAnswer: "left",
+  },
+  {
+    questionStart: "I had to try to find the",
+    answerOptions: ["house", "river", "street"],
+    questionEnd: "to get home.",
+    correctAnswer: "street",
+  },
+  {
+    questionStart: "We also sometimes",
+    answerOptions: ["build", "carry", "drink"],
+    questionEnd: "cane juice when we feel tired.",
+    correctAnswer: "drink",
+  },
+];
+export const questions1_28 = [
+  {
+    questionStart: "The",
+    answerOptions: ["city", "country", "school"],
+    questionEnd: "is really new to me and other students.",
+    correctAnswer: "country",
+  },
+  {
+    questionStart: "The park is really",
+    answerOptions: ["clean", "dirty", "small"],
+    questionEnd: "and we can have talks or walk there.",
+    correctAnswer: "clean",
+  },
+  {
+    questionStart: "We love to have some games after",
+    answerOptions: ["breakfast", "class", "holiday"],
+    questionEnd: ".",
+    correctAnswer: "class",
+  },
+  {
+    questionStart: "I live with",
+    answerOptions: ["alone", "other", "young"],
+    questionEnd: "students who come from different countries.",
+    correctAnswer: "other",
+  },
+  {
+    questionStart: "We can learn some",
+    answerOptions: ["clothes", "foods", "words"],
+    questionEnd: "which are really good for speaking.",
+    correctAnswer: "words",
+  },
+];
+export const questions1_25 = [
+  {
+    questionStart: "I have",
+    answerOptions: ["already", "just", "yet"],
+    questionEnd: "gone to a clothing store.",
+    correctAnswer: "just",
+  },
+  {
+    questionStart: "And the color is perfect,",
+    answerOptions: ["either", "so", "too"],
+    questionEnd: "too.",
+    correctAnswer: "too",
+  },
+  {
+    questionStart: "I am going to wear it",
+    answerOptions: ["at", "in", "on"],
+    questionEnd: "my birthday party.",
+    correctAnswer: "at",
+  },
+  {
+    questionStart: "Sorry you can't come, I will bring",
+    answerOptions: ["any", "much", "some"],
+    questionEnd: "cakes for you.",
+    correctAnswer: "some",
+  },
+  {
+    questionStart: "",
+    answerOptions: ["Give", "Send", "Take"],
+    questionEnd: "my love to everyone.",
+    correctAnswer: "Give",
   },
 ];

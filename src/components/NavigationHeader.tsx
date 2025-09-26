@@ -58,7 +58,7 @@ export default function NavigationHeader() {
         { href: "/part2", label: "Part 2", icon: "🎙️" },
         { href: "/part3", label: "Part 3", icon: "📝" },
         { href: "/part4", label: "Part 4", icon: "🎵" },
-      ]
+      ],
     },
     {
       label: "Reading",
@@ -67,8 +67,9 @@ export default function NavigationHeader() {
       items: [
         { href: "/reading/part1", label: "Reading 1", icon: "📖" },
         { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
-        { href: "/reading/part3", label: "Reading 3", icon: "🏷️" },
-      ]
+        { href: "/reading/part4", label: "Reading 4", icon: "🌷͙֒" },
+        { href: "/reading/part5", label: "Reading 5", icon: "🏷️" },
+      ],
     },
     {
       href: "/incorrect",
@@ -77,7 +78,7 @@ export default function NavigationHeader() {
       badge: incorrectCount,
     },
   ];
-  
+
   // All navigation items flattened for mobile drawer
   const flatNavigationItems = [
     { href: "/", label: "Home", icon: "🏠" },
@@ -87,7 +88,8 @@ export default function NavigationHeader() {
     { href: "/part4", label: "Part 4", icon: "🎵" },
     { href: "/reading/part1", label: "Reading 1", icon: "📖" },
     { href: "/reading/part2", label: "Reading 2", icon: "🔄" },
-    { href: "/reading/part3", label: "Reading 3", icon: "🏷️" },
+    { href: "/reading/part4", label: "Reading 4", icon: "🌷͙֒" },
+    { href: "/reading/part5", label: "Reading 5", icon: "🏷️" },
     {
       href: "/incorrect",
       label: "Incorrect",
@@ -197,10 +199,18 @@ export default function NavigationHeader() {
           >
             {navigationItems.map((item, index) => {
               if (item.isDropdown) {
-                const isOpen = item.label === "Listening" ? isListeningDropdownOpen : isReadingDropdownOpen;
-                const setIsOpen = item.label === "Listening" ? setIsListeningDropdownOpen : setIsReadingDropdownOpen;
-                const hasActiveChild = item.items?.some(subItem => pathname === subItem.href);
-                
+                const isOpen =
+                  item.label === "Listening"
+                    ? isListeningDropdownOpen
+                    : isReadingDropdownOpen;
+                const setIsOpen =
+                  item.label === "Listening"
+                    ? setIsListeningDropdownOpen
+                    : setIsReadingDropdownOpen;
+                const hasActiveChild = item.items?.some(
+                  (subItem) => pathname === subItem.href
+                );
+
                 return (
                   <div
                     key={item.label}
@@ -213,7 +223,9 @@ export default function NavigationHeader() {
                         padding: "8px 16px",
                         borderRadius: "8px",
                         background: hasActiveChild ? "#4f46e5" : "transparent",
-                        border: hasActiveChild ? "none" : "1px solid var(--border-color)",
+                        border: hasActiveChild
+                          ? "none"
+                          : "1px solid var(--border-color)",
                         color: hasActiveChild ? "#fff" : "var(--card-text)",
                         fontSize: "16px",
                         fontWeight: "500",
@@ -226,9 +238,11 @@ export default function NavigationHeader() {
                     >
                       <span>{item.icon}</span>
                       {item.label}
-                      <span style={{ fontSize: "12px", marginLeft: "4px" }}>▼</span>
+                      <span style={{ fontSize: "12px", marginLeft: "4px" }}>
+                        ▼
+                      </span>
                     </button>
-                    
+
                     {/* Dropdown Menu */}
                     {isMounted && isOpen && (
                       <div
@@ -255,9 +269,16 @@ export default function NavigationHeader() {
                               gap: "8px",
                               padding: "12px 16px",
                               textDecoration: "none",
-                              color: pathname === subItem.href ? "#4f46e5" : "var(--card-text)",
-                              backgroundColor: pathname === subItem.href ? "#f3f4f6" : "transparent",
-                              fontWeight: pathname === subItem.href ? "600" : "500",
+                              color:
+                                pathname === subItem.href
+                                  ? "#4f46e5"
+                                  : "var(--card-text)",
+                              backgroundColor:
+                                pathname === subItem.href
+                                  ? "#f3f4f6"
+                                  : "transparent",
+                              fontWeight:
+                                pathname === subItem.href ? "600" : "500",
                               transition: "all 0.2s ease",
                             }}
                             className="dropdown-link"
@@ -285,9 +306,14 @@ export default function NavigationHeader() {
                       display: "flex",
                       alignItems: "center",
                       gap: "6px",
-                      backgroundColor: pathname === item.href ? "#4f46e5" : "transparent",
-                      color: pathname === item.href ? "#fff" : "var(--card-text)",
-                      border: pathname === item.href ? "none" : "1px solid var(--border-color)",
+                      backgroundColor:
+                        pathname === item.href ? "#4f46e5" : "transparent",
+                      color:
+                        pathname === item.href ? "#fff" : "var(--card-text)",
+                      border:
+                        pathname === item.href
+                          ? "none"
+                          : "1px solid var(--border-color)",
                       position: "relative",
                     }}
                     className="nav-link"
@@ -297,7 +323,8 @@ export default function NavigationHeader() {
                     {item.badge !== undefined && (
                       <span
                         style={{
-                          backgroundColor: item.badge > 0 ? "#ef4444" : "#10b981",
+                          backgroundColor:
+                            item.badge > 0 ? "#ef4444" : "#10b981",
                           color: "white",
                           borderRadius: "50%",
                           width: "20px",

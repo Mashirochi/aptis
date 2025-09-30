@@ -1,11 +1,15 @@
-fetch("https://aptishienle-backend-rvw7.onrender.com/api/auth/login", {
+fetch("https://aptishienle-backend-rvw7.onrender.com/api/auth/register", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
+    Accept: "application/json, text/plain, */*",
+    Origin: "https://www.aptishienle.com",
+    Referer: "https://www.aptishienle.com/",
   },
   body: JSON.stringify({
-    email: "aptisrealtests@gmail.com",
+    email: "aptislearner@gmail.com",
     password: "123456",
+    name: "Mai Chiến Thắng",
     browser: "Browser",
     os: "Windows",
     ip: "af1f4ef345643b9ceb937fff5b1f13ae",
@@ -14,15 +18,6 @@ fetch("https://aptishienle-backend-rvw7.onrender.com/api/auth/login", {
     status: "1",
   }),
 })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    console.log("✅ Success:", data);
-  })
-  .catch((error) => {
-    console.error("❌ Error:", error);
-  });
+  .then((res) => res.json())
+  .then((data) => console.log("Response:", data))
+  .catch((err) => console.error("Error:", err));

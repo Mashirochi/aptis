@@ -32,6 +32,8 @@ import {
   questions1_28,
   questions1_20,
   questions1_25,
+  questions1_29,
+  questions1_30,
 } from "../../../utils/reading";
 
 // Define the base question interface
@@ -79,6 +81,8 @@ const ALL_QUESTION_SETS = [
   { name: "Questions 126-130", questions: questions1_26 },
   { name: "Questions 131-135", questions: questions1_27 },
   { name: "Questions 136-140", questions: questions1_28 },
+  { name: "Questions 141-145", questions: questions1_29 },
+  { name: "Questions 146-150", questions: questions1_30 },
 ].filter((set) => set.questions && set.questions.length > 0); // Filter out empty sets
 
 interface Question {
@@ -262,7 +266,7 @@ function ReadingPart1Content() {
               marginTop: 16,
               padding: 12,
               borderRadius: 8,
-              backgroundColor: isCorrect ? "#dcfce7" : "#fef2f2",
+              border: isCorrect ? "#dcfce7" : "#fef2f2",
             }}
           >
             <p
@@ -275,9 +279,11 @@ function ReadingPart1Content() {
                 fontWeight: "600",
               }}
             >
-              {isCorrect
-                ? "✅ Correct!"
-                : `❌ Incorrect. The correct answer is: ${question.correctAnswer}`}
+              {isCorrect ? (
+                <span style={{ color: "red !important" }}>"✅ Correct!"</span>
+              ) : (
+                `❌ Incorrect. The correct answer is: ${question.correctAnswer}`
+              )}
             </p>
             <button
               onClick={() => resetQuestion(questionId)}
@@ -363,7 +369,13 @@ function ReadingPart1Content() {
                 ({ALL_QUESTION_SETS[currentSet].questions.length} questions)
               </span>
             </h3>
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+                gap: "12px",
+              }}
+            >
               {ALL_QUESTION_SETS.map((set, index) => (
                 <button
                   key={index}

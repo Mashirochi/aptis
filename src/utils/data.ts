@@ -4391,8 +4391,21 @@ export const PART_4_DATA = [
       {
         id: 3378,
         question:
-          "Listen to an office worker talking about working from home and answer the questions below. According to the author, working from home: A. Needs a big home office. B. Do not require self-motivation. C. It depends on your situation and personality.",
-        options: [],
+          "Listen to an office worker talking about working from home and answer the questions below. According to the author, working from home:",
+        options: [
+          {
+            key: "A",
+            text: "Needs a big home office.",
+          },
+          {
+            key: "B",
+            text: "Do not require self-motivation.",
+          },
+          {
+            key: "C",
+            text: "It depends on your situation and personality.",
+          },
+        ],
         answer: "C",
       },
     ],

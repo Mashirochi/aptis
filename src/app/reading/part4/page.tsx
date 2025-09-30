@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { READING_PART_4 } from '../../../utils/part2';
+import React, { useState } from "react";
+import { READING_PART_4 } from "../../../utils/part2";
 
 // Define TypeScript interfaces
 interface PersonWithName {
@@ -51,23 +51,27 @@ type ReadingSection = ReadingSectionWithPeople | ReadingSectionWithTopics;
 const ReadingPart4 = () => {
   // State to track selected answers
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  
+
   // Handle answer selection
   const handleAnswerSelect = (questionId: string, answer: string) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer
+      [questionId]: answer,
     }));
   };
 
   // Check if an answer is correct
-  const isAnswerCorrect = (questionId: string, selectedAnswer: string, correctAnswer: string) => {
+  const isAnswerCorrect = (
+    questionId: string,
+    selectedAnswer: string,
+    correctAnswer: string
+  ) => {
     return selectedAnswer === correctAnswer;
   };
 
   // Helper function to get person name
   const getPersonName = (person: Person): string => {
-    if ('name' in person) {
+    if ("name" in person) {
       return person.name;
     } else {
       return person.person;
@@ -76,7 +80,7 @@ const ReadingPart4 = () => {
 
   // Helper function to get question number
   const getQuestionNumber = (question: Question): number | undefined => {
-    if ('number' in question) {
+    if ("number" in question) {
       return question.number;
     }
     return undefined;
@@ -131,13 +135,14 @@ const ReadingPart4 = () => {
               color: "var(--foreground)",
             }}
           >
-            <strong>📋 Instructions:</strong> Read the texts and answer the questions below by selecting who says each opinion.
+            <strong>📋 Instructions:</strong> Read the texts and answer the
+            questions below by selecting who says each opinion.
           </p>
         </div>
 
         {READING_PART_4.map((section: any, sectionIndex: number) => (
-          <div 
-            key={sectionIndex} 
+          <div
+            key={sectionIndex}
             className="card"
             style={{
               marginBottom: "20px",
@@ -148,9 +153,9 @@ const ReadingPart4 = () => {
               border: "1px solid var(--border-color)",
             }}
           >
-            {'title' in section && (
+            {"title" in section && (
               <>
-                <h2 
+                <h2
                   style={{
                     color: "#1f2937",
                     marginBottom: "20px",
@@ -160,9 +165,9 @@ const ReadingPart4 = () => {
                 >
                   {section.title}
                 </h2>
-                
+
                 {section.description && (
-                  <p 
+                  <p
                     style={{
                       marginBottom: "20px",
                       fontSize: "16px",
@@ -173,10 +178,10 @@ const ReadingPart4 = () => {
                     {section.description}
                   </p>
                 )}
-                
+
                 {section.people && (
                   <div className="mb-8">
-                    <h3 
+                    <h3
                       style={{
                         fontSize: "18px",
                         fontWeight: "600",
@@ -187,190 +192,53 @@ const ReadingPart4 = () => {
                       Comments:
                     </h3>
                     <div className="space-y-4">
-                      {section.people.map((person: Person, personIndex: number) => (
-                        <div 
-                          key={personIndex} 
-                          style={{
-                            padding: "16px",
-                            border: "1px solid var(--border-color)",
-                            borderRadius: "8px",
-                            backgroundColor: "var(--card-background)",
-                            marginBottom: "12px",
-                          }}
-                        >
-                          <p 
+                      {section.people.map(
+                        (person: Person, personIndex: number) => (
+                          <div
+                            key={personIndex}
                             style={{
-                              fontWeight: "600",
-                              color: "var(--foreground)",
-                              marginBottom: "8px",
+                              padding: "16px",
+                              border: "1px solid var(--border-color)",
+                              borderRadius: "8px",
+                              backgroundColor: "var(--card-background)",
+                              marginBottom: "12px",
                             }}
                           >
-                            {getPersonName(person)}:
-                          </p>
-                          <p 
-                            style={{
-                              color: "var(--card-text)",
-                              lineHeight: "1.5",
-                              margin: 0,
-                            }}
-                          >
-                            {person.text}
-                          </p>
-                        </div>
-                      ))}
+                            <p
+                              style={{
+                                fontWeight: "600",
+                                color: "var(--foreground)",
+                                marginBottom: "8px",
+                              }}
+                            >
+                              {getPersonName(person)}:
+                            </p>
+                            <p
+                              style={{
+                                color: "var(--card-text)",
+                                lineHeight: "1.5",
+                                margin: 0,
+                              }}
+                            >
+                              {person.text}
+                            </p>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 )}
-                
+
                 {section.questions && (
                   <div style={{ marginTop: "20px" }}>
-                    {section.questions.map((question: QuestionWithNumber, questionIndex: number) => {
-                      const questionId = `${sectionIndex}-${questionIndex}`;
-                      const selectedAnswer = answers[questionId] || '';
-                      
-                      return (
-                        <div 
-                          key={questionIndex} 
-                          style={{
-                            padding: "16px",
-                            border: "1px solid var(--border-color)",
-                            borderRadius: "8px",
-                            backgroundColor: "var(--card-background)",
-                            marginBottom: "16px",
-                          }}
-                        >
-                          <p 
-                            style={{
-                              fontWeight: "500",
-                              color: "var(--foreground)",
-                              marginBottom: "12px",
-                              fontSize: "16px",
-                            }}
-                          >
-                            {question.number}. {question.question}
-                          </p>
-                          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-                            <span 
-                              style={{
-                                fontWeight: "500",
-                                color: "var(--card-text)",
-                              }}
-                            >
-                              Answer:
-                            </span>
-                            <select
-                              value={selectedAnswer}
-                              onChange={(e) => handleAnswerSelect(questionId, e.target.value)}
-                              className="btn btn-secondary"
-                              style={{
-                                padding: "8px 12px",
-                                borderRadius: "6px",
-                                border: "1px solid var(--border-color)",
-                                backgroundColor: "var(--card-background)",
-                                color: "var(--card-text)",
-                                fontSize: "14px",
-                                minWidth: "120px",
-                              }}
-                            >
-                              <option value="">Select...</option>
-                              {section.people?.map((person: Person, idx: number) => (
-                                <option 
-                                  key={idx} 
-                                  value={getPersonName(person)}
-                                  style={{
-                                    backgroundColor: "var(--card-background)",
-                                    color: "var(--card-text)",
-                                  }}
-                                >
-                                  {getPersonName(person)}
-                                </option>
-                              ))}
-                            </select>
-                            
-                            {selectedAnswer && (
-                              <span 
-                                style={{
-                                  fontWeight: "600",
-                                  color: isAnswerCorrect(questionId, selectedAnswer, question.answer) ? "#10b981" : "#ef4444",
-                                }}
-                              >
-                                {isAnswerCorrect(questionId, selectedAnswer, question.answer) ? '✅ Correct!' : `❌ Incorrect. Correct answer: ${question.answer}`}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
-            )}
-            
-            {'topics' in section && section.topics && (
-              <>
-                {section.topics.map((topic: Topic, topicIndex: number) => (
-                  <div 
-                    key={topicIndex} 
-                    style={{
-                      marginBottom: "20px",
-                      padding: "16px",
-                      border: "1px solid var(--border-color)",
-                      borderRadius: "8px",
-                      backgroundColor: "var(--card-background)",
-                    }}
-                  >
-                    <h3 
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        marginBottom: "16px",
-                        color: "var(--foreground)",
-                      }}
-                    >
-                      {topic.title}
-                    </h3>
-                    <div className="space-y-4 mb-6">
-                      {topic.people.map((person: PersonWithName, personIndex: number) => (
-                        <div 
-                          key={personIndex} 
-                          style={{
-                            padding: "16px",
-                            border: "1px solid var(--border-color)",
-                            borderRadius: "8px",
-                            backgroundColor: "var(--card-background)",
-                            marginBottom: "12px",
-                          }}
-                        >
-                          <p 
-                            style={{
-                              fontWeight: "600",
-                              color: "var(--foreground)",
-                              marginBottom: "8px",
-                            }}
-                          >
-                            {person.name}:
-                          </p>
-                          <p 
-                            style={{
-                              color: "var(--card-text)",
-                              lineHeight: "1.5",
-                              margin: 0,
-                            }}
-                          >
-                            {person.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div style={{ marginTop: "20px" }}>
-                      {topic.questions.map((question: QuestionWithoutNumber, questionIndex: number) => {
-                        const questionId = `${sectionIndex}-${topicIndex}-${questionIndex}`;
-                        const selectedAnswer = answers[questionId] || '';
-                        
+                    {section.questions.map(
+                      (question: QuestionWithNumber, questionIndex: number) => {
+                        const questionId = `${sectionIndex}-${questionIndex}`;
+                        const selectedAnswer = answers[questionId] || "";
+
                         return (
-                          <div 
-                            key={questionIndex} 
+                          <div
+                            key={questionIndex}
                             style={{
                               padding: "16px",
                               border: "1px solid var(--border-color)",
@@ -379,7 +247,7 @@ const ReadingPart4 = () => {
                               marginBottom: "16px",
                             }}
                           >
-                            <p 
+                            <p
                               style={{
                                 fontWeight: "500",
                                 color: "var(--foreground)",
@@ -387,10 +255,17 @@ const ReadingPart4 = () => {
                                 fontSize: "16px",
                               }}
                             >
-                              {question.question}
+                              {question.number}. {question.question}
                             </p>
-                            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-                              <span 
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "12px",
+                                flexWrap: "wrap",
+                              }}
+                            >
+                              <span
                                 style={{
                                   fontWeight: "500",
                                   color: "var(--card-text)",
@@ -400,7 +275,9 @@ const ReadingPart4 = () => {
                               </span>
                               <select
                                 value={selectedAnswer}
-                                onChange={(e) => handleAnswerSelect(questionId, e.target.value)}
+                                onChange={(e) =>
+                                  handleAnswerSelect(questionId, e.target.value)
+                                }
                                 className="btn btn-secondary"
                                 style={{
                                   padding: "8px 12px",
@@ -413,34 +290,224 @@ const ReadingPart4 = () => {
                                 }}
                               >
                                 <option value="">Select...</option>
-                                {topic.people.map((person: PersonWithName, idx: number) => (
-                                  <option 
-                                    key={idx} 
-                                    value={person.name}
-                                    style={{
-                                      backgroundColor: "var(--card-background)",
-                                      color: "var(--card-text)",
-                                    }}
-                                  >
-                                    {person.name}
-                                  </option>
-                                ))}
+                                {section.people?.map(
+                                  (person: Person, idx: number) => (
+                                    <option
+                                      key={idx}
+                                      value={getPersonName(person)}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--card-background)",
+                                        color: "var(--card-text)",
+                                      }}
+                                    >
+                                      {getPersonName(person)}
+                                    </option>
+                                  )
+                                )}
                               </select>
-                              
+
                               {selectedAnswer && (
-                                <span 
+                                <span
                                   style={{
                                     fontWeight: "600",
-                                    color: isAnswerCorrect(questionId, selectedAnswer, question.answer) ? "#10b981" : "#ef4444",
+                                    color: isAnswerCorrect(
+                                      questionId,
+                                      selectedAnswer,
+                                      question.answer
+                                    )
+                                      ? "#10b981"
+                                      : "#ef4444",
                                   }}
                                 >
-                                  {isAnswerCorrect(questionId, selectedAnswer, question.answer) ? '✅ Correct!' : `❌ Incorrect. Correct answer: ${question.answer}`}
+                                  {isAnswerCorrect(
+                                    questionId,
+                                    selectedAnswer,
+                                    question.answer
+                                  )
+                                    ? "✅ Correct!"
+                                    : `❌ Incorrect. Correct answer: ${question.answer}`}
                                 </span>
                               )}
                             </div>
                           </div>
                         );
-                      })}
+                      }
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+
+            {"topics" in section && section.topics && (
+              <>
+                {section.topics.map((topic: Topic, topicIndex: number) => (
+                  <div
+                    key={topicIndex}
+                    style={{
+                      marginBottom: "20px",
+                      padding: "16px",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "8px",
+                      backgroundColor: "var(--card-background)",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        marginBottom: "16px",
+                        color: "var(--foreground)",
+                      }}
+                    >
+                      {topic.title}
+                    </h3>
+                    <div className="space-y-4 mb-6">
+                      {topic.people.map(
+                        (person: PersonWithName, personIndex: number) => (
+                          <div
+                            key={personIndex}
+                            style={{
+                              padding: "16px",
+                              border: "1px solid var(--border-color)",
+                              borderRadius: "8px",
+                              backgroundColor: "var(--card-background)",
+                              marginBottom: "12px",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontWeight: "600",
+                                color: "var(--foreground)",
+                                marginBottom: "8px",
+                              }}
+                            >
+                              {person.name}:
+                            </p>
+                            <p
+                              style={{
+                                color: "var(--card-text)",
+                                lineHeight: "1.5",
+                                margin: 0,
+                              }}
+                            >
+                              {person.text}
+                            </p>
+                          </div>
+                        )
+                      )}
+                    </div>
+
+                    <div style={{ marginTop: "20px" }}>
+                      {topic.questions.map(
+                        (
+                          question: QuestionWithoutNumber,
+                          questionIndex: number
+                        ) => {
+                          const questionId = `${sectionIndex}-${topicIndex}-${questionIndex}`;
+                          const selectedAnswer = answers[questionId] || "";
+
+                          return (
+                            <div
+                              key={questionIndex}
+                              style={{
+                                padding: "16px",
+                                border: "1px solid var(--border-color)",
+                                borderRadius: "8px",
+                                backgroundColor: "var(--card-background)",
+                                marginBottom: "16px",
+                              }}
+                            >
+                              <p
+                                style={{
+                                  fontWeight: "500",
+                                  color: "var(--foreground)",
+                                  marginBottom: "12px",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                {question.question}
+                              </p>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "12px",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontWeight: "500",
+                                    color: "var(--card-text)",
+                                  }}
+                                >
+                                  Answer:
+                                </span>
+                                <select
+                                  value={selectedAnswer}
+                                  onChange={(e) =>
+                                    handleAnswerSelect(
+                                      questionId,
+                                      e.target.value
+                                    )
+                                  }
+                                  className="btn btn-secondary"
+                                  style={{
+                                    padding: "8px 12px",
+                                    borderRadius: "6px",
+                                    border: "1px solid var(--border-color)",
+                                    backgroundColor: "var(--card-background)",
+                                    color: "var(--card-text)",
+                                    fontSize: "14px",
+                                    minWidth: "120px",
+                                  }}
+                                >
+                                  <option value="">Select...</option>
+                                  {topic.people.map(
+                                    (person: PersonWithName, idx: number) => (
+                                      <option
+                                        key={idx}
+                                        value={person.name}
+                                        style={{
+                                          backgroundColor:
+                                            "var(--card-background)",
+                                          color: "var(--card-text)",
+                                        }}
+                                      >
+                                        {person.name}
+                                      </option>
+                                    )
+                                  )}
+                                </select>
+
+                                {selectedAnswer && (
+                                  <span
+                                    style={{
+                                      fontWeight: "600",
+                                      color: isAnswerCorrect(
+                                        questionId,
+                                        selectedAnswer,
+                                        question.answer
+                                      )
+                                        ? "#10b981"
+                                        : "#ef4444",
+                                    }}
+                                  >
+                                    {isAnswerCorrect(
+                                      questionId,
+                                      selectedAnswer,
+                                      question.answer
+                                    )
+                                      ? "✅ Correct!"
+                                      : `❌ Incorrect. Correct answer: ${question.answer}`}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 ))}
@@ -458,13 +525,12 @@ const ReadingPart4 = () => {
           --border-color: #e5e7eb;
         }
 
-        .dark:root {
+        .dark {
           --card-background: #1f2937;
           --card-text: #d1d5db;
           --foreground: #f9fafb;
           --border-color: #374151;
         }
-
         .gradient-bg {
           background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
         }
@@ -474,11 +540,13 @@ const ReadingPart4 = () => {
         }
 
         .card {
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .dark .card {
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+            0 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
 
         .btn {

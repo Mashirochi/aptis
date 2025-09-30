@@ -794,7 +794,6 @@ function ReadingPart3Content() {
 
       {/* CSS */}
       <style jsx>{`
-        /* Smooth transitions for all interactive elements */
         .card {
           transition: all 0.3s ease;
         }

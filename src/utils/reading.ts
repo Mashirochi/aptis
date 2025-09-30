@@ -909,3 +909,69 @@ export const questions1_25 = [
     correctAnswer: "Give",
   },
 ];
+
+export const questions1_29 = [
+  {
+    questionStart: "I live in a house",
+    answerOptions: ["near", "on", "under"],
+    questionEnd: "the park.",
+    correctAnswer: "near",
+  },
+  {
+    questionStart: "My house has a kitchen, but it is very",
+    answerOptions: ["heavy", "large", "small"],
+    questionEnd: ".",
+    correctAnswer: "small",
+  },
+  {
+    questionStart: "I work at a",
+    answerOptions: ["school", "shop", "station"],
+    questionEnd: "to sell the clothes.",
+    correctAnswer: "shop",
+  },
+  {
+    questionStart: "I can meet many",
+    answerOptions: ["cars", "chairs", "people"],
+    questionEnd: "and want to talk to them.",
+    correctAnswer: "people",
+  },
+  {
+    questionStart: "I am going to",
+    answerOptions: ["close", "draw", "visit"],
+    questionEnd: "my hometown.",
+    correctAnswer: "visit",
+  },
+];
+
+export const questions1_30 = [
+  {
+    questionStart: "Yesterday I went to the museum to",
+    answerOptions: ["drive", "play", "visit"],
+    questionEnd: "the new art exhibition.",
+    correctAnswer: "visit",
+  },
+  {
+    questionStart: "In the middle of the",
+    answerOptions: ["garden", "park", "room"],
+    questionEnd: ", there was a big tree – very unusual.",
+    correctAnswer: "room",
+  },
+  {
+    questionStart: "The weather was very",
+    answerOptions: ["cold", "hot", "rainy"],
+    questionEnd: "that day, so I felt quite tired.",
+    correctAnswer: "hot",
+  },
+  {
+    questionStart: "On the way home, I took the",
+    answerOptions: ["bike", "car", "train"],
+    questionEnd: ".",
+    correctAnswer: "train",
+  },
+  {
+    questionStart: "At the museum, I could",
+    answerOptions: ["sing", "speak", "write"],
+    questionEnd: "with a tour guide about history.",
+    correctAnswer: "speak",
+  },
+];

@@ -315,6 +315,18 @@ export const READING_PART_2 = [
       "Attendees networked over smoothies, brainstorming future partnerships.",
     ],
   },
+  {
+    key: 28,
+    title:
+      "The event took place on Saturday, and many new students joined the welcoming activities.",
+    sentences: [
+      "The program officially began at 10 a.m., with a short introduction about the university.",
+      "We took the elevator to the second floor, where the main sessions were arranged.",
+      "After that, we had the chance to meet several teachers as well as different departments.",
+      "There were friendly staff members available in the auditorium to provide support and guidance. ",
+      "During the visit, people met one another and later went out together to enjoy lunch",
+    ],
+  },
 ];
 
 export const READING_PART_4 = [

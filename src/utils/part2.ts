@@ -327,6 +327,41 @@ export const READING_PART_2 = [
       "During the visit, people met one another and later went out together to enjoy lunch",
     ],
   },
+  {
+    key: 29,
+    title:
+      "This weekend, our university hosted a startup showcase to celebrate creativity and innovation among young entrepreneurs.",
+    sentences: [
+      "The startup showcase was held on Saturday, highlighting innovative apps.",
+      "Over 55 entrepreneurs participated, with Ms. Vo pitching a health-tech app.",
+      "Activities included live app demos, coding sprints, and investor Q&A sessions.",
+      "After the pitches, awards were given for the most impactful innovation.",
+      "Attendees networked over smoothies, brainstorming future partnerships.",
+    ],
+  },
+  {
+    key: 30,
+    title:
+      "This semester, we have studied several chapters about local history in the class.",
+    sentences: [
+      "Your end-of-term project should focus on at least two of these chapters.",
+      "It must include relevant pictures and your own written text about the topic.",
+      "You will then use these pictures and your written work to create a presentation for the class.",
+      "Your talk should highlight the key points and last about five minutes in total.",
+      "After your presentation, other students will ask questions and you will answer them.",
+    ],
+  },
+  {
+    key: 31,
+    title: "NO TITLE",
+    sentences: [
+      "When I was at the coffee shop it was very crowded and the staff were very busy on the first day.",
+      "Although it was busy the staff still arranged a table for me.",
+      "They gave me the menu and when I looked at it I saw quite a few dishes.",
+      "I looked at all of those and chose the most expensive sandwich.",
+      "It tasted quite good with cheese toppings and I will definitely go back to this place.",
+    ],
+  },
 ];
 
 export const READING_PART_4 = [
